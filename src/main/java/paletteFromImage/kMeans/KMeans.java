@@ -1,47 +1,43 @@
 package paletteFromImage.kMeans;
 
-import java.util.List;
+import java.util.Arrays;
 
 class KMeans {
-    private final List<Point> points;
+    private final Point[] points;
     private final int maxIterations;
 
     private final KMeansCenterInitializer initializer;
 
-    public KMeans(List<Point> points, int maxIterations, KMeansCenterInitializer initializer) {
+    public KMeans(Point[] points, int maxIterations, KMeansCenterInitializer initializer) {
        this.points = points;
        this.maxIterations = maxIterations;
        this.initializer = initializer;
     }
 
-    public List<Point> findClusters(int numberOfClusters) {
-        List<Center> centers = initializeCenters(numberOfClusters, points);
+    public Point[] findClusters(int numberOfClusters) {
+        Center[] centers = initializeCenters(numberOfClusters, points);
 
         for (int i = 0; i < maxIterations; i++) {
             assignPointsToCenters(centers);
             adjustCenters(centers);
-
-            System.out.println("Iteration: " + i);
-            System.out.println(centers);
         }
 
         return convertToPoints(centers);
     }
 
-    private List<Center> initializeCenters(int numberOfClusters, List<Point> points) {
-        return initializer.initialize(numberOfClusters, points)
-            .stream()
+    private Center[] initializeCenters(int numberOfClusters, Point[] points) {
+        return Arrays.stream(initializer.initialize(numberOfClusters, points))
             .map(Center::new)
-            .toList();
+            .toArray(Center[]::new);
         /*
         1. select first center uniformly at random
         2. for remaining centers:
             2.1. compute distance between every point and its nearest center
-            2.2. pick random point with probablity proporitonal to square of distance
+            2.2. pick random point with probability proportional to square of distance
          */
     }
 
-    private void assignPointsToCenters(List<Center> centers) {
+    private void assignPointsToCenters(Center[] centers) {
         for (Center center : centers) {
             center.clear();
         }
@@ -52,11 +48,11 @@ class KMeans {
         }
     }
 
-    private Center findClosestCenter(Point point, List<Center> centers) {
+    private Center findClosestCenter(Point point, Center[] centers) {
         Center candidate = null;
         double minDistance = Double.POSITIVE_INFINITY;
         for (Center center : centers) {
-            double distance = point.distance(center.getPosition());
+            double distance = point.calculateDistanceTo(center.getPosition());
             if (distance < minDistance) {
                 candidate = center;
                 minDistance = distance;
@@ -66,15 +62,15 @@ class KMeans {
         return candidate;
     }
 
-    private void adjustCenters(List<Center> centers) {
+    private void adjustCenters(Center[] centers) {
         for (Center center : centers) {
             center.recenter();
         }
     }
 
-    private List<Point> convertToPoints(List<Center> centers) {
-        return centers.stream()
+    private Point[] convertToPoints(Center[] centers) {
+        return Arrays.stream(centers)
             .map(Center::getPosition)
-            .toList();
+            .toArray(Point[]::new);
     }
 }

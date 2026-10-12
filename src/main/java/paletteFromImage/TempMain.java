@@ -2,31 +2,35 @@ package paletteFromImage;
 
 import paletteFromImage.kMeans.KMeansPaletteExtractor;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.nio.file.Path;
-import java.util.List;
+import java.io.File;
 import java.util.Scanner;
 
 public class TempMain {
     public static void main(String[] args) {
-        Path path = Path.of("/Users/moritzpirer/OneDrive/__Personal/Miscellaneous/397388.jpg");
+        Scanner scanner = new Scanner(System.in);
+        scanner.nextLine();
+
+        File file = new File("/Users/moritzpirer/OneDrive/__Personal/Miscellaneous/Your Name Wallpaper.jpg");
+
         try {
-            BufferedImage image = ImageLoader.load(path);
+            BufferedImage image = ImageIO.read(file);
             ImagePaletteExtractor extractor = new KMeansPaletteExtractor();
-            List<Color> result = extractor.extractFromImage(image, 5);
+            Color[] result = extractor.extractFromImage(image, 5);
+
             for (Color color : result) {
                 int value = color.getRGB() & 0xFFFFFF;
-                System.out.println(Integer.toHexString(value));
+                String ansi = "\u001B[48;2;%d;%d;%dm".formatted(color.getRed(), color.getGreen(), color.getBlue());
+                System.out.println(ansi + Integer.toHexString(value) +"\u001B[0m");
             }
         }
         catch (Exception e) {
             System.err.println(e.getMessage());
         }
-
         System.gc();
 
-        //Scanner scanner = new Scanner(System.in);
-        //scanner.nextLine();
+        scanner.nextLine();
     }
 }

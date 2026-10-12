@@ -1,7 +1,12 @@
 package paletteFromImage.kMeans;
 
-import java.util.List;
-
 interface KMeansCenterInitializer {
-    List<Point> initialize(int numberOfClusters, List<Point> points);
+    /**
+     * Select a subset of numberOfClusters distinct points from points to be used as the
+     * initial points of a K-Means algorithm
+     * @param numberOfClusters how many clusters to pick
+     * @param points the points to choose from
+     * @return the points to start the K-Means algorithm with
+     */
+    Point[] initialize(int numberOfClusters, Point[] points);
 }

@@ -1,23 +1,26 @@
 package paletteFromImage.kMeans;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Random;
 
+/**
+ * Selects the Initial points uniformly at random
+ */
 class RandomKMeansCenterInitializer implements KMeansCenterInitializer {
     private final Random random = new Random();
 
     @Override
-    public List<Point> initialize(int numberOfClusters, List<Point> points) {
-        List<Point> centers = new ArrayList<>(numberOfClusters);
-
-        while (centers.size() < numberOfClusters) {
-            Point point = points.get(random.nextInt(points.size()));
-            if (centers.contains(point)) {
+    public Point[] initialize(int numberOfClusters, Point[] points) {
+        Point[] centers = new Point[numberOfClusters];
+        int index = 0;
+        while (index < numberOfClusters) {
+            Point point = points[random.nextInt(points.length)];
+            if (Arrays.asList(centers).contains(point)) {
                 continue;
             }
 
-            centers.add(point);
+            centers[index] = point;
+            index++;
         }
 
         return centers;

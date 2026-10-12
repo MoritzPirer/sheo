@@ -1,5 +1,8 @@
 package paletteFromImage.kMeans;
 
+/**
+ * represents a point in 3-dimensional space
+ */
 record Point(int x, int y, int z){
 
     @Override
@@ -32,7 +35,12 @@ record Point(int x, int y, int z){
         );
     }
 
-    double distance(Point other) {
+    /**
+     * returns the euclidian distance between the two points
+     * @param other the point to calculate the distance to
+     * @return the Euclidean distance between this point the given point
+     */
+    double calculateDistanceTo(Point other) {
         int delta_x = x - other.x;
         int delta_y = y - other.y;
         int delta_z = z - other.z;
