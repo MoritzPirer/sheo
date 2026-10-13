@@ -3,12 +3,12 @@ package paletteFromImage.kMeans;
 import java.util.Arrays;
 
 class KMeans {
-    private final Point[] points;
+    private final DataSet points;
     private final int maxIterations;
 
     private final KMeansCenterInitializer initializer;
 
-    public KMeans(Point[] points, int maxIterations, KMeansCenterInitializer initializer) {
+    public KMeans(DataSet points, int maxIterations, KMeansCenterInitializer initializer) {
        this.points = points;
        this.maxIterations = maxIterations;
        this.initializer = initializer;
@@ -25,16 +25,10 @@ class KMeans {
         return convertToPoints(centers);
     }
 
-    private Center[] initializeCenters(int numberOfClusters, Point[] points) {
+    private Center[] initializeCenters(int numberOfClusters, DataSet points) {
         return Arrays.stream(initializer.initialize(numberOfClusters, points))
             .map(Center::new)
             .toArray(Center[]::new);
-        /*
-        1. select first center uniformly at random
-        2. for remaining centers:
-            2.1. compute distance between every point and its nearest center
-            2.2. pick random point with probability proportional to square of distance
-         */
     }
 
     private void assignPointsToCenters(Center[] centers) {
@@ -42,17 +36,22 @@ class KMeans {
             center.clear();
         }
 
-        for (Point point : points) {
-            Center center = findClosestCenter(point, centers);
-            center.add(point);
+        for (int i = 0; i < points.size(); i++) {
+            Center center = findClosestCenter(i, centers);
+            center.addChild(points.getX(i), points.getY(i), points.getZ(i));
         }
     }
 
-    private Center findClosestCenter(Point point, Center[] centers) {
+    private Center findClosestCenter(int pointIndex, Center[] centers) {
         Center candidate = null;
         double minDistance = Double.POSITIVE_INFINITY;
         for (Center center : centers) {
-            double distance = point.calculateDistanceTo(center.getPosition());
+            double distance = center.getPosition().calculateDistanceTo(
+                points.getX(pointIndex),
+                points.getY(pointIndex),
+                points.getZ(pointIndex)
+            );
+
             if (distance < minDistance) {
                 candidate = center;
                 minDistance = distance;

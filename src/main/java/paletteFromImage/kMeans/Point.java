@@ -23,10 +23,6 @@ record Point(int x, int y, int z){
         return "Point(" + "x=" + x + ", y=" + y + ", z=" + z + ')';
     }
 
-    public static Point sum(Point a, Point b) {
-        return new Point(a.x + b.x, a.y + b.y, a.z + b.z);
-    }
-
     public Point multiply(float factor) {
         return new Point(
             (int) (x * factor),
@@ -35,15 +31,10 @@ record Point(int x, int y, int z){
         );
     }
 
-    /**
-     * returns the euclidian distance between the two points
-     * @param other the point to calculate the distance to
-     * @return the Euclidean distance between this point the given point
-     */
-    double calculateDistanceTo(Point other) {
-        int delta_x = x - other.x;
-        int delta_y = y - other.y;
-        int delta_z = z - other.z;
+    double calculateDistanceTo(int x, int y, int z) {
+        int delta_x = x - this.x;
+        int delta_y = y - this.y;
+        int delta_z = z - this.z;
 
         return Math.sqrt(
             delta_x * delta_x

@@ -8,5 +8,5 @@ interface KMeansCenterInitializer {
      * @param points the points to choose from
      * @return the points to start the K-Means algorithm with
      */
-    Point[] initialize(int numberOfClusters, Point[] points);
+    Point[] initialize(int numberOfClusters, DataSet points);
 }

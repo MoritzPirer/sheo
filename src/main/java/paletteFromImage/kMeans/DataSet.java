@@ -1,31 +1,62 @@
 package paletteFromImage.kMeans;
 
+import dataStructures.DynamicByteArray;
+
 class DataSet {
-    private int[] x;
-    private int[] y;
-    private int[] z;
+    private final DynamicByteArray x;
+    private final DynamicByteArray y;
+    private final DynamicByteArray z;
+
+    public DataSet() {
+        x = new DynamicByteArray();
+        y = new DynamicByteArray();
+        z = new DynamicByteArray();
+    }
 
     public DataSet(int count) {
-        x = new int[count];
-        y = new int[count];
-        z = new int[count];
+        this.x = new DynamicByteArray(count);
+        this.y = new DynamicByteArray(count);
+        this.z = new DynamicByteArray(count);
     }
 
-    public void setPoint(int index, int x, int y, int z) {
-        this.x[index] = x;
-        this.y[index] = y;
-        this.z[index] = z;
+    public void setPoint(int index, byte x, byte y, byte z) {
+        this.x.set(index, x);
+        this.y.set(index, y);
+        this.z.set(index, z);
     }
 
-    public int getX(int index) {
-        return x[index];
+    public void addPoint(byte x, byte y, byte z) {
+        this.x.add(x);
+        this.y.add(y);
+        this.z.add(z);
     }
 
-    public int getY(int index) {
-        return y[index];
+    public byte getX(int index) {
+        return x.get(index);
     }
 
-    public int getZ(int index) {
-        return z[index];
+    public byte getY(int index) {
+        return y.get(index);
+    }
+
+    public byte getZ(int index) {
+        return z.get(index);
+    }
+
+    public int size() {
+        return x.size();
+    }
+
+    public void clear() {
+        x.clear();
+        y.clear();
+        z.clear();
+    }
+
+    public static int adjustByteValue(byte value) {
+        if (value < 0) {
+            return 256 + value;
+        }
+        return value;
     }
 }

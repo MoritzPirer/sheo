@@ -1,11 +1,8 @@
 package paletteFromImage.kMeans;
 
-import java.util.ArrayList;
-import java.util.List;
-
 class Center {
     private Point position;
-    private final List<Point> children = new ArrayList<>();
+    private final DataSet children = new DataSet();
 
     public Center(Point position) {
         this.position = position;
@@ -28,8 +25,8 @@ class Center {
         return position;
     }
 
-    public void add(Point point) {
-        children.add(point);
+    public void addChild(byte x, byte y, byte z) {
+        children.addPoint(x, y, z);
     }
 
     public void clear() {
@@ -37,12 +34,15 @@ class Center {
     }
 
     public void recenter() {
-        Point newPosition = new Point(0, 0, 0);
+        int x = 0, y = 0, z = 0;
 
-        for (Point child : children) {
-            newPosition = Point.sum(newPosition, child);
+        for (int i = 0; i < children.size(); i++) {
+
+            x += DataSet.adjustByteValue(children.getX(i));
+            y += DataSet.adjustByteValue(children.getY(i));
+            z += DataSet.adjustByteValue(children.getZ(i));
         }
 
-        position = newPosition.multiply(1.0f / children.size());
+        position = new Point(x, y, z).multiply(1.0f / children.size());
     }
 }

@@ -6,13 +6,10 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.Scanner;
+import java.io.IOException;
 
 public class TempMain {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        scanner.nextLine();
-
         File file = new File("/Users/moritzpirer/OneDrive/__Personal/Miscellaneous/Your Name Wallpaper.jpg");
 
         try {
@@ -26,11 +23,8 @@ public class TempMain {
                 System.out.println(ansi + Integer.toHexString(value) +"\u001B[0m");
             }
         }
-        catch (Exception e) {
-            System.err.println(e.getMessage());
+        catch (IOException e) {
+            System.out.println(e.getMessage());
         }
-        System.gc();
-
-        scanner.nextLine();
     }
 }

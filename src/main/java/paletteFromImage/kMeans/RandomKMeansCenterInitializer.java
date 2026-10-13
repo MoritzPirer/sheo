@@ -10,11 +10,13 @@ class RandomKMeansCenterInitializer implements KMeansCenterInitializer {
     private final Random random = new Random();
 
     @Override
-    public Point[] initialize(int numberOfClusters, Point[] points) {
+    public Point[] initialize(int numberOfClusters, DataSet points) {
         Point[] centers = new Point[numberOfClusters];
         int index = 0;
         while (index < numberOfClusters) {
-            Point point = points[random.nextInt(points.length)];
+            int selection = random.nextInt(points.size());
+            Point point = new Point(points.getX(selection), points.getY(selection), points.getZ(selection));
+
             if (Arrays.asList(centers).contains(point)) {
                 continue;
             }
