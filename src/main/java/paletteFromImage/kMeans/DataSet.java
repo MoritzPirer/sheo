@@ -2,6 +2,9 @@ package paletteFromImage.kMeans;
 
 import dataStructures.DynamicByteArray;
 
+/**
+ * Struct-of-Arrays to represent
+ */
 class DataSet {
     private final DynamicByteArray x;
     private final DynamicByteArray y;
@@ -35,12 +38,24 @@ class DataSet {
         return x.get(index);
     }
 
+    public int getXasInt(int index) {
+        return adjustByteValue(x.get(index));
+    }
+
     public byte getY(int index) {
         return y.get(index);
     }
 
+    public int getYasInt(int index) {
+        return adjustByteValue(y.get(index));
+    }
+
     public byte getZ(int index) {
         return z.get(index);
+    }
+
+    public int getZasInt(int index) {
+        return adjustByteValue(z.get(index));
     }
 
     public int size() {
@@ -53,7 +68,7 @@ class DataSet {
         z.clear();
     }
 
-    public static int adjustByteValue(byte value) {
+    private static int adjustByteValue(byte value) {
         if (value < 0) {
             return 256 + value;
         }

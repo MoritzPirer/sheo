@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public class KMeansPaletteExtractor implements ImagePaletteExtractor {
     private static final int MAX_ITERATIONS = 10;
-    private static final int STEP_SIZE = 8;
+    private static final int STEP_SIZE = 4;
 
     @Override
     public Color[] extractFromImage(BufferedImage image, int count) {

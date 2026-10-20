@@ -36,11 +36,14 @@ class Center {
     public void recenter() {
         int x = 0, y = 0, z = 0;
 
-        for (int i = 0; i < children.size(); i++) {
+        if (children.size() == 0) {
+            return; // avoids centers to move to (0,0,0)
+        }
 
-            x += DataSet.adjustByteValue(children.getX(i));
-            y += DataSet.adjustByteValue(children.getY(i));
-            z += DataSet.adjustByteValue(children.getZ(i));
+        for (int i = 0; i < children.size(); i++) {
+            x += children.getXasInt(i);
+            y += children.getYasInt(i);
+            z += children.getZasInt(i);
         }
 
         position = new Point(x, y, z).multiply(1.0f / children.size());
