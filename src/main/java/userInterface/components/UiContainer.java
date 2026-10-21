@@ -16,4 +16,5 @@ public interface UiContainer extends UiComponent {
      * @param uiComponentWrapper the wrapper of the component to add
      */
     void addChild(UiComponentWrapper uiComponentWrapper);
+
 }

@@ -12,7 +12,6 @@ public interface UiFactory {
      * @param text the text to display
      * @return a new button
      */
-    Button createButton(String text, SizeConfiguration config);
     Button createButton(String text);
 
     /**
@@ -20,19 +19,16 @@ public interface UiFactory {
      * @param text the text to display
      * @return a new label
      */
-    Label createLabel(String text, SizeConfiguration config);
     Label createLabel(String text);
 
     /**
      * creates a new UiContainer in which components are arranged below each other
      */
-    UiContainer createVerticalUiContainer(SizeConfiguration config);
     UiContainer createVerticalUiContainer();
 
     /**
      * creates a new UiContainer in which components are arranged next to each other
      */
-    UiContainer createHorizontalUiContainer(SizeConfiguration config);
     UiContainer createHorizontalUiContainer();
 
     /**

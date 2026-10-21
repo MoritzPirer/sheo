@@ -1,14 +1,14 @@
 package userInterface.JavaFxInterface;
 
 import javafx.embed.swing.SwingFXUtils;
+import javafx.geometry.Pos;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import userInterface.ContentAlignment;
-import userInterface.SizeConfiguration;
+import userInterface.Size;
 import userInterface.components.Button;
-import userInterface.components.ButtonListener;
-import userInterface.components.UiComponent;
+import userInterface.listeners.ButtonListener;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -30,7 +30,7 @@ class JavaFxButton implements Button, JavaFxComponent{
         }
     }
     @Override
-    public void addListener(ButtonListener listener) {
+    public void addButtonListener(ButtonListener listener) {
         this.listeners.add(listener);
     }
 
@@ -50,27 +50,40 @@ class JavaFxButton implements Button, JavaFxComponent{
     }
 
     @Override
-    public JavaFxButton setBackground(Color color) {
-        javafx.scene.paint.Color javaFxColor = javafx.scene.paint.Color.rgb(
-            color.getRed(),
-            color.getGreen(),
-            color.getBlue()
-        );
-
+    public void setBackground(Color color) {
+        javafx.scene.paint.Color javaFxColor = JavaFxConverter.toJavaFxColor(color);
         button.setBackground(new Background(new BackgroundFill(javaFxColor, null, null)));
-        return this;
     }
 
     @Override
-    public JavaFxButton setSizeConfiguration(SizeConfiguration config) {
-        JavaFxHelper.applySizeConfiguration(button, config);
-        return this;
+    public void setMinimumSize(Size size) {
+        button.setMinSize(size.width(), size.height());
     }
 
     @Override
-    public UiComponent setContentAlignment(ContentAlignment alignment) {
-        //TODO
-        return null;
+    public void setMaximumSize(Size size) {
+        button.setMaxSize(size.width(), size.height());
+    }
+
+    @Override
+    public void setPreferredSize(Size size) {
+        button.setPrefSize(size.width(), size.height());
+    }
+
+    @Override
+    public void setContentAlignment(ContentAlignment alignment) {
+        Pos pos = JavaFxConverter.toPos(alignment);
+        button.setAlignment(pos);
+    }
+
+    @Override
+    public void hide() {
+        button.setVisible(false);
+    }
+
+    @Override
+    public void show() {
+        button.setVisible(true);
     }
 
     @Override

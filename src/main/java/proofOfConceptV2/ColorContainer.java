@@ -2,11 +2,12 @@ package proofOfConceptV2;
 
 import userInterface.ContentAlignment;
 import userInterface.Size;
-import userInterface.SizeConfiguration;
 import userInterface.UiFactory;
 import userInterface.components.*;
 import userInterface.components.Button;
 import userInterface.components.Label;
+import userInterface.listeners.ButtonListener;
+import userInterface.listeners.HoverListener;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -14,32 +15,32 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Random;
 
-public class ColorContainer implements ButtonListener, UiComponentWrapper {
+public class ColorContainer implements ButtonListener, UiComponentWrapper, HoverListener {
     private final Random random = new Random();
     private final UiContainer uiContainer;
     private final Label label;
     private final Button button;
+    private final Label hoverOnly;
 
     public ColorContainer(UiFactory uiFactory) {
-        uiContainer = uiFactory.createVerticalUiContainer(new SizeConfiguration(
-            new Size(100, 100),
-            new Size(200, 150),
-            new Size(200, 150)
-        ));
+        uiContainer = uiFactory.createVerticalUiContainer();
+        uiContainer.setMinimumSize(new Size(100, 100));
+        uiContainer.setPreferredSize(new Size(200, 150));
+        uiContainer.setMaximumSize(new Size(200, 150));
         uiContainer.setContentAlignment(ContentAlignment.BOTTOM_CENTER);
+        uiContainer.addHoverListener(this);
 
         label = uiFactory.createLabel("UNINITIALIZED");
         uiContainer.addChild(label);
         try {
             BufferedImage image = ImageIO.read(new File("img.png"));
             button = uiFactory.createButton("Randomize");
-            button.setSizeConfiguration(new SizeConfiguration(
-                new Size(30, 80),
-                new Size(30, 120),
-                null //new Size(30, 80)
-            ));
+            button.setMinimumSize(new Size(30, 120));
+            button.setPreferredSize(new Size(30, 120));
             button.setImage(image);
-            button.addListener(this);
+            button.addButtonListener(this);
+            button.addHoverListener(this);
+
             uiContainer.addChild(button);
 
             randomizeColor();
@@ -47,6 +48,10 @@ public class ColorContainer implements ButtonListener, UiComponentWrapper {
         catch (Exception e) {
             throw new RuntimeException(e);
         }
+
+        hoverOnly = uiFactory.createLabel("Now you see me");
+        hoverOnly.hide();
+        uiContainer.addChild(hoverOnly);
     }
 
     @Override
@@ -71,5 +76,25 @@ public class ColorContainer implements ButtonListener, UiComponentWrapper {
     @Override
     public UiComponent getUiComponent() {
         return uiContainer;
+    }
+
+    @Override
+    public void onHoverStart(UiComponent hovered) {
+        if (hovered == button) {
+            randomizeColor();
+        }
+        else if (hovered == uiContainer) {
+            hoverOnly.show();
+        }
+    }
+
+    @Override
+    public void onHoverStop(UiComponent hovered) {
+        if (hovered == button) {
+            randomizeColor();
+        }
+        else if (hovered == uiContainer) {
+            hoverOnly.hide();
+        }
     }
 }

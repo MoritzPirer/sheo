@@ -1,4 +1,6 @@
-package userInterface.components;
+package userInterface.listeners;
+
+import userInterface.components.Button;
 
 public interface ButtonListener {
     /**

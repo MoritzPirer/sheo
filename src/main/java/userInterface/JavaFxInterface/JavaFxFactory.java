@@ -2,24 +2,13 @@ package userInterface.JavaFxInterface;
 
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import userInterface.SizeConfiguration;
 import userInterface.UiFactory;
 import userInterface.components.*;
 
 public class JavaFxFactory implements UiFactory {
     @Override
-    public Button createButton(String text, SizeConfiguration config) {
-        return new JavaFxButton(text).setSizeConfiguration(config);
-    }
-
-    @Override
     public Button createButton(String text) {
         return new JavaFxButton(text);
-    }
-
-    @Override
-    public Label createLabel(String text, SizeConfiguration config) {
-        return new JavaFxLabel(text).setSizeConfiguration(config);
     }
 
     @Override
@@ -28,18 +17,8 @@ public class JavaFxFactory implements UiFactory {
     }
 
     @Override
-    public UiContainer createVerticalUiContainer(SizeConfiguration config) {
-        return new JavaFxContainer(new VBox()).setSizeConfiguration(config);
-    }
-
-    @Override
     public UiContainer createVerticalUiContainer() {
         return new JavaFxContainer(new VBox());
-    }
-
-    @Override
-    public UiContainer createHorizontalUiContainer(SizeConfiguration config) {
-        return new JavaFxContainer(new HBox()).setSizeConfiguration(config);
     }
 
     @Override

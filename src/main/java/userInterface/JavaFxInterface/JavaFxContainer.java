@@ -4,7 +4,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.layout.*;
 import userInterface.ContentAlignment;
-import userInterface.SizeConfiguration;
+import userInterface.Size;
 import userInterface.components.UiComponent;
 import userInterface.components.UiComponentWrapper;
 import userInterface.components.UiContainer;
@@ -38,48 +38,46 @@ class JavaFxContainer implements UiContainer, JavaFxComponent {
         addChild(uiComponentWrapper.getUiComponent());
     }
 
-
     @Override
-    public JavaFxContainer setBackground(Color color) {
-        javafx.scene.paint.Color javaFxColor = javafx.scene.paint.Color.rgb(
-                color.getRed(),
-                color.getGreen(),
-                color.getBlue()
-        );
-
+    public void setBackground(Color color) {
+        javafx.scene.paint.Color javaFxColor = JavaFxConverter.toJavaFxColor(color);
         pane.setBackground(new Background(new BackgroundFill(javaFxColor, null, null)));
-        return this;
     }
 
     @Override
-    public JavaFxContainer setSizeConfiguration(SizeConfiguration config) {
-        if (config == null) {
-            return this;
-        }
-        if (config.maximum() != null) {
-            pane.setMaxSize(config.maximum().width(), config.maximum().height());
-        }
-        if (config.minimum() != null) {
-            pane.setMinSize(config.minimum().width(), config.minimum().height());
-        }
-        if (config.preferred() != null) {
-            pane.setPrefSize(config.preferred().width(), config.preferred().height());
-        }
-
-        return this;
+    public void setMinimumSize(Size size) {
+        pane.setMinSize(size.width(), size.height());
     }
 
     @Override
-    public JavaFxContainer setContentAlignment(ContentAlignment alignment) {
-        Pos pos = JavaFxHelper.toPos(alignment);
+    public void setMaximumSize(Size size) {
+        pane.setMaxSize(size.width(), size.height());
+    }
+
+    @Override
+    public void setPreferredSize(Size size) {
+        pane.setPrefSize(size.width(), size.height());
+    }
+
+    @Override
+    public void setContentAlignment(ContentAlignment alignment) {
+        Pos pos = JavaFxConverter.toPos(alignment);
         if (pane instanceof HBox hBox) {
             hBox.setAlignment(pos);
         }
         else if (pane instanceof VBox vBox) {
             vBox.setAlignment(pos);
         }
+    }
 
-        return this;
+    @Override
+    public void hide() {
+       pane.setVisible(false);
+    }
+
+    @Override
+    public void show() {
+        pane.setVisible(true);
     }
 
     @Override

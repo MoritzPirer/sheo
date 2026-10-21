@@ -4,9 +4,8 @@ import javafx.scene.Parent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import userInterface.ContentAlignment;
-import userInterface.SizeConfiguration;
+import userInterface.Size;
 import userInterface.components.Label;
-import userInterface.components.UiComponent;
 
 import java.awt.*;
 
@@ -34,27 +33,39 @@ class JavaFxLabel implements Label, JavaFxComponent {
 
 
     @Override
-    public JavaFxLabel setBackground(Color color) {
-        javafx.scene.paint.Color javaFxColor = javafx.scene.paint.Color.rgb(
-                color.getRed(),
-                color.getGreen(),
-                color.getBlue()
-        );
-
+    public void setBackground(Color color) {
+        javafx.scene.paint.Color javaFxColor = JavaFxConverter.toJavaFxColor(color);
         label.setBackground(new Background(new BackgroundFill(javaFxColor, null, null)));
-        return this;
     }
 
     @Override
-    public JavaFxLabel setSizeConfiguration(SizeConfiguration config) {
-        JavaFxHelper.applySizeConfiguration(label, config);
-        return this;
+    public void setMinimumSize(Size size) {
+        label.setMinSize(size.width(), size.height());
     }
 
     @Override
-    public JavaFxLabel setContentAlignment(ContentAlignment alignment) {
-        label.setAlignment(JavaFxHelper.toPos(alignment));
-        return this;
+    public void setMaximumSize(Size size) {
+        label.setMaxSize(size.width(), size.height());
+    }
+
+    @Override
+    public void setPreferredSize(Size size) {
+        label.setPrefSize(size.width(), size.height());
+    }
+
+    @Override
+    public void setContentAlignment(ContentAlignment alignment) {
+        label.setAlignment(JavaFxConverter.toPos(alignment));
+    }
+
+    @Override
+    public void hide() {
+        label.setVisible(false);
+    }
+
+    @Override
+    public void show() {
+        label.setVisible(true);
     }
 
     @Override
