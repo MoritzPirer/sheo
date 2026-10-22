@@ -1,6 +1,6 @@
-package dataStructures;
+package paletteFromImage.kMeans;
 
-public class DynamicByteArray {
+class DynamicByteArray {
     private static final int INITIAL_CAPACITY = 16;
 
     byte[] array;

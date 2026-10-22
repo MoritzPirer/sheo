@@ -1,7 +1,5 @@
 package paletteFromImage.kMeans;
 
-import dataStructures.DynamicByteArray;
-
 /**
  * Struct-of-Arrays to represent
  */
