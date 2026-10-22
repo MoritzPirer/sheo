@@ -1,4 +1,4 @@
-package userInterface.components;
+package userinterface.components;
 
 /**
  * An Object that is not itself an Ui component but contains a component and benefits from being treated uniformly

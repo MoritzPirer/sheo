@@ -1,7 +1,7 @@
-package userInterface.JavaFxInterface;
+package userinterface.javafxinterface;
 
-import userInterface.components.Scene;
-import userInterface.components.UiContainer;
+import userinterface.components.Scene;
+import userinterface.components.UiContainer;
 
 class JavaFxScene extends Scene {
     private final javafx.scene.Scene scene;

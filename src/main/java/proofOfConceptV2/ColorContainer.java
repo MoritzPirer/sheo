@@ -1,13 +1,13 @@
 package proofOfConceptV2;
 
-import userInterface.ContentAlignment;
-import userInterface.Size;
-import userInterface.UiFactory;
-import userInterface.components.*;
-import userInterface.components.Button;
-import userInterface.components.Label;
-import userInterface.listeners.ButtonListener;
-import userInterface.listeners.HoverListener;
+import userinterface.ContentAlignment;
+import userinterface.Size;
+import userinterface.UiFactory;
+import userinterface.components.*;
+import userinterface.components.Button;
+import userinterface.components.Label;
+import userinterface.listeners.ButtonListener;
+import userinterface.listeners.HoverListener;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

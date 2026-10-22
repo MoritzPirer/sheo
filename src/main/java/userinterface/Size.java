@@ -1,4 +1,4 @@
-package userInterface;
+package userinterface;
 
 public record Size(int height, int width) {
 

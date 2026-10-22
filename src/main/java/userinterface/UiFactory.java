@@ -1,6 +1,6 @@
-package userInterface;
+package userinterface;
 
-import userInterface.components.*;
+import userinterface.components.*;
 
 /**
  * Defines an Abstract Factory to create Ui components that are compatible with each other. Ui Components will guarantee

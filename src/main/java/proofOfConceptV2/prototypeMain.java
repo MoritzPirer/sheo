@@ -1,11 +1,11 @@
 package proofOfConceptV2;
 
-import userInterface.JavaFxInterface.JavaFxFactory;
-import userInterface.Size;
-import userInterface.components.Scene;
-import userInterface.components.UiApplication;
-import userInterface.components.UiContainer;
-import userInterface.UiFactory;
+import userinterface.javafxinterface.JavaFxFactory;
+import userinterface.Size;
+import userinterface.components.Scene;
+import userinterface.components.UiApplication;
+import userinterface.components.UiContainer;
+import userinterface.UiFactory;
 
 public class prototypeMain {
     public static void main(String[] args) throws Exception {
@@ -18,7 +18,6 @@ public class prototypeMain {
         UiApplication application = factory.createUiApplication("proofOfConceptV2");
         application.initialize(args);
         Scene scene = initializeScene(factory);
-        System.out.println(scene);
         application.start(scene);
     }
 

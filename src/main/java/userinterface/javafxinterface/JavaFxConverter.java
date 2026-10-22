@@ -1,7 +1,7 @@
-package userInterface.JavaFxInterface;
+package userinterface.javafxinterface;
 
 import javafx.geometry.Pos;
-import userInterface.ContentAlignment;
+import userinterface.ContentAlignment;
 
 class JavaFxConverter {
     public static javafx.scene.paint.Color toJavaFxColor(java.awt.Color color) {

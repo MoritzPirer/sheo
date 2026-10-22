@@ -1,4 +1,4 @@
-package userInterface.components;
+package userinterface.components;
 
 /**
  * Encapsulates all resources the UI providing library needs to run
@@ -14,5 +14,5 @@ public interface UiApplication {
      * starts displaying the given scene
      * @param scene the contents to be shown right away
      */
-    void start(Scene scene) throws Exception;
+    void start(Scene scene); //TODO: min / max size as args here
 }

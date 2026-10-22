@@ -1,9 +1,9 @@
-package userInterface.JavaFxInterface;
+package userinterface.javafxinterface;
 
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import userInterface.UiFactory;
-import userInterface.components.*;
+import userinterface.UiFactory;
+import userinterface.components.*;
 
 public class JavaFxFactory implements UiFactory {
     @Override
@@ -18,12 +18,18 @@ public class JavaFxFactory implements UiFactory {
 
     @Override
     public UiContainer createVerticalUiContainer() {
-        return new JavaFxContainer(new VBox());
+        VBox container = new VBox();
+        container.setFillWidth(false);
+
+        return new JavaFxContainer(container);
     }
 
     @Override
     public UiContainer createHorizontalUiContainer() {
-        return new JavaFxContainer(new HBox());
+        HBox container = new HBox();
+        container.setFillHeight(false);
+
+        return new JavaFxContainer(container);
     }
 
     @Override

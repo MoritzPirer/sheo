@@ -1,6 +1,6 @@
-package userInterface.listeners;
+package userinterface.listeners;
 
-import userInterface.components.UiComponent;
+import userinterface.components.UiComponent;
 
 /**
  * HoverListeners can be registered to UiComponents to be notified when the mouse is hovering over that

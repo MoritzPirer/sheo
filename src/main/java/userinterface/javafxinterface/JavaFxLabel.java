@@ -1,15 +1,16 @@
-package userInterface.JavaFxInterface;
+package userinterface.javafxinterface;
 
 import javafx.scene.Parent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
-import userInterface.ContentAlignment;
-import userInterface.Size;
-import userInterface.components.Label;
+import javafx.scene.layout.Region;
+import userinterface.ContentAlignment;
+import userinterface.Size;
+import userinterface.components.Label;
 
 import java.awt.*;
 
-class JavaFxLabel implements Label, JavaFxComponent {
+class JavaFxLabel extends JavaFxComponent implements Label {
     private final javafx.scene.control.Label label;
 
     public JavaFxLabel(String text) {
@@ -27,7 +28,7 @@ class JavaFxLabel implements Label, JavaFxComponent {
     }
 
     @Override
-    public Parent getJavaFxNode() {
+    public Region getJavaFxNode() {
         return label;
     }
 
@@ -36,16 +37,6 @@ class JavaFxLabel implements Label, JavaFxComponent {
     public void setBackground(Color color) {
         javafx.scene.paint.Color javaFxColor = JavaFxConverter.toJavaFxColor(color);
         label.setBackground(new Background(new BackgroundFill(javaFxColor, null, null)));
-    }
-
-    @Override
-    public void setMinimumSize(Size size) {
-        label.setMinSize(size.width(), size.height());
-    }
-
-    @Override
-    public void setMaximumSize(Size size) {
-        label.setMaxSize(size.width(), size.height());
     }
 
     @Override

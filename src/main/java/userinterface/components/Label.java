@@ -1,4 +1,4 @@
-package userInterface.components;
+package userinterface.components;
 
 public interface Label extends UiComponent {
     void setText(String text);

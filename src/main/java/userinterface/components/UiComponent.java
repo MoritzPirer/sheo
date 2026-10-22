@@ -1,8 +1,8 @@
-package userInterface.components;
+package userinterface.components;
 
-import userInterface.ContentAlignment;
-import userInterface.Size;
-import userInterface.listeners.HoverListener;
+import userinterface.ContentAlignment;
+import userinterface.Size;
+import userinterface.listeners.HoverListener;
 
 import java.awt.*;
 
@@ -34,6 +34,13 @@ public interface UiComponent {
     void setPreferredSize(Size size);
 
     /**
+     * Specify the component's height and width to be a percentage of its parent's height and width
+     * @param heightPercentage what percentage of the parent's height the component's height should be
+     * @param widthPercentage what percentage of the parent's width the component's width should be
+     */
+    void setPercentageSize(double heightPercentage, double widthPercentage);
+
+    /**
      * Updates where the contents of the component (e.g. text, other components) are aligned within the component
      */
     void setContentAlignment(ContentAlignment alignment);
@@ -46,4 +53,5 @@ public interface UiComponent {
      * @param hoverListener the listener to notify
      */
     void addHoverListener(HoverListener hoverListener);
+
 }

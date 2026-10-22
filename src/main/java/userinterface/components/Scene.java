@@ -1,4 +1,4 @@
-package userInterface.components;
+package userinterface.components;
 
 public class Scene {
     protected final UiContainer root;

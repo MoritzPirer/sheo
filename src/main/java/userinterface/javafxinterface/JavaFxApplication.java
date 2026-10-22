@@ -1,9 +1,9 @@
-package userInterface.JavaFxInterface;
+package userinterface.javafxinterface;
 
 import javafx.stage.Stage;
 import javafx.application.Platform;
-import userInterface.components.Scene;
-import userInterface.components.UiApplication;
+import userinterface.components.Scene;
+import userinterface.components.UiApplication;
 import java.util.concurrent.CountDownLatch;
 
 class JavaFxApplication implements UiApplication {
@@ -23,6 +23,12 @@ class JavaFxApplication implements UiApplication {
             try {
                 stage = new Stage();
                 stage.setTitle(title);
+
+                stage.setMinWidth(860);
+                stage.setMinHeight(540);
+
+                stage.setMaxWidth(1920);
+                stage.setMaxHeight(1080);
             } finally {
                 latch.countDown();
             }

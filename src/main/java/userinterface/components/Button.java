@@ -1,6 +1,6 @@
-package userInterface.components;
+package userinterface.components;
 
-import userInterface.listeners.ButtonListener;
+import userinterface.listeners.ButtonListener;
 
 import java.awt.image.BufferedImage;
 
