@@ -5,10 +5,13 @@ import shared.ColorUtility;
 import java.awt.*;
 import java.nio.file.Path;
 
+/**
+ * Uses K-nearest neighbors to find the best approximation in the dataset
+ */
 public class KnnColorNameProvider implements ColorNameProvider {
 
     private final ImmutableIntToStringMap map;
-    int[] colors;
+    int[] colors; //known colors stored as an integer where the lower three bytes correspond to red, blue and green.
 
     public KnnColorNameProvider(Path colorNameFile) {
         map = ColorNameLoader.loadColorNames(colorNameFile);

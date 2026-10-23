@@ -17,15 +17,14 @@ class ColorNameLoader {
             while ((line = reader.readLine()) != null) {
                 String[] tokens = line.split(", ");
                 if (tokens.length != 2) {
+                    continue; //ignore misformatted entries
+                }
+
+                int hex = hexStringToInt(tokens[0]);
+                if (hex < 0) {
                     continue;
                 }
 
-                String hexString = tokens[0];
-                if (hexString.startsWith("#")) {
-                    hexString = hexString.substring(1);
-                }
-
-                int hex = Integer.parseInt(hexString, 16);
                 colors.add(hex);
                 names.add(tokens[1]);
             }
@@ -38,6 +37,19 @@ class ColorNameLoader {
         }
         catch (IOException e) {
             return new ImmutableIntToStringMap(new int[0], new String[0]);
+        }
+    }
+
+    private static int hexStringToInt(String hexString) {
+        if (hexString.startsWith("#")) {
+            hexString = hexString.substring(1);
+        }
+
+        try {
+           return Integer.parseInt(hexString, 16);
+        }
+        catch (NumberFormatException e) {
+            return -1;
         }
     }
 }
