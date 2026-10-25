@@ -1,0 +1,63 @@
+package view;
+
+import model.Palette;
+import userinterface.ContentAlignment;
+import userinterface.Size;
+import userinterface.UiFactory;
+import userinterface.components.*;
+import userinterface.components.Button;
+import userinterface.javafxinterface.JavaFxFactory;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.awt.*;
+
+public class PaletteView {
+    private final List<ColorCard> colorCards = new ArrayList<>();
+
+    void createListeners(Palette palette) {
+        for (ColorCard card : colorCards) {
+            palette.addColorChangeListener(card);
+        }
+    }
+    public Scene initializeScene(UiFactory factory, Palette palette) {
+        UiContainer root = factory.createVerticalUiContainer();
+        root.setBackground(new Color(250, 0, 250));
+        root.setContentAlignment(ContentAlignment.CENTER);
+
+        root.stretch();
+        UiContainer toolBand = factory.createHorizontalUiContainer();
+        toolBand.setBackground(new Color(0, 255, 0));
+
+        UiContainer lowerHalf = factory.createHorizontalUiContainer();
+        lowerHalf.setBackground(new Color(0, 0, 250));
+
+
+        UiContainer colorSegment = factory.createHorizontalUiContainer();
+        colorSegment.setContentAlignment(ContentAlignment.CENTER);
+        for (int i = 0; i < palette.getColorCount(); i++) {
+            ColorCard card = new ColorCard(i, palette, factory);
+            colorCards.add(card);
+            colorSegment.addChild(card.getUiComponent());
+        }
+
+        lowerHalf.addChild(colorSegment);
+
+        colorSegment.setPercentageSize(100.0, 80.0);
+        UiContainer informationPanel = factory.createVerticalUiContainer();
+        informationPanel.setBackground(new Color(0, 250, 250));
+        lowerHalf.addChild(informationPanel);
+        informationPanel.setPercentageSize(100.0, 20.0);
+        informationPanel.setMinimumSize(new Size(-1, 200));
+
+        root.addChild(toolBand);
+        root.addChild(lowerHalf);
+
+        toolBand.setPercentageSize(25.0, 100.0);
+        toolBand.setMaximumSize(new Size(175, -1));
+        lowerHalf.setPercentageSize(75.0, 100.0);
+
+        root.setContentAlignment(ContentAlignment.TOP_CENTER);
+        return factory.createScene(root);
+    }
+}

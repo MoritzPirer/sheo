@@ -1,5 +1,7 @@
 package shared.random;
 
+import java.awt.*;
+
 /**
  * for use in testing
  */
@@ -12,5 +14,10 @@ public class MockRandom implements RandomnessProvider {
         }
         lastInt++;
         return (lastInt % (to - from)) + from;
+    }
+
+    @Override
+    public Color makeColor() {
+        return new Color(++lastInt, ++lastInt, ++lastInt);
     }
 }

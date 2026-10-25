@@ -1,5 +1,7 @@
 package shared.random;
 
+import java.awt.*;
+
 /**
  * Used everywhere the program requires randomness. Allows for deterministic testing.
  */
@@ -9,4 +11,6 @@ public interface RandomnessProvider {
     default int nextInt(int to) {
         return nextInt(0, to);
     }
+
+    Color makeColor();
 }
