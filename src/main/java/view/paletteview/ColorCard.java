@@ -47,18 +47,23 @@ public class ColorCard implements ColorChangeListener {
         hoverMenu.setContentAlignment(ContentAlignment.CENTER);
         hoverMenu.setBackground(color);
 
-        List<Button> components = List.of(
-                factory.createButton("I"), //INSPECT
-                factory.createButton("E"), //EDIT
-                factory.createButton("D"), //DELETE
-                factory.createButton("R")  //RANDOMIZE
-        );
+        Button inspectButton = factory.createButton("I");
+        inspectButton.setToolTip("Inspect");
 
+        Button editButton = factory.createButton("E");
+        editButton.setToolTip("Edit");
 
-        components.get(2).addButtonListener(b -> controller.deleteColor(index));
-        components.get(3).addButtonListener(b -> controller.randomizeColor(index));
+        Button deleteButton = factory.createButton("D");
+        deleteButton.setToolTip("Delete");
+        deleteButton.addButtonListener(b -> controller.deleteColor(index));
 
-        for (UiComponent component : components) {
+        Button randomizeButton = factory.createButton("R");
+        randomizeButton.setToolTip("Randomize");
+        randomizeButton.addButtonListener(b -> controller.randomizeColor(index));
+
+        List<Button> buttons = List.of(inspectButton, editButton, deleteButton, randomizeButton);
+
+        for (UiComponent component : buttons) {
             hoverMenu.addChild(component);
             component.hide();
         }

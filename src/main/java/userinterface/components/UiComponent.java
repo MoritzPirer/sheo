@@ -54,4 +54,5 @@ public interface UiComponent {
      */
     void addHoverListener(HoverListener hoverListener);
 
+    void setToolTip(String text);
 }

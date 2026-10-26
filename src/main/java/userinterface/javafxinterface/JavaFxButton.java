@@ -2,9 +2,11 @@ package userinterface.javafxinterface;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Pos;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.util.Duration;
 import userinterface.ContentAlignment;
 import userinterface.Size;
 import userinterface.components.Button;

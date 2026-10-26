@@ -2,6 +2,7 @@ package userinterface.javafxinterface;
 
 import javafx.stage.Stage;
 import javafx.application.Platform;
+import javafx.stage.StageStyle;
 import userinterface.components.Scene;
 import userinterface.components.UiApplication;
 import java.util.concurrent.CountDownLatch;
@@ -23,7 +24,7 @@ class JavaFxApplication implements UiApplication {
             try {
                 stage = new Stage();
                 stage.setTitle(title);
-
+                stage.initStyle(StageStyle.DECORATED);
                 stage.setMinWidth(860);
                 stage.setMinHeight(540);
 
