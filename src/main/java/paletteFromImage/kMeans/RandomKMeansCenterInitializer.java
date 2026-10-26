@@ -1,13 +1,23 @@
 package paletteFromImage.kMeans;
 
+import shared.random.Random;
+import shared.random.RandomnessProvider;
+
 import java.util.Arrays;
-import java.util.Random;
 
 /**
  * Selects the Initial points uniformly at random
  */
 class RandomKMeansCenterInitializer implements KMeansCenterInitializer {
-    private final Random random = new Random();
+    private final RandomnessProvider random;
+
+    public RandomKMeansCenterInitializer(RandomnessProvider random) {
+        this.random = random;
+    }
+
+    public RandomKMeansCenterInitializer() {
+        this.random = new Random();
+    }
 
     @Override
     public Point[] initialize(int numberOfClusters, DataSet points) {

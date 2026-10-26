@@ -1,9 +1,12 @@
 package view.paletteview;
 
+import controller.Controller;
+import model.listeners.ColorChangeListener;
 import shared.ColorUtility;
 import userinterface.ContentAlignment;
 import userinterface.Size;
 import userinterface.UiFactory;
+import userinterface.components.Button;
 import userinterface.components.Label;
 import userinterface.components.UiComponent;
 import userinterface.components.UiContainer;
@@ -12,38 +15,48 @@ import userinterface.listeners.HoverListener;
 import java.awt.*;
 import java.util.List;
 
-public class ColorCard {
+public class ColorCard implements ColorChangeListener {
     private Color color;
     private final UiContainer uiContainer;
+    private final UiContainer background;
+    private Label hexCode;
+    private Label colorName;
 
-    public ColorCard(Color color, UiFactory factory) {
-        this.color = color;
+    private int index;
+
+    public ColorCard(int index, Controller controller, UiFactory factory) {
+        this.index = index;
+        this.color = controller.getColor(index);
 
         uiContainer = factory.createVerticalUiContainer();
 
-        uiContainer.setMaximumSize(new Size(360, 240));
+        uiContainer.setMinimumSize(new Size(180, 120));
 
-        UiContainer hoverMenu = createColorCardHoverMenu(factory);
+        background = createColorCardHoverMenu(factory, controller);
         UiContainer colorInfo = createColorInfo(factory);
 
-        uiContainer.addChild(hoverMenu);
+        uiContainer.addChild(background);
         uiContainer.addChild(colorInfo);
 
-        hoverMenu.setPercentageSize(70.0, 100.0);
+        background.setPercentageSize(70.0, 100.0);
         colorInfo.setPercentageSize(30.0, 100.0);
     }
 
-    private UiContainer createColorCardHoverMenu(UiFactory factory) {
+    private UiContainer createColorCardHoverMenu(UiFactory factory, Controller controller) {
         UiContainer hoverMenu = factory.createHorizontalUiContainer();
         hoverMenu.setContentAlignment(ContentAlignment.CENTER);
         hoverMenu.setBackground(color);
 
-        java.util.List<UiComponent> components = List.of(
-                factory.createButton("I"),
-                factory.createButton("E"),
-                factory.createButton("D"),
-                factory.createButton("R")
+        List<Button> components = List.of(
+                factory.createButton("I"), //INSPECT
+                factory.createButton("E"), //EDIT
+                factory.createButton("D"), //DELETE
+                factory.createButton("R")  //RANDOMIZE
         );
+
+
+        components.get(2).addButtonListener(b -> controller.deleteColor(index));
+        components.get(3).addButtonListener(b -> controller.randomizeColor(index));
 
         for (UiComponent component : components) {
             hoverMenu.addChild(component);
@@ -75,10 +88,10 @@ public class ColorCard {
         uiContainer.setBackground(new Color(200, 200, 200));
 
         String hexString = ColorUtility.colorToHex(color);
-        userinterface.components.Label hexCode = factory.createLabel(hexString);
+        this.hexCode = factory.createLabel(hexString);
         uiContainer.addChild(hexCode);
 
-        Label colorName = factory.createLabel("White");
+        this.colorName = factory.createLabel("White");
         uiContainer.addChild(colorName);
 
         return uiContainer;
@@ -86,5 +99,27 @@ public class ColorCard {
 
     public UiContainer getUiComponent() {
         return uiContainer;
+    }
+
+    @Override
+    public int getIndex() {
+        return index;
+    }
+
+    @Override
+    public void onChange(Color before, Color after) {
+        setColor(after);
+    }
+
+    @Override
+    public void onIndexShift(int newIndex) {
+       this.index = newIndex;
+    }
+
+    private void setColor(Color color) {
+        this.color = color;
+        background.setBackground(color);
+        hexCode.setText(ColorUtility.colorToHex(color));
+        colorName.setText("NAME OF " + ColorUtility.colorToHex(color)); //TODO connect to colorname module
     }
 }

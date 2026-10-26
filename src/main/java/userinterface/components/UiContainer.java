@@ -34,7 +34,6 @@ public interface UiContainer extends UiComponent {
      */
     void addChild(UiComponentWrapper uiComponentWrapper);
 
-
     void stretch();
 
     void setPadding(Padding padding);

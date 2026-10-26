@@ -48,7 +48,6 @@ class JavaFxApplication implements UiApplication {
             if (scene instanceof JavaFxScene javaFxScene) {
                 this.scene = javaFxScene;
                 stage.setScene(javaFxScene.getScene());
-                System.out.println("running!!!");
                 stage.show();
             }
             else {
