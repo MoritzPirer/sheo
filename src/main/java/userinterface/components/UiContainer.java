@@ -28,12 +28,6 @@ public interface UiContainer extends UiComponent {
 
     List<UiComponent> getChildren();
 
-    /**
-     * Adds the component being wrapped to the end of the contained elements
-     * @param uiComponentWrapper the wrapper of the component to add
-     */
-    void addChild(UiComponentWrapper uiComponentWrapper);
-
     void stretch();
 
     void setPadding(Padding padding);

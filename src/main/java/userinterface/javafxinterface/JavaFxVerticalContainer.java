@@ -7,7 +7,6 @@ import javafx.scene.layout.*;
 import userinterface.ContentAlignment;
 import userinterface.Padding;
 import userinterface.components.UiComponent;
-import userinterface.components.UiComponentWrapper;
 import userinterface.components.UiContainer;
 
 import java.awt.*;
@@ -53,11 +52,6 @@ public class JavaFxVerticalContainer extends JavaFxComponent implements UiContai
     @Override
     public List<UiComponent> getChildren() {
         return components;
-    }
-
-    @Override
-    public void addChild(UiComponentWrapper uiComponentWrapper) {
-
     }
 
     @Override

@@ -9,7 +9,6 @@ import javafx.scene.layout.HBox;
 import userinterface.ContentAlignment;
 import userinterface.Padding;
 import userinterface.components.UiComponent;
-import userinterface.components.UiComponentWrapper;
 import userinterface.components.UiContainer;
 
 import java.awt.*;
@@ -55,11 +54,6 @@ public class JavaFxHorizontalContainer extends JavaFxComponent implements UiCont
     @Override
     public List<UiComponent> getChildren() {
         return components;
-    }
-
-    @Override
-    public void addChild(UiComponentWrapper uiComponentWrapper) {
-
     }
 
     @Override
