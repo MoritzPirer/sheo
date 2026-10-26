@@ -1,7 +1,9 @@
 package userinterface.javafxinterface;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import userinterface.ContentAlignment;
+import userinterface.Padding;
 
 class JavaFxConverter {
     public static javafx.scene.paint.Color toJavaFxColor(java.awt.Color color) {
@@ -24,5 +26,9 @@ class JavaFxConverter {
             case BOTTOM_CENTER -> Pos.BOTTOM_CENTER;
             case BOTTOM_RIGHT -> Pos.BOTTOM_RIGHT;
         };
+    }
+
+    public static Insets toInsets(Padding padding) {
+        return new Insets(padding.top(), padding.right(), padding.bottom(), padding.left());
     }
 }

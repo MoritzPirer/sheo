@@ -8,7 +8,7 @@ class JavaFxScene extends Scene {
 
     public JavaFxScene(UiContainer root) {
         super(root);
-        if (root instanceof JavaFxContainer javaFxContainer) {
+        if (root instanceof JavaFxComponent javaFxContainer) {
             scene = new javafx.scene.Scene(javaFxContainer.getJavaFxNode());
         }
         else {

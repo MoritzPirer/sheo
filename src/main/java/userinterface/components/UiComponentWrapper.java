@@ -1,9 +1,6 @@
 package userinterface.components;
 
-/**
- * An Object that is not itself an Ui component but contains a component and benefits from being treated uniformly
- * with ui components in containers
- */
+@Deprecated //remove once proofOfConceptV2 is removed
 public interface UiComponentWrapper {
 
     /**

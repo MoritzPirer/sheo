@@ -1,5 +1,7 @@
 package userinterface.components;
 
+import userinterface.Padding;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -13,11 +15,16 @@ public interface UiContainer extends UiComponent {
      * @param uiComponent the component to add
      */
     void addChild(UiComponent uiComponent);
+
+    void addChild(int index, UiComponent uiComponent);
+
     default void addChildren(Collection<UiComponent> uiComponents) {
         for (UiComponent uiComponent : uiComponents) {
             addChild(uiComponent);
         }
     }
+
+    void removeChild(UiContainer uiComponent);
 
     List<UiComponent> getChildren();
 
@@ -27,5 +34,10 @@ public interface UiContainer extends UiComponent {
      */
     void addChild(UiComponentWrapper uiComponentWrapper);
 
+
     void stretch();
+
+    void setPadding(Padding padding);
+
+    void setSpacing(double spacing);
 }

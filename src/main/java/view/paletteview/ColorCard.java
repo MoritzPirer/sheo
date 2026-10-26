@@ -1,4 +1,4 @@
-package view;
+package view.paletteview;
 
 import shared.ColorUtility;
 import userinterface.ContentAlignment;

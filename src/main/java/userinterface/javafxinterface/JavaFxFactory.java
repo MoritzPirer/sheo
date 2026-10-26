@@ -18,27 +18,17 @@ public class JavaFxFactory implements UiFactory {
 
     @Override
     public UiContainer createVerticalUiContainer() {
-        VBox container = new VBox();
-        container.setFillWidth(false);
-
-        return new JavaFxContainer(container);
+        return new JavaFxVerticalContainer();
     }
 
     @Override
     public UiContainer createHorizontalUiContainer() {
-        HBox container = new HBox();
-        container.setFillHeight(false);
-
-        return new JavaFxContainer(container);
+        return new JavaFxHorizontalContainer();
     }
 
     @Override
     public Scene createScene(UiContainer uiContainer) {
-        if (uiContainer instanceof JavaFxContainer) {
-            return new JavaFxScene(uiContainer);
-        }
-
-        throw new IllegalArgumentException("UiContainer was not created by this factory");
+        return new JavaFxScene(uiContainer);
     }
 
     @Override

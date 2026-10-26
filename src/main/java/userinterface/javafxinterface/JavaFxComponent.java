@@ -50,6 +50,17 @@ abstract class JavaFxComponent implements UiComponent {
     }
 
     @Override
+    public void setPreferredSize(Size size) {
+        Region component = getJavaFxNode();
+        if (size.height() >= 0) {
+            component.setPrefHeight(size.height());
+        }
+        if (size.width() >= 0) {
+            component.setPrefWidth(size.width());
+        }
+    }
+
+    @Override
     public void setPercentageSize(double heightPercentage, double widthPercentage) {
         if (heightPercentage < 0 || heightPercentage > 100) {
             throw new IllegalArgumentException("heightPercentage must be between 0 and 100");
