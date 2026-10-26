@@ -1,7 +1,5 @@
 package userinterface.javafxinterface;
 
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import userinterface.UiFactory;
 import userinterface.components.*;
 
