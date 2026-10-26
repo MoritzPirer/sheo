@@ -2,6 +2,7 @@ package controller;
 
 import model.*;
 import model.listeners.ColorChangeListener;
+import model.listeners.ColorCreationListener;
 import model.listeners.ColorDeletionListener;
 import userinterface.UiFactory;
 import userinterface.javafxinterface.JavaFxFactory;
@@ -15,12 +16,11 @@ public class Controller {
     }
 
     private Palette palette;
-    private ViewManager viewManager;
 
     public void run(String[] args) {
         // 1. initialize frontend
         UiFactory factory = new JavaFxFactory();
-        viewManager = new ViewManager(factory, args);
+        ViewManager viewManager = new ViewManager(factory);
 
         // 2. Run creation logic
         viewManager.initialize(args);
@@ -54,7 +54,15 @@ public class Controller {
         palette.addColorChangeListener(listener);
     }
 
-    public void addPaletteChangeListener(ColorDeletionListener listener) {
+    public void addColorDeletionListener(ColorDeletionListener listener) {
         palette.addColorDeletionListener(listener);
+    }
+
+    public void addColorCreationListener(ColorCreationListener listener) {
+        palette.addColorCreationListener(listener);
+    }
+
+    public void addColor() {
+        palette.addColor();
     }
 }

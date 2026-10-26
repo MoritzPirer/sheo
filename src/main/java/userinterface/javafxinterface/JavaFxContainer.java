@@ -1,7 +1,6 @@
 package userinterface.javafxinterface;
 
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.layout.*;
 import userinterface.ContentAlignment;
 import userinterface.Size;
@@ -34,8 +33,22 @@ class JavaFxContainer extends JavaFxComponent implements UiContainer {
     }
 
     @Override
+    public void addChild(int index, UiComponent uiComponent) {
+        if (uiComponent instanceof JavaFxComponent component) {
+            if (index < 0 || index >= components.size()) {
+                throw new IndexOutOfBoundsException("Index: " + index + "is out of bounds for size: " + components.size());
+            }
+
+            components.add(index, uiComponent);
+            pane.getChildren().add(index, component.getJavaFxNode());
+        }
+        else {
+            throw new IllegalArgumentException(uiComponent.getClass().getSimpleName() + " is not a JavaFxComponent");
+        }
+    }
+
+    @Override
     public void removeChild(UiContainer uiComponent) {
-        System.out.println("removing " + uiComponent.toString());
         if (uiComponent instanceof JavaFxComponent component) {
             components.remove(component);
             pane.getChildren().remove(component.getJavaFxNode());

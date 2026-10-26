@@ -1,17 +1,16 @@
 package view;
 
 import controller.Controller;
-import model.Palette;
 import userinterface.UiFactory;
 import userinterface.components.Scene;
 import userinterface.components.UiApplication;
+import view.paletteview.PaletteView;
 
 public class ViewManager {
     private UiApplication application;
     private final UiFactory factory;
-    private PaletteView view;
 
-    public ViewManager(UiFactory factory, String[] args) {
+    public ViewManager(UiFactory factory) {
         this.factory = factory;
     }
 
@@ -23,7 +22,7 @@ public class ViewManager {
     }
 
     public void switchToEditor(Controller controller) {
-        view = new PaletteView();
+        PaletteView view = new PaletteView();
         Scene scene = view.initializeScene(factory, controller);
         application.start(scene);
         view.createListeners(controller);
