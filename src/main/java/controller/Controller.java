@@ -1,14 +1,16 @@
 package controller;
 
 import model.*;
-import model.listeners.ColorChangeListener;
-import model.listeners.ColorCreationListener;
-import model.listeners.ColorDeletionListener;
+import controller.listeners.ColorChangeListener;
+import controller.listeners.ColorCreationListener;
+import controller.listeners.ColorDeletionListener;
 import userinterface.UiFactory;
 import userinterface.javafxinterface.JavaFxFactory;
 import view.ViewManager;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Controller {
     public static void main(String[] args) {
@@ -16,6 +18,10 @@ public class Controller {
     }
 
     private Palette palette;
+
+    private final java.util.List<ColorDeletionListener> colorDeletionListeners = new ArrayList<>();
+    private final java.util.List<ColorCreationListener> colorCreationListeners = new ArrayList<>();
+    private final List<ColorChangeListener> colorChangeListeners = new ArrayList<>();
 
     public void run(String[] args) {
         // 1. initialize frontend
@@ -41,28 +47,47 @@ public class Controller {
         return palette.getColor(index);
     }
 
+    public void addColorChangeListener(ColorChangeListener listener) {
+        colorChangeListeners.add(listener);
+    }
+
     public void randomizeColor(int index) {
+        Color before = palette.getColor(index);
         palette.randomizeColor(index);
+        Color after = palette.getColor(index);
+
+        colorChangeListeners.stream()
+                .filter(c -> c.getIndex() == index)
+                .forEach(c -> c.onChange(before, after));
     }
 
     public void deleteColor(int index) {
         palette.deleteColor(index);
+        colorDeletionListeners.forEach(p -> p.onRemove(index));
+
+        // Notify listeners of the removed color
+        colorChangeListeners.stream()
+            .filter(c -> c.getIndex() == index)
+            .forEach(c -> c.onIndexShift(-1));
+        colorChangeListeners.removeIf(c -> c.getIndex() == index);
+
+        // Notify listeners whose index is now outdated
+        colorChangeListeners.stream()
+            .filter(c -> c.getIndex() > index)
+            .forEach(c -> c.onIndexShift(c.getIndex() - 1));
     }
 
-    public void addColorChangeListener(ColorChangeListener listener) {
-        //TODO move listeners into controller
-        palette.addColorChangeListener(listener);
-    }
 
     public void addColorDeletionListener(ColorDeletionListener listener) {
-        palette.addColorDeletionListener(listener);
+        colorDeletionListeners.add(listener);
     }
 
     public void addColorCreationListener(ColorCreationListener listener) {
-        palette.addColorCreationListener(listener);
+        colorCreationListeners.add(listener);
     }
 
     public void addColor() {
         palette.addColor();
+        colorCreationListeners.forEach(listener -> listener.onAdd(palette.getColorCount() - 1));
     }
 }

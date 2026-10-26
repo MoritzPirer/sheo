@@ -1,7 +1,7 @@
 package view.paletteview;
 
 import controller.Controller;
-import model.listeners.ColorChangeListener;
+import controller.listeners.ColorChangeListener;
 import shared.ColorUtility;
 import userinterface.ContentAlignment;
 import userinterface.Size;

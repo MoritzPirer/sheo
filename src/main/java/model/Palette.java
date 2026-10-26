@@ -1,8 +1,5 @@
 package model;
 
-import model.listeners.ColorChangeListener;
-import model.listeners.ColorCreationListener;
-import model.listeners.ColorDeletionListener;
 import shared.random.Random;
 import shared.random.RandomnessProvider;
 
@@ -13,10 +10,6 @@ import java.util.List;
 public class Palette {
     private final RandomnessProvider random;
     private final List<Color> colors;
-
-    private final List<ColorDeletionListener> colorDeletionListeners = new ArrayList<>();
-    private final List<ColorCreationListener> colorCreationListeners = new ArrayList<>();
-    private final List<ColorChangeListener> colorChangeListeners = new ArrayList<>();
 
     private Palette(List<Color> colors) {
         this.colors = colors;
@@ -38,24 +31,6 @@ public class Palette {
         return new Palette(colors);
     }
 
-    private void notifyColorChange(int index, Color before, Color after) {
-        colorChangeListeners.stream()
-            .filter(c -> c.getIndex() == index)
-            .forEach(c -> c.onChange(before, after));
-    }
-
-    public void addColorChangeListener(ColorChangeListener listener) {
-        colorChangeListeners.add(listener);
-    }
-
-    public void addColorDeletionListener(ColorDeletionListener paletteChangeListener) {
-        colorDeletionListeners.add(paletteChangeListener);
-    }
-
-    public void addColorCreationListener(ColorCreationListener paletteChangeListener) {
-        colorCreationListeners.add(paletteChangeListener);
-    }
-
     public int getColorCount() {
         return colors.size();
     }
@@ -69,26 +44,14 @@ public class Palette {
             throw new IllegalArgumentException("Index " + index + " is out of bounds for size " + colors.size());
         }
 
-        Color before = colors.get(index);
-        Color after = random.makeColor();
-        colors.set(index, after);
-
-        notifyColorChange(index, before, after);
+        colors.set(index, random.makeColor());
     }
 
     public void deleteColor(int index) {
         colors.remove(index);
-        colorDeletionListeners.forEach(p -> p.onRemove(index));
-        colorChangeListeners.stream()
-            .filter(c -> c.getIndex() == index)
-            .forEach(c -> c.onIndexShift(-1));
-        colorChangeListeners.stream()
-                .filter(c -> c.getIndex() > index)
-                .forEach(c -> c.onIndexShift(c.getIndex() - 1));
     }
 
     public void addColor() {
         colors.add(random.makeColor());
-        colorCreationListeners.forEach(p -> p.onAdd(colors.size() - 1));
     }
 }

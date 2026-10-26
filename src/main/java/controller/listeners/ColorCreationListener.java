@@ -1,4 +1,4 @@
-package model.listeners;
+package controller.listeners;
 
 public interface ColorCreationListener {
     /**

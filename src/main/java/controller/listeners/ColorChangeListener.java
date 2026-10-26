@@ -1,4 +1,4 @@
-package model.listeners;
+package controller.listeners;
 
 import java.awt.*;
 
