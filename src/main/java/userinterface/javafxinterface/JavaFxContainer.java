@@ -34,6 +34,15 @@ class JavaFxContainer extends JavaFxComponent implements UiContainer {
     }
 
     @Override
+    public void removeChild(UiContainer uiComponent) {
+        System.out.println("removing " + uiComponent.toString());
+        if (uiComponent instanceof JavaFxComponent component) {
+            components.remove(component);
+            pane.getChildren().remove(component.getJavaFxNode());
+        }
+    }
+
+    @Override
     public List<UiComponent> getChildren() {
         return components;
     }

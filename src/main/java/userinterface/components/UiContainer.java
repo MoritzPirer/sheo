@@ -19,6 +19,8 @@ public interface UiContainer extends UiComponent {
         }
     }
 
+    void removeChild(UiContainer uiComponent);
+
     List<UiComponent> getChildren();
 
     /**
@@ -27,5 +29,7 @@ public interface UiContainer extends UiComponent {
      */
     void addChild(UiComponentWrapper uiComponentWrapper);
 
+
     void stretch();
+
 }

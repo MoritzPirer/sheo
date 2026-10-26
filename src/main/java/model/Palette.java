@@ -67,4 +67,9 @@ public class Palette {
 
         notifyColorChange(index, before, after);
     }
+
+    public void deleteColor(int index) {
+        colors.remove(index);
+        paletteChangeListeners.forEach(p -> p.onRemove(index));
+    }
 }

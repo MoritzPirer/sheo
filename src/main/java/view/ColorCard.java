@@ -1,5 +1,6 @@
 package view;
 
+import controller.Controller;
 import model.ColorChangeListener;
 import model.Palette;
 import shared.ColorUtility;
@@ -25,15 +26,15 @@ public class ColorCard implements ColorChangeListener {
 
     private final int index;
 
-    public ColorCard(int index, Palette palette, UiFactory factory) {
+    public ColorCard(int index, Controller controller, UiFactory factory) {
         this.index = index;
-        this.color = palette.getColor(index);
+        this.color = controller.getColor(index);
 
         uiContainer = factory.createVerticalUiContainer();
 
         uiContainer.setMinimumSize(new Size(180, 120));
 
-        background = createColorCardHoverMenu(factory, palette);
+        background = createColorCardHoverMenu(factory, controller);
         UiContainer colorInfo = createColorInfo(factory);
 
         uiContainer.addChild(background);
@@ -43,19 +44,21 @@ public class ColorCard implements ColorChangeListener {
         colorInfo.setPercentageSize(30.0, 100.0);
     }
 
-    private UiContainer createColorCardHoverMenu(UiFactory factory, Palette palette) {
+    private UiContainer createColorCardHoverMenu(UiFactory factory, Controller controller) {
         UiContainer hoverMenu = factory.createHorizontalUiContainer();
         hoverMenu.setContentAlignment(ContentAlignment.CENTER);
         hoverMenu.setBackground(color);
 
         List<Button> components = List.of(
-                factory.createButton("I"),
-                factory.createButton("E"),
-                factory.createButton("D"),
-                factory.createButton("R")
+                factory.createButton("I"), //INSPECT
+                factory.createButton("E"), //EDIT
+                factory.createButton("D"), //DELETE
+                factory.createButton("R")  //RANDOMIZE
         );
 
-        components.get(3).addButtonListener(source -> palette.randomizeColor(index));
+
+        components.get(2).addButtonListener(b -> controller.deleteColor(index));
+        components.get(3).addButtonListener(b -> controller.randomizeColor(index));
 
         for (UiComponent component : components) {
             hoverMenu.addChild(component);

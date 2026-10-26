@@ -1,22 +1,31 @@
 package view;
 
+import controller.Controller;
 import model.Palette;
 import userinterface.UiFactory;
+import userinterface.components.Scene;
 import userinterface.components.UiApplication;
 
 public class ViewManager {
-    private final Palette palette;
-    private final PaletteView view;
-
+    private UiApplication application;
+    private final UiFactory factory;
+    private PaletteView view;
 
     public ViewManager(UiFactory factory, String[] args) {
-        this.palette = Palette.createRandom(5);
-        this.view = new PaletteView();
+        this.factory = factory;
+    }
 
-        UiApplication application = factory.createUiApplication("sheo");
+    public void initialize(String[] args) {
+        application = factory.createUiApplication("sheo");
         application.initialize(args);
-        application.start(view.initializeScene(factory, palette));
+        //application.start(view.initializeScene(factory, palette));
 
-        view.createListeners(palette);
+    }
+
+    public void switchToEditor(Controller controller) {
+        view = new PaletteView();
+        Scene scene = view.initializeScene(factory, controller);
+        application.start(scene);
+        view.createListeners(controller);
     }
 }

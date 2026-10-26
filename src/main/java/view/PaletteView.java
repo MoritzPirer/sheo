@@ -1,12 +1,11 @@
 package view;
 
-import model.Palette;
+import controller.Controller;
+import model.PaletteChangeListener;
 import userinterface.ContentAlignment;
 import userinterface.Size;
 import userinterface.UiFactory;
 import userinterface.components.*;
-import userinterface.components.Button;
-import userinterface.javafxinterface.JavaFxFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,12 +14,13 @@ import java.awt.*;
 public class PaletteView {
     private final List<ColorCard> colorCards = new ArrayList<>();
 
-    void createListeners(Palette palette) {
+    void createListeners(Controller controller) {
         for (ColorCard card : colorCards) {
-            palette.addColorChangeListener(card);
+            controller.addColorChangeListener(card);
         }
     }
-    public Scene initializeScene(UiFactory factory, Palette palette) {
+
+    public Scene initializeScene(UiFactory factory, Controller controller) {
         UiContainer root = factory.createVerticalUiContainer();
         root.setBackground(new Color(250, 0, 250));
         root.setContentAlignment(ContentAlignment.CENTER);
@@ -35,13 +35,24 @@ public class PaletteView {
 
         UiContainer colorSegment = factory.createHorizontalUiContainer();
         colorSegment.setContentAlignment(ContentAlignment.CENTER);
-        for (int i = 0; i < palette.getColorCount(); i++) {
-            ColorCard card = new ColorCard(i, palette, factory);
+        for (int i = 0; i < controller.getColorCount(); i++) {
+            ColorCard card = new ColorCard(i, controller, factory);
             colorCards.add(card);
             colorSegment.addChild(card.getUiComponent());
         }
 
         lowerHalf.addChild(colorSegment);
+        controller.addPaletteChangeListener(new PaletteChangeListener() {
+            @Override
+            public void onChange(List<Color> before, List<Color> after) { }
+
+            @Override
+            public void onRemove(int removedIndex) {
+
+                ColorCard card = colorCards.remove(removedIndex);
+                colorSegment.removeChild(card.getUiComponent());
+            }
+        });
 
         colorSegment.setPercentageSize(100.0, 80.0);
         UiContainer informationPanel = factory.createVerticalUiContainer();
