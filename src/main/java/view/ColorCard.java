@@ -1,8 +1,7 @@
 package view;
 
 import controller.Controller;
-import model.ColorChangeListener;
-import model.Palette;
+import model.listeners.ColorChangeListener;
 import shared.ColorUtility;
 import userinterface.ContentAlignment;
 import userinterface.Size;
@@ -11,7 +10,6 @@ import userinterface.components.Button;
 import userinterface.components.Label;
 import userinterface.components.UiComponent;
 import userinterface.components.UiContainer;
-import userinterface.listeners.ButtonListener;
 import userinterface.listeners.HoverListener;
 
 import java.awt.*;
@@ -24,7 +22,7 @@ public class ColorCard implements ColorChangeListener {
     private Label hexCode;
     private Label colorName;
 
-    private final int index;
+    private int index;
 
     public ColorCard(int index, Controller controller, UiFactory factory) {
         this.index = index;
@@ -104,12 +102,18 @@ public class ColorCard implements ColorChangeListener {
     }
 
     @Override
-    public void onChange(int index, Color before, Color after) {
-        if (this.index != index) {
-            return;
-        }
+    public int getIndex() {
+        return index;
+    }
 
+    @Override
+    public void onChange(Color before, Color after) {
         setColor(after);
+    }
+
+    @Override
+    public void onIndexShift(int newIndex) {
+       this.index = newIndex;
     }
 
     private void setColor(Color color) {

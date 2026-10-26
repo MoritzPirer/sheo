@@ -1,6 +1,8 @@
 package controller;
 
 import model.*;
+import model.listeners.ColorChangeListener;
+import model.listeners.ColorDeletionListener;
 import userinterface.UiFactory;
 import userinterface.javafxinterface.JavaFxFactory;
 import view.ViewManager;
@@ -52,7 +54,7 @@ public class Controller {
         palette.addColorChangeListener(listener);
     }
 
-    public void addPaletteChangeListener(PaletteChangeListener listener) {
-        palette.addPaletteChangeListener(listener);
+    public void addPaletteChangeListener(ColorDeletionListener listener) {
+        palette.addColorDeletionListener(listener);
     }
 }

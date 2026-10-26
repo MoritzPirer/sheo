@@ -1,7 +1,6 @@
 package view;
 
 import controller.Controller;
-import model.PaletteChangeListener;
 import userinterface.ContentAlignment;
 import userinterface.Size;
 import userinterface.UiFactory;
@@ -42,16 +41,9 @@ public class PaletteView {
         }
 
         lowerHalf.addChild(colorSegment);
-        controller.addPaletteChangeListener(new PaletteChangeListener() {
-            @Override
-            public void onChange(List<Color> before, List<Color> after) { }
-
-            @Override
-            public void onRemove(int removedIndex) {
-
-                ColorCard card = colorCards.remove(removedIndex);
-                colorSegment.removeChild(card.getUiComponent());
-            }
+        controller.addPaletteChangeListener(removedIndex -> {
+            ColorCard card = colorCards.remove(removedIndex);
+            colorSegment.removeChild(card.getUiComponent());
         });
 
         colorSegment.setPercentageSize(100.0, 80.0);

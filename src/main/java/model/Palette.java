@@ -1,5 +1,7 @@
 package model;
 
+import model.listeners.ColorChangeListener;
+import model.listeners.ColorDeletionListener;
 import shared.random.Random;
 import shared.random.RandomnessProvider;
 
@@ -11,7 +13,7 @@ public class Palette {
     private final RandomnessProvider random;
     private final List<Color> colors;
 
-    private final List<PaletteChangeListener> paletteChangeListeners = new ArrayList<>();
+    private final List<ColorDeletionListener> paletteChangeListeners = new ArrayList<>();
     private final List<ColorChangeListener> colorChangeListeners = new ArrayList<>();
 
     private Palette(List<Color> colors) {
@@ -35,18 +37,16 @@ public class Palette {
     }
 
     private void notifyColorChange(int index, Color before, Color after) {
-        colorChangeListeners.forEach(c -> c.onChange(index, before, after));
+        colorChangeListeners.stream()
+            .filter(c -> c.getIndex() == index)
+            .forEach(c -> c.onChange(before, after));
     }
 
     public void addColorChangeListener(ColorChangeListener listener) {
         colorChangeListeners.add(listener);
     }
 
-    private void notifyPaletteChange(List<Color> before, List<Color> after) {
-        paletteChangeListeners.forEach(p -> p.onChange(before, after));
-    }
-
-    public void addPaletteChangeListener(PaletteChangeListener paletteChangeListener) {
+    public void addColorDeletionListener(ColorDeletionListener paletteChangeListener) {
         paletteChangeListeners.add(paletteChangeListener);
     }
 
@@ -60,7 +60,9 @@ public class Palette {
 
     public void randomizeColor(int index) {
         // TODO validation
-
+        if (index < 0 || index >= getColorCount()) {
+            System.out.println("Index " + index + " is out of bounds");
+        }
         Color before = colors.get(index);
         Color after = random.makeColor();
         colors.set(index, after);
@@ -71,5 +73,11 @@ public class Palette {
     public void deleteColor(int index) {
         colors.remove(index);
         paletteChangeListeners.forEach(p -> p.onRemove(index));
+        colorChangeListeners.stream()
+            .filter(c -> c.getIndex() == index)
+            .forEach(c -> c.onIndexShift(-1));
+        colorChangeListeners.stream()
+                .filter(c -> c.getIndex() > index)
+                .forEach(c -> c.onIndexShift(c.getIndex() - 1));
     }
 }
