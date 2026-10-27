@@ -8,19 +8,15 @@ import userinterface.UiFactory;
 import userinterface.javafxinterface.JavaFxFactory;
 import view.ViewManager;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.*;
 
 public class Controller {
-    public static void main(String[] args) {
-        new Controller().run(args);
-    }
-
     private Palette palette;
 
-    private final java.util.List<ColorDeletionListener> colorDeletionListeners = new ArrayList<>();
-    private final java.util.List<ColorCreationListener> colorCreationListeners = new ArrayList<>();
+    private final List<ColorDeletionListener> colorDeletionListeners = new ArrayList<>();
+    private final List<ColorCreationListener> colorCreationListeners = new ArrayList<>();
     private final List<ColorChangeListener> colorChangeListeners = new ArrayList<>();
 
     public void run(String[] args) {
@@ -51,6 +47,14 @@ public class Controller {
         colorChangeListeners.add(listener);
     }
 
+    public void addColorDeletionListener(ColorDeletionListener listener) {
+        colorDeletionListeners.add(listener);
+    }
+
+    public void addColorCreationListener(ColorCreationListener listener) {
+        colorCreationListeners.add(listener);
+    }
+
     public void randomizeColor(int index) {
         Color before = palette.getColor(index);
         palette.randomizeColor(index);
@@ -77,17 +81,16 @@ public class Controller {
             .forEach(c -> c.onIndexShift(c.getIndex() - 1));
     }
 
-
-    public void addColorDeletionListener(ColorDeletionListener listener) {
-        colorDeletionListeners.add(listener);
-    }
-
-    public void addColorCreationListener(ColorCreationListener listener) {
-        colorCreationListeners.add(listener);
-    }
-
     public void addColor() {
         palette.addColor();
         colorCreationListeners.forEach(listener -> listener.onAdd(palette.getColorCount() - 1));
+    }
+
+    public void openInspector() {
+        //TODO
+    }
+
+    public void openEditor() {
+        //TODO
     }
 }

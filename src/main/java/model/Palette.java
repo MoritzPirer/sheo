@@ -4,31 +4,21 @@ import shared.random.Random;
 import shared.random.RandomnessProvider;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Palette {
     private final RandomnessProvider random;
     private final List<Color> colors;
 
-    private Palette(List<Color> colors) {
+    Palette(List<Color> colors) {
         this.colors = colors;
         this.random = new Random();
     }
 
-    public static Palette createRandom(int count) {
-        List<Color> colors = new ArrayList<>(count);
-        RandomnessProvider random = new Random();
-
-        for (int i = 0; i < count; i++) {
-            int r = random.nextInt(255);
-            int g = random.nextInt(255);
-            int b = random.nextInt(255);
-
-            colors.add(new Color(r, g, b));
+    private void validateIndex(int index) {
+        if (index < 0 || index >= colors.size()) {
+            throw new IllegalArgumentException("Index " + index + " is out of bounds for size " + colors.size());
         }
-
-        return new Palette(colors);
     }
 
     public int getColorCount() {
@@ -36,18 +26,17 @@ public class Palette {
     }
 
     public Color getColor(int index) {
+        validateIndex(index);
         return colors.get(index);
     }
 
     public void randomizeColor(int index) {
-        if (index < 0 || index >= colors.size()) {
-            throw new IllegalArgumentException("Index " + index + " is out of bounds for size " + colors.size());
-        }
-
+        validateIndex(index);
         colors.set(index, random.makeColor());
     }
 
     public void deleteColor(int index) {
+        validateIndex(index);
         colors.remove(index);
     }
 
