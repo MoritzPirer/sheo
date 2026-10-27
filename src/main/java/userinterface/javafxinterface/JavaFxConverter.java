@@ -8,10 +8,22 @@ import userinterface.Padding;
 class JavaFxConverter {
     public static javafx.scene.paint.Color toJavaFxColor(java.awt.Color color) {
         return javafx.scene.paint.Color.rgb(
-                color.getRed(),
-                color.getGreen(),
-                color.getBlue()
+            color.getRed(),
+            color.getGreen(),
+            color.getBlue()
         );
+    }
+
+    public static java.awt.Color toAwtColor(javafx.scene.paint.Color javaFxColor) {
+        return new java.awt.Color(
+            percentToAbsolute(javaFxColor.getRed()),
+            percentToAbsolute(javaFxColor.getGreen()),
+            percentToAbsolute(javaFxColor.getBlue())
+        );
+    }
+
+    private static int percentToAbsolute(double percent) {
+        return (int) (percent * 255);
     }
 
     public static Pos toPos(ContentAlignment alignment) {
@@ -31,4 +43,5 @@ class JavaFxConverter {
     public static Insets toInsets(Padding padding) {
         return new Insets(padding.top(), padding.right(), padding.bottom(), padding.left());
     }
+
 }

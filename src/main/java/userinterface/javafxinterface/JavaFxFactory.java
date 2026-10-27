@@ -33,4 +33,9 @@ public class JavaFxFactory implements UiFactory {
     public UiApplication createUiApplication(String title) {
         return new JavaFxApplication(title);
     }
+
+    @Override
+    public ColorPicker createColorPicker() {
+        return new JavaFxColorPicker();
+    }
 }

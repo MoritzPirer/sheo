@@ -21,7 +21,7 @@ public class RandomPaletteCreator implements PaletteCreator {
         List<Color> colors = new ArrayList<>(amount);
 
         for (int i = 0; i < amount; i++) {
-            random.makeColor();
+            colors.add(random.makeColor());
         }
 
         return new Palette(colors);

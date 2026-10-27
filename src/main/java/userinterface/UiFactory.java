@@ -41,4 +41,5 @@ public interface UiFactory {
      */
     UiApplication createUiApplication(String title);
 
+    ColorPicker createColorPicker();
 }

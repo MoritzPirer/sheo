@@ -1,11 +1,15 @@
 package view.paletteview;
 
 import controller.Controller;
+import shared.ColorUtility;
 import userinterface.ContentAlignment;
 import userinterface.Padding;
 import userinterface.Size;
 import userinterface.UiFactory;
 import userinterface.components.*;
+import userinterface.components.Button;
+import userinterface.components.Label;
+import userinterface.listeners.ColorPickerListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,14 +33,14 @@ public class PaletteView {
         root.setContentAlignment(ContentAlignment.TOP_CENTER);
 
         toolbar = new Toolbar(factory, controller);
+        root.addChild(toolbar.getUiComponent());
         toolbar.getUiComponent().setPercentageSize(25.0, 100.0);
         toolbar.getUiComponent().setMaximumSize(new Size(175, -1));
-        root.addChild(toolbar.getUiComponent());
 
         UiContainer lowerHalf = factory.createHorizontalUiContainer();
+        root.addChild(lowerHalf);
         lowerHalf.setBackground(new Color(0, 0, 250));
         lowerHalf.setPercentageSize(75.0, 100.0);
-        root.addChild(lowerHalf);
 
         createColorSegment(factory, controller, lowerHalf);
         createInformationPanel(factory, controller, lowerHalf);
@@ -78,5 +82,20 @@ public class PaletteView {
         informationPanel.setPercentageSize(100.0, 20.0);
         informationPanel.setMinimumSize(new Size(-1, 200));
 
+        ColorPicker colorPicker = factory.createColorPicker();
+        informationPanel.addChild(colorPicker);
+        colorPicker.setPercentageSize(50.0, 90.0);
+        informationPanel.setContentAlignment(ContentAlignment.TOP_CENTER);
+        informationPanel.setPadding(new Padding(15));
+        Button temp = factory.createButton("test");
+        informationPanel.addChild(temp);
+        temp.addButtonListener(b -> {colorPicker.setColor(new Color(176, 11, 105));});
+        temp.setBackground(new Color(176, 11, 105));
+
+        Label proof = factory.createLabel("this should change color");
+        colorPicker.addListener((before, after) -> {proof.setBackground(after);
+            System.out.println(ColorUtility.colorToHex(after));
+        });
+        informationPanel.addChild(proof);
     }
 }
