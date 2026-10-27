@@ -25,25 +25,39 @@ public class PaletteView {
         UiContainer root = factory.createVerticalUiContainer();
         root.setBackground(new Color(250, 0, 250));
         root.setContentAlignment(ContentAlignment.CENTER);
-
         root.stretch();
+        root.setContentAlignment(ContentAlignment.TOP_CENTER);
+
         toolbar = new Toolbar(factory, controller);
+        toolbar.getUiComponent().setPercentageSize(25.0, 100.0);
+        toolbar.getUiComponent().setMaximumSize(new Size(175, -1));
+        root.addChild(toolbar.getUiComponent());
 
         UiContainer lowerHalf = factory.createHorizontalUiContainer();
         lowerHalf.setBackground(new Color(0, 0, 250));
+        lowerHalf.setPercentageSize(75.0, 100.0);
+        root.addChild(lowerHalf);
 
+        createColorSegment(factory, controller, lowerHalf);
+        createInformationPanel(factory, controller, lowerHalf);
 
+        return factory.createScene(root);
+    }
+
+    public void createColorSegment(UiFactory factory, Controller controller, UiContainer parent) {
         UiContainer colorSegment = factory.createHorizontalUiContainer();
+        parent.addChild(colorSegment);
         colorSegment.setContentAlignment(ContentAlignment.CENTER);
+        colorSegment.setPadding(new Padding(15, 30));
+        colorSegment.setSpacing(20.0);
+        colorSegment.setPercentageSize(100.0, 80.0);
+
         for (int i = 0; i < controller.getColorCount(); i++) {
             ColorCard card = new ColorCard(i, controller, factory);
             colorCards.add(card);
             colorSegment.addChild(card.getUiComponent());
         }
-        colorSegment.setPadding(new Padding(15, 30));
-        colorSegment.setSpacing(20.0);
 
-        lowerHalf.addChild(colorSegment);
         controller.addColorDeletionListener(removedIndex -> {
             ColorCard card = colorCards.remove(removedIndex);
             colorSegment.removeChild(card.getUiComponent());
@@ -55,22 +69,14 @@ public class PaletteView {
             colorSegment.addChild(card.getUiComponent());
             controller.addColorChangeListener(card);
         });
+    }
 
-        colorSegment.setPercentageSize(100.0, 80.0);
+    public void createInformationPanel(UiFactory factory, Controller controller, UiContainer parent) {
         UiContainer informationPanel = factory.createVerticalUiContainer();
+        parent.addChild(informationPanel);
         informationPanel.setBackground(new Color(0, 250, 250));
-        lowerHalf.addChild(informationPanel);
         informationPanel.setPercentageSize(100.0, 20.0);
         informationPanel.setMinimumSize(new Size(-1, 200));
 
-        root.addChild(toolbar.getUiComponent());
-        root.addChild(lowerHalf);
-
-        toolbar.getUiComponent().setPercentageSize(25.0, 100.0);
-        toolbar.getUiComponent().setMaximumSize(new Size(175, -1));
-        lowerHalf.setPercentageSize(75.0, 100.0);
-
-        root.setContentAlignment(ContentAlignment.TOP_CENTER);
-        return factory.createScene(root);
     }
 }

@@ -54,5 +54,9 @@ public interface UiComponent {
      */
     void addHoverListener(HoverListener hoverListener);
 
+    /**
+     * Add a tool tip to this component that is shown when the user mouses over the component.
+     * @param text the text to display on hover
+     */
     void setToolTip(String text);
 }

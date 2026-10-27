@@ -28,13 +28,12 @@ public class ColorCard implements ColorChangeListener {
         this.index = index;
         this.color = controller.getColor(index);
 
-        uiContainer = factory.createVerticalUiContainer();
-
-        uiContainer.setMinimumSize(new Size(180, 120));
 
         background = createColorCardHoverMenu(factory, controller);
         UiContainer colorInfo = createColorInfo(factory);
 
+        uiContainer = factory.createVerticalUiContainer();
+        uiContainer.setMinimumSize(new Size(180, 120));
         uiContainer.addChild(background);
         uiContainer.addChild(colorInfo);
 
@@ -44,30 +43,21 @@ public class ColorCard implements ColorChangeListener {
 
     private UiContainer createColorCardHoverMenu(UiFactory factory, Controller controller) {
         UiContainer hoverMenu = factory.createHorizontalUiContainer();
-        hoverMenu.setContentAlignment(ContentAlignment.CENTER);
-        hoverMenu.setBackground(color);
 
-        Button inspectButton = factory.createButton("I");
-        inspectButton.setToolTip("Inspect");
+        List<Button> buttons = List.of(
+            createInspectButton(factory, controller),
+            createEditButton(factory, controller),
+            createDeleteButton(factory, controller),
+            createRandomizeButton(factory, controller)
+        );
 
-        Button editButton = factory.createButton("E");
-        editButton.setToolTip("Edit");
-
-        Button deleteButton = factory.createButton("D");
-        deleteButton.setToolTip("Delete");
-        deleteButton.addButtonListener(b -> controller.deleteColor(index));
-
-        Button randomizeButton = factory.createButton("R");
-        randomizeButton.setToolTip("Randomize");
-        randomizeButton.addButtonListener(b -> controller.randomizeColor(index));
-
-        List<Button> buttons = List.of(inspectButton, editButton, deleteButton, randomizeButton);
-
-        for (UiComponent component : buttons) {
-            hoverMenu.addChild(component);
-            component.hide();
+        for (Button button : buttons) {
+            hoverMenu.addChild(button);
+            button.hide();
         }
 
+        hoverMenu.setContentAlignment(ContentAlignment.CENTER);
+        hoverMenu.setBackground(color);
         hoverMenu.addHoverListener(new HoverListener() {
             @Override
             public void onHoverStart(UiComponent hovered) {
@@ -85,6 +75,38 @@ public class ColorCard implements ColorChangeListener {
         });
 
         return hoverMenu;
+    }
+
+    private Button createInspectButton(UiFactory factory, Controller controller) {
+        Button inspectButton = factory.createButton("I");
+        inspectButton.setToolTip("Inspect");
+        inspectButton.addButtonListener(b -> controller.openInspector());
+
+        return inspectButton;
+    }
+
+    private Button createEditButton(UiFactory factory, Controller controller) {
+        Button editButton = factory.createButton("E");
+        editButton.setToolTip("Edit");
+        editButton.addButtonListener(b -> controller.openEditor());
+
+        return editButton;
+    }
+
+    private Button createDeleteButton(UiFactory factory, Controller controller) {
+        Button deleteButton = factory.createButton("D");
+        deleteButton.setToolTip("Delete");
+        deleteButton.addButtonListener(b -> controller.deleteColor(index));
+
+        return deleteButton;
+    }
+
+    private Button createRandomizeButton(final UiFactory factory, Controller controller) {
+        Button randomizeButton = factory.createButton("R");
+        randomizeButton.setToolTip("Randomize");
+        randomizeButton.addButtonListener(b -> controller.randomizeColor(index));
+
+        return randomizeButton;
     }
 
     private UiContainer createColorInfo(UiFactory factory) {
@@ -125,6 +147,6 @@ public class ColorCard implements ColorChangeListener {
         this.color = color;
         background.setBackground(color);
         hexCode.setText(ColorUtility.colorToHex(color));
-        colorName.setText("NAME OF " + ColorUtility.colorToHex(color)); //TODO connect to colorname module
+        colorName.setText("NAME OF " + ColorUtility.colorToHex(color)); //TODO: connect to colorname module
     }
 }
