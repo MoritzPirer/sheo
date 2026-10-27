@@ -9,7 +9,6 @@ import userinterface.UiFactory;
 import userinterface.components.*;
 import userinterface.components.Button;
 import userinterface.components.Label;
-import userinterface.listeners.ColorPickerListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,9 +79,9 @@ public class PaletteView {
         parent.addChild(informationPanel);
         informationPanel.setBackground(new Color(0, 250, 250));
         informationPanel.setPercentageSize(100.0, 20.0);
-        informationPanel.setMinimumSize(new Size(-1, 200));
+        //informationPanel.setMinimumSize(new Size(-1, 200));
 
-        ColorPicker colorPicker = factory.createColorPicker();
+        ColorPicker colorPicker = factory.createCanvasColorPicker();
         informationPanel.addChild(colorPicker);
         colorPicker.setPercentageSize(50.0, 90.0);
         informationPanel.setContentAlignment(ContentAlignment.TOP_CENTER);

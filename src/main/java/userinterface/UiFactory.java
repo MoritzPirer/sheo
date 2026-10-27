@@ -41,5 +41,8 @@ public interface UiFactory {
      */
     UiApplication createUiApplication(String title);
 
-    ColorPicker createColorPicker();
+    /**
+     * creates a color picker that allows the user to select the color from a 2d gradient
+     */
+    ColorPicker createCanvasColorPicker();
 }
