@@ -38,4 +38,10 @@ public class JavaFxFactory implements UiFactory {
     public ColorPicker createCanvasColorPicker() {
         return new JavaFxCanvasColorPicker();
     }
+
+    @Override
+    public ColorPicker createRgbColorPicker() {
+        return new JavaFxSliderColorPicker(new RgbSliderManager());
+    }
+
 }

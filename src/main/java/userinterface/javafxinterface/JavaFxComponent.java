@@ -97,4 +97,14 @@ abstract class JavaFxComponent implements UiComponent {
         tooltip.setShowDelay(Duration.millis(250));
         Tooltip.install(getJavaFxNode(), tooltip);
     }
+
+    @Override
+    public void hide() {
+        getJavaFxNode().setVisible(false);
+    }
+
+    @Override
+    public void show() {
+        getJavaFxNode().setVisible(true);
+    }
 }

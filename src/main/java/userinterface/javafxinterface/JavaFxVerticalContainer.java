@@ -13,7 +13,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JavaFxVerticalContainer extends JavaFxComponent implements UiContainer {
+class JavaFxVerticalContainer extends JavaFxComponent implements UiContainer {
     private final VBox vBox = new VBox();
     private final List<UiComponent> components = new ArrayList<>();
 
@@ -80,16 +80,6 @@ public class JavaFxVerticalContainer extends JavaFxComponent implements UiContai
     public void setContentAlignment(ContentAlignment alignment) {
         Pos pos = JavaFxConverter.toPos(alignment);
         vBox.setAlignment(pos);
-    }
-
-    @Override
-    public void hide() {
-        vBox.setVisible(false);
-    }
-
-    @Override
-    public void show() {
-        vBox.setVisible(true);
     }
 
     @Override

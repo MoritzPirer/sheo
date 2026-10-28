@@ -16,7 +16,7 @@ import userinterface.listeners.ColorPickerListener;
 import java.util.List;
 import java.util.ArrayList;
 
-public class JavaFxCanvasColorPicker extends JavaFxComponent implements ColorPicker {
+class JavaFxCanvasColorPicker extends JavaFxComponent implements ColorPicker {
     private final List<ColorPickerListener> listeners = new ArrayList<>();
     private double selectedX = 0;
     private double selectedY = 0;
@@ -266,15 +266,5 @@ public class JavaFxCanvasColorPicker extends JavaFxComponent implements ColorPic
     public void setContentAlignment(ContentAlignment alignment) {
         Pos pos = JavaFxConverter.toPos(alignment);
         container.setAlignment(pos);
-    }
-
-    @Override
-    public void hide() {
-        container.setVisible(false);
-    }
-
-    @Override
-    public void show() {
-        container.setVisible(true);
     }
 }

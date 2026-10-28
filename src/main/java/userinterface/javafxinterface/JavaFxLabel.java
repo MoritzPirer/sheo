@@ -50,16 +50,6 @@ class JavaFxLabel extends JavaFxComponent implements Label {
     }
 
     @Override
-    public void hide() {
-        label.setVisible(false);
-    }
-
-    @Override
-    public void show() {
-        label.setVisible(true);
-    }
-
-    @Override
     public String toString() {
         return "JavaFxLabel{\n" +
             "text=" + getText() + "\n" +

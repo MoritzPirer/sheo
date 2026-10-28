@@ -15,7 +15,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JavaFxHorizontalContainer extends JavaFxComponent implements UiContainer {
+class JavaFxHorizontalContainer extends JavaFxComponent implements UiContainer {
     private final HBox hBox = new HBox();
     private final List<UiComponent> components = new ArrayList<>();
 
@@ -82,16 +82,6 @@ public class JavaFxHorizontalContainer extends JavaFxComponent implements UiCont
     public void setContentAlignment(ContentAlignment alignment) {
         Pos pos = JavaFxConverter.toPos(alignment);
         hBox.setAlignment(pos);
-    }
-
-    @Override
-    public void hide() {
-        hBox.setVisible(false);
-    }
-
-    @Override
-    public void show() {
-        hBox.setVisible(true);
     }
 
     @Override

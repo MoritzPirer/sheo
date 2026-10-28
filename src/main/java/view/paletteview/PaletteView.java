@@ -77,11 +77,10 @@ public class PaletteView {
     public void createInformationPanel(UiFactory factory, Controller controller, UiContainer parent) {
         UiContainer informationPanel = factory.createVerticalUiContainer();
         parent.addChild(informationPanel);
-        informationPanel.setBackground(new Color(0, 250, 250));
+        informationPanel.setBackground(new Color(255, 255, 255));
         informationPanel.setPercentageSize(100.0, 20.0);
-        //informationPanel.setMinimumSize(new Size(-1, 200));
 
-        ColorPicker colorPicker = factory.createCanvasColorPicker();
+        ColorPicker colorPicker = factory.createRgbColorPicker();
         informationPanel.addChild(colorPicker);
         colorPicker.setPercentageSize(50.0, 90.0);
         informationPanel.setContentAlignment(ContentAlignment.TOP_CENTER);
@@ -93,7 +92,7 @@ public class PaletteView {
 
         Label proof = factory.createLabel("this should change color");
         colorPicker.addListener((before, after) -> {proof.setBackground(after);
-            System.out.println(ColorUtility.colorToHex(after));
+            System.out.println(ColorUtility.colorToHex(after) + " this is from label");
         });
         informationPanel.addChild(proof);
     }

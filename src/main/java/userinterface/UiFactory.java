@@ -45,4 +45,6 @@ public interface UiFactory {
      * creates a color picker that allows the user to select the color from a 2d gradient
      */
     ColorPicker createCanvasColorPicker();
+
+    ColorPicker createRgbColorPicker();
 }
