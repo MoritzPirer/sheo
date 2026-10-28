@@ -15,7 +15,7 @@ import java.util.List;
 import java.awt.*;
 
 public class Controller {
-    private ListPalette palette;
+    private Palette palette;
     private final RandomnessProvider random = new Random();
 
     private final List<ColorDeletionListener> colorDeletionListeners = new ArrayList<>();
@@ -30,12 +30,17 @@ public class Controller {
         // 2. Run creation logic
         viewManager.initialize(args);
 
-        // 3. Create palette
+        // 3. Create palette (eventually given from creation logic
         PaletteCreator creator = new RandomPaletteCreator(5);
         palette = creator.create();
 
         // 4. Run main scene
         viewManager.switchToEditor(this);
+    }
+
+    // only for testing
+    public void setPalette(Palette palette) {
+        this.palette = palette;
     }
 
     public int getColorCount() {

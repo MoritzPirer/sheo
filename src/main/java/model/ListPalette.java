@@ -7,7 +7,7 @@ import java.util.List;
 public class ListPalette implements Palette {
     private final List<Color> colors;
 
-    ListPalette(List<Color> colors) {
+    public ListPalette(List<Color> colors) {
         this.colors = colors;
     }
 
