@@ -16,7 +16,7 @@ public class RandomPaletteCreator implements PaletteCreator {
     }
 
     @Override
-    public Palette create() {
+    public ListPalette create() {
         RandomnessProvider random = new Random();
         List<Color> colors = new ArrayList<>(amount);
 
@@ -24,6 +24,6 @@ public class RandomPaletteCreator implements PaletteCreator {
             random.makeColor();
         }
 
-        return new Palette(colors);
+        return new ListPalette(colors);
     }
 }

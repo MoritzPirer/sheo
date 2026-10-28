@@ -1,46 +1,38 @@
 package model;
 
-import shared.random.Random;
-import shared.random.RandomnessProvider;
-
 import java.awt.*;
-import java.util.List;
 
-public class Palette {
-    private final RandomnessProvider random;
-    private final List<Color> colors;
+public interface Palette {
 
-    Palette(List<Color> colors) {
-        this.colors = colors;
-        this.random = new Random();
-    }
+    /**
+     * @return the number of colors in the palette
+     */
+    int size();
 
-    private void validateIndex(int index) {
-        if (index < 0 || index >= colors.size()) {
-            throw new IllegalArgumentException("Index " + index + " is out of bounds for size " + colors.size());
-        }
-    }
+    /**
+     * @param index the index of the color to retrieve.
+     * @return the requested color
+     * @throws IllegalArgumentException if the index is negative or >= size()
+     */
+    Color getColor(int index);
 
-    public int getColorCount() {
-        return colors.size();
-    }
+    /**
+     * updates the color at the given index to the given value
+     * @param index the index to set at
+     * @param color the color to set to
+     * @throws IllegalArgumentException if the index is negative or >= size()
+     */
+    void setColor(int index, Color color);
 
-    public Color getColor(int index) {
-        validateIndex(index);
-        return colors.get(index);
-    }
+    /**
+     * @param index the index of the color to delete.
+     * @throws IllegalArgumentException if the index is negative or >= size()
+     */
+    void deleteColor(int index);
 
-    public void randomizeColor(int index) {
-        validateIndex(index);
-        colors.set(index, random.makeColor());
-    }
-
-    public void deleteColor(int index) {
-        validateIndex(index);
-        colors.remove(index);
-    }
-
-    public void addColor() {
-        colors.add(random.makeColor());
-    }
+    /**
+     * add the given color to the end of the palette
+     * @param color the color to add
+     */
+    void addColor(Color color);
 }

@@ -4,6 +4,8 @@ import model.*;
 import controller.listeners.ColorChangeListener;
 import controller.listeners.ColorCreationListener;
 import controller.listeners.ColorDeletionListener;
+import shared.random.Random;
+import shared.random.RandomnessProvider;
 import userinterface.UiFactory;
 import userinterface.javafxinterface.JavaFxFactory;
 import view.ViewManager;
@@ -13,7 +15,8 @@ import java.util.List;
 import java.awt.*;
 
 public class Controller {
-    private Palette palette;
+    private ListPalette palette;
+    private final RandomnessProvider random = new Random();
 
     private final List<ColorDeletionListener> colorDeletionListeners = new ArrayList<>();
     private final List<ColorCreationListener> colorCreationListeners = new ArrayList<>();
@@ -36,7 +39,7 @@ public class Controller {
     }
 
     public int getColorCount() {
-        return palette.getColorCount();
+        return palette.size();
     }
 
     public Color getColor(int index) {
@@ -57,12 +60,12 @@ public class Controller {
 
     public void randomizeColor(int index) {
         Color before = palette.getColor(index);
-        palette.randomizeColor(index);
-        Color after = palette.getColor(index);
+        Color after = random.makeColor();
+        palette.setColor(index, after);
 
         colorChangeListeners.stream()
-                .filter(c -> c.getIndex() == index)
-                .forEach(c -> c.onChange(before, after));
+            .filter(c -> c.getIndex() == index)
+            .forEach(c -> c.onChange(before, after));
     }
 
     public void deleteColor(int index) {
@@ -82,8 +85,8 @@ public class Controller {
     }
 
     public void addColor() {
-        palette.addColor();
-        colorCreationListeners.forEach(listener -> listener.onAdd(palette.getColorCount() - 1));
+        palette.addColor(random.makeColor());
+        colorCreationListeners.forEach(listener -> listener.onAdd(palette.size() - 1));
     }
 
     public void openInspector() {
