@@ -1,11 +1,14 @@
 package view.paletteview;
 
 import controller.Controller;
+import shared.ColorUtility;
 import userinterface.ContentAlignment;
 import userinterface.Padding;
 import userinterface.Size;
 import userinterface.UiFactory;
 import userinterface.components.*;
+import userinterface.components.Button;
+import userinterface.components.Label;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,25 +28,39 @@ public class PaletteView {
         UiContainer root = factory.createVerticalUiContainer();
         root.setBackground(new Color(250, 0, 250));
         root.setContentAlignment(ContentAlignment.CENTER);
-
         root.stretch();
+        root.setContentAlignment(ContentAlignment.TOP_CENTER);
+
         toolbar = new Toolbar(factory, controller);
+        root.addChild(toolbar.getUiComponent());
+        toolbar.getUiComponent().setPercentageSize(25.0, 100.0);
+        toolbar.getUiComponent().setMaximumSize(new Size(175, -1));
 
         UiContainer lowerHalf = factory.createHorizontalUiContainer();
+        root.addChild(lowerHalf);
         lowerHalf.setBackground(new Color(0, 0, 250));
+        lowerHalf.setPercentageSize(75.0, 100.0);
 
+        createColorSegment(factory, controller, lowerHalf);
+        createInformationPanel(factory, controller, lowerHalf);
 
+        return factory.createScene(root);
+    }
+
+    public void createColorSegment(UiFactory factory, Controller controller, UiContainer parent) {
         UiContainer colorSegment = factory.createHorizontalUiContainer();
+        parent.addChild(colorSegment);
         colorSegment.setContentAlignment(ContentAlignment.CENTER);
+        colorSegment.setPadding(new Padding(15, 30));
+        colorSegment.setSpacing(20.0);
+        colorSegment.setPercentageSize(100.0, 80.0);
+
         for (int i = 0; i < controller.getColorCount(); i++) {
             ColorCard card = new ColorCard(i, controller, factory);
             colorCards.add(card);
             colorSegment.addChild(card.getUiComponent());
         }
-        colorSegment.setPadding(new Padding(15, 30));
-        colorSegment.setSpacing(20.0);
 
-        lowerHalf.addChild(colorSegment);
         controller.addColorDeletionListener(removedIndex -> {
             ColorCard card = colorCards.remove(removedIndex);
             colorSegment.removeChild(card.getUiComponent());
@@ -55,22 +72,29 @@ public class PaletteView {
             colorSegment.addChild(card.getUiComponent());
             controller.addColorChangeListener(card);
         });
+    }
 
-        colorSegment.setPercentageSize(100.0, 80.0);
+    public void createInformationPanel(UiFactory factory, Controller controller, UiContainer parent) {
         UiContainer informationPanel = factory.createVerticalUiContainer();
+        parent.addChild(informationPanel);
         informationPanel.setBackground(new Color(0, 250, 250));
-        lowerHalf.addChild(informationPanel);
         informationPanel.setPercentageSize(100.0, 20.0);
-        informationPanel.setMinimumSize(new Size(-1, 200));
+        //informationPanel.setMinimumSize(new Size(-1, 200));
 
-        root.addChild(toolbar.getUiComponent());
-        root.addChild(lowerHalf);
+        ColorPicker colorPicker = factory.createCanvasColorPicker();
+        informationPanel.addChild(colorPicker);
+        colorPicker.setPercentageSize(50.0, 90.0);
+        informationPanel.setContentAlignment(ContentAlignment.TOP_CENTER);
+        informationPanel.setPadding(new Padding(15));
+        Button temp = factory.createButton("test");
+        informationPanel.addChild(temp);
+        temp.addButtonListener(b -> {colorPicker.setColor(new Color(176, 11, 105));});
+        temp.setBackground(new Color(176, 11, 105));
 
-        toolbar.getUiComponent().setPercentageSize(25.0, 100.0);
-        toolbar.getUiComponent().setMaximumSize(new Size(175, -1));
-        lowerHalf.setPercentageSize(75.0, 100.0);
-
-        root.setContentAlignment(ContentAlignment.TOP_CENTER);
-        return factory.createScene(root);
+        Label proof = factory.createLabel("this should change color");
+        colorPicker.addListener((before, after) -> {proof.setBackground(after);
+            System.out.println(ColorUtility.colorToHex(after));
+        });
+        informationPanel.addChild(proof);
     }
 }

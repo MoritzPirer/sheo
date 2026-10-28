@@ -18,7 +18,6 @@ public class ViewManager {
         application = factory.createUiApplication("sheo");
         application.initialize(args);
         //application.start(view.initializeScene(factory, palette));
-
     }
 
     public void switchToEditor(Controller controller) {

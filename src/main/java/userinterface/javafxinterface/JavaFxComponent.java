@@ -86,6 +86,9 @@ abstract class JavaFxComponent implements UiComponent {
 
         child.maxHeightProperty().bind(region.heightProperty());
         child.maxWidthProperty().bind(region.widthProperty());
+
+        child.minHeightProperty().bind(region.heightProperty().multiply(heightPercentage / 100.0));
+        child.minWidthProperty().bind(region.widthProperty().multiply(widthPercentage / 100.0));
     }
 
     @Override
