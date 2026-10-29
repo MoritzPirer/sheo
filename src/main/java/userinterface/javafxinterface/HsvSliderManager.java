@@ -17,8 +17,9 @@ public class HsvSliderManager extends SliderManager {
     public HsvSliderManager() {
         hueSlider = createSlider(359,
             "#FF0000", "#FFFF00", "#00FF00", "#00FFFF", "#0000FF", "#FF00FF", "#FF0000");
-        saturationSlider = createSlider(1, "#000000", "#000000"); //TODO correct initial
+        saturationSlider = createSlider(1, "#000000", "#000000");
         valueSlider = createSlider(1, "#000000", "#FFFFFF");
+        updateSliderGradients();
     }
 
     @Override
@@ -27,6 +28,9 @@ public class HsvSliderManager extends SliderManager {
         this.context = context;
     }
 
+    /**
+     * update the saturation and value sliders' gradients to show what colors can be reached by moving them
+     */
     private void updateSliderGradients() {
         double[] currentHsv = toHsv(color);
         double hue = currentHsv[0];

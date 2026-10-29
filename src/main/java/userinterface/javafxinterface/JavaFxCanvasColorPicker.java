@@ -61,26 +61,34 @@ class JavaFxCanvasColorPicker extends JavaFxComponent implements ColorPicker {
         return canvas;
     }
 
-    private void adjustHorizontalSelectionAfterResize(Double oldVal, Double newVal) {
+    /**
+     * correct the x-position of the selection marker within the canvas after width changes
+     * to keep saturation percentage consistent
+     */
+    private void adjustHorizontalSelectionAfterResize(Double widthBefore, Double widthAfter) {
         double percent;
-        if (oldVal == 0) {
+        if (widthBefore == 0) {
             percent = 0;
         }
         else {
-            percent = selectedX / oldVal;
+            percent = selectedX / widthBefore;
         }
-        selectedX = percent * newVal;
+        selectedX = percent * widthAfter;
     }
 
-    private void adjustVerticalSelectionAfterResize(Double oldVal, Double newVal) {
+    /**
+     * correct the y-position of the selection marker within the canvas after height changes
+     * to keep percentage consistent
+     */
+    private void adjustVerticalSelectionAfterResize(Double heightBefore, Double heightAfter) {
         double percent;
-        if (oldVal == 0) {
+        if (heightBefore == 0) {
             percent = 0;
         }
         else {
-            percent = selectedY / oldVal;
+            percent = selectedY / heightBefore;
         }
-        selectedY = percent * newVal;
+        selectedY = percent * heightAfter;
     }
 
     /**
@@ -139,6 +147,9 @@ class JavaFxCanvasColorPicker extends JavaFxComponent implements ColorPicker {
         drawMarker();
     }
 
+    /**
+     * draw the maker onto the canvas
+     */
     private void drawMarker() {
         System.out.println("draw marker");
         System.out.println("selectedX: " + selectedX + " selectedY: " + selectedY);
@@ -183,6 +194,11 @@ class JavaFxCanvasColorPicker extends JavaFxComponent implements ColorPicker {
         listeners.forEach(l -> l.onChange(before, after));
     }
 
+    /**
+     * process the hue slider moving
+     * @param oldPosition the hue before moving
+     * @param newPosition the hue after moving
+     */
     private void processSliderMove(double oldPosition, double newPosition) {
         drawGradient();
 

@@ -38,13 +38,24 @@ abstract class SliderManager {
         return slider;
     }
 
+    /**
+     * called by javaFx's listener whenever a slider created with createSlider is moved
+     */
     abstract void processSliderMove();
 
+    /**
+     * overload for setSliderGradient(Slider, String...). converts all colors into hex codes first.
+     */
     protected void setSliderGradient(Slider slider, Color... colors) {
         String[] hexCodes = Arrays.stream(colors).map(c -> ColorUtility.colorToHex(JavaFxConverter.toAwtColor(c))).toArray(String[]::new);
         setSliderGradient(slider, hexCodes);
     }
 
+    /**
+     * applies a linear gradient to the given slider, going through the given colors in order (from left to right)
+     * @param slider the slider to apply the gradient to
+     * @param colors the hex codes of the colors to use in the gradient
+     */
     protected void setSliderGradient(Slider slider, String... colors) {
         slider.applyCss();
 
@@ -58,11 +69,19 @@ abstract class SliderManager {
         }
     }
 
+    /**
+     * Set the given slider to be a given percentage towards its maximum
+     * @param slider the slider to set
+     * @param percentage the percentage to set to, between 0 and 1
+     */
     protected void setSliderToPercentage(Slider slider, double percentage) {
         double absolute = percentage * slider.getMax();
         slider.setValue(absolute);
     }
 
+    /**
+     * @return how far the slider is, as a percentage between 0 and 1
+     */
     protected double readSliderAsPercentage(Slider slider) {
         return slider.getValue() / slider.getMax();
     }

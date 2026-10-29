@@ -8,8 +8,17 @@ import userinterface.Size;
 import userinterface.listeners.HoverListener;
 import userinterface.components.UiComponent;
 
+/**
+ * Abstract base for every component produced by the JavaFxFactory. Implements methods of UiComponent that only depend
+ * on the Component's primary javaFx component
+ */
 abstract class JavaFxComponent implements UiComponent {
-    abstract javafx.scene.layout.Region getJavaFxNode();
+    /**
+     * Used by the methods of this class. Return the primary javaFx component of the UiComponent (for wrappers, this is
+     * the wrapped component. For custom components, this is the container of the used components)
+     * @return the primary component
+     */
+    abstract Region getJavaFxNode();
 
     @Override
     public void addHoverListener(HoverListener hoverListener) {
@@ -81,14 +90,14 @@ abstract class JavaFxComponent implements UiComponent {
             throw new IllegalArgumentException("Parent is not a Region!");
         }
 
+        child.minHeightProperty().bind(region.heightProperty().multiply(heightPercentage / 100.0));
+        child.minWidthProperty().bind(region.widthProperty().multiply(widthPercentage / 100.0));
+
         child.prefHeightProperty().bind(region.heightProperty().multiply(heightPercentage / 100.0));
         child.prefWidthProperty().bind(region.widthProperty().multiply(widthPercentage / 100.0));
 
         child.maxHeightProperty().bind(region.heightProperty());
         child.maxWidthProperty().bind(region.widthProperty());
-
-        child.minHeightProperty().bind(region.heightProperty().multiply(heightPercentage / 100.0));
-        child.minWidthProperty().bind(region.widthProperty().multiply(widthPercentage / 100.0));
     }
 
     @Override

@@ -19,6 +19,7 @@ public class HslSliderManager extends SliderManager {
             "#FF0000", "#FFFF00", "#00FF00", "#00FFFF", "#0000FF", "#FF00FF", "#FF0000");
         saturationSlider = createSlider(1, "#000000", "#000000");
         lightnessSlider = createSlider(1, "#000000", "#FFFFFF");
+        updateSliderGradients();
     }
 
     @Override
@@ -27,12 +28,15 @@ public class HslSliderManager extends SliderManager {
         this.context = context;
     }
 
+    /**
+     * update the saturation and lightness sliders' gradients to show what colors can be reached by moving them
+     */
     private void updateSliderGradients() {
         double hue = hueSlider.getValue();
         double saturation = saturationSlider.getValue();
         double lightness = lightnessSlider.getValue();
-        System.out.println(color.toString());
 
+        // need to do three steps because gradients can go e.g. black -> red -> white
         Color saturationMinimum = fromHsl(hue, 0, lightness);
         Color saturationMedium = fromHsl(hue, 0.5, lightness);
         Color saturationMaximum = fromHsl(hue, 1, lightness);

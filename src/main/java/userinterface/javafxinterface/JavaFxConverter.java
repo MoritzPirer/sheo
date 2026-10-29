@@ -5,6 +5,9 @@ import javafx.geometry.Pos;
 import userinterface.ContentAlignment;
 import userinterface.Padding;
 
+/**
+ * Utility class to convert between JavaFx's types and custom or standard library (i.e. not third party dependent) types
+ */
 class JavaFxConverter {
     public static javafx.scene.paint.Color toJavaFxColor(java.awt.Color color) {
         return javafx.scene.paint.Color.rgb(
@@ -22,6 +25,11 @@ class JavaFxConverter {
         );
     }
 
+    /**
+     * convert a percentage to a value in the range [0-255] i.e. and RGB color channel
+     * @param percent the percentage to convert
+     * @return the corresponding value in the range [0-255]
+     */
     private static int percentToAbsolute(double percent) {
         return (int) (percent * 255);
     }
