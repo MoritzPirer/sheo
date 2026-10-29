@@ -45,6 +45,37 @@ public class ColorUtility {
         double max = max(redPercentage, greenPercentage, bluePercentage);
         double min = min(redPercentage, greenPercentage, bluePercentage);
 
+        double hue = getHue(min, max, redPercentage, greenPercentage, bluePercentage);
+
+        double saturation = (max == min) ?
+            0 :
+            (max - min) / max;
+
+
+        return new double[]{ hue, saturation, max };
+    }
+
+
+    public static double[] toHsl(Color color) {
+        double redPercentage = (double) color.getRed() / 255;
+        double greenPercentage = (double) color.getGreen() / 255;
+        double bluePercentage = (double) color.getBlue() / 255;
+
+        double max = max(redPercentage, greenPercentage, bluePercentage);
+        double min = min(redPercentage, greenPercentage, bluePercentage);
+
+        double hue = getHue(min, max, redPercentage, greenPercentage, bluePercentage);
+
+        double saturation = (max == min) ?
+            0 :
+            (max - min) / (1 - Math.abs(max + min - 1));
+
+        double lightness = (max + min) / 2;
+
+        return new double[]{ hue, saturation, lightness };
+    }
+
+    private static double getHue(double min, double max, double redPercentage, double greenPercentage, double bluePercentage) {
         double hue = 0;
         if (max == redPercentage) {
             hue = 60.0 * (greenPercentage - bluePercentage) / (max - min);
@@ -59,12 +90,7 @@ public class ColorUtility {
             hue += 360.0;
         }
 
-        double saturation = (max == min) ?
-            0 :
-            (max - min) / max;
-
-
-        return new double[]{ hue, saturation, max };
+        return hue;
     }
 
     private static double max(double... options) {
@@ -117,5 +143,52 @@ public class ColorUtility {
     private static double rgbToHsvHelper(int n, double hue, double saturation, double value) {
         double k = (n + hue / 60.0) % 6;
         return value - value * saturation * max(0, min(k, 4 - k, 1));
+    }
+
+    public static Color fromHsl(double hue, double saturation, double lightness) {
+        double chroma = saturation * (1 - Math.abs(2 * lightness - 1));
+        double hPrime = hue / 60.0;
+        double x = chroma * (1 - Math.abs(hPrime % 2 - 1));
+
+        double tempRed = 0, tempGreen = 0, tempBlue = 0;
+        switch ((int) Math.floor(hPrime)) {
+            case 0 -> {
+                tempRed = chroma;
+                tempGreen = x;
+                tempBlue = 0;
+            }
+            case 1 -> {
+                tempRed = x;
+                tempGreen = chroma;
+                tempBlue = 0;
+            }
+            case 2 -> {
+                tempRed = 0;
+                tempGreen = chroma;
+                tempBlue = x;
+            }
+            case 3 -> {
+                tempRed = 0;
+                tempGreen = x;
+                tempBlue = chroma;
+            }
+            case 4 -> {
+                tempRed = x;
+                tempGreen = 0;
+                tempBlue = chroma;
+            }
+            case 5 -> {
+                tempRed = chroma;
+                tempGreen = 0;
+                tempBlue = x;
+            }
+        }
+
+        double m = lightness - chroma / 2;
+
+        int red = (int) ((tempRed + m) * 255);
+        int green = (int) ((tempGreen + m) * 255);
+        int blue = (int) ((tempBlue + m) * 255);
+        return new Color(red, green, blue);
     }
 }

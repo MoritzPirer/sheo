@@ -29,8 +29,7 @@ abstract class SliderManager {
                     "-fx-border-radius: 50%;" +
                     "-fx-background-radius: 50%;"
                 );
-                }
-
+            }
         });
         slider.valueProperty().addListener(
                 (obs, oldVal, newVal) -> processSliderMove()
