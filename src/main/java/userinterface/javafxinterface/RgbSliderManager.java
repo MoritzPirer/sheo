@@ -1,13 +1,10 @@
 package userinterface.javafxinterface;
 
-import javafx.scene.Node;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
-import shared.ColorUtility;
 
-class RgbSliderManager implements SliderManager {
+class RgbSliderManager extends SliderManager {
 
     private final Slider redSlider;
     private final Slider greenSlider;
@@ -18,48 +15,15 @@ class RgbSliderManager implements SliderManager {
     private boolean isUpdating = false;
 
     public RgbSliderManager() {
-        redSlider = createSlider("#FF0000");
-        greenSlider = createSlider("#00FF00");
-        blueSlider = createSlider("#0000FF");
+        redSlider = createSlider(255, "#000000", "#FF0000");
+        greenSlider = createSlider(255, "#000000", "#00FF00");
+        blueSlider = createSlider(255,"#000000", "#0000FF");
     }
 
     @Override
     public void initialize(Pane parent, JavaFxSliderColorPicker context) {
         parent.getChildren().addAll(redSlider, greenSlider, blueSlider);
         this.context = context;
-    }
-
-    private Slider createSlider(String gradientEnd) {
-        Slider slider = new Slider(0, 255, 0);
-        slider.skinProperty().addListener((obs, oldSkin, newSkin) -> {
-            Node track = slider.lookup(".track");
-            if (track instanceof Region region) {
-                region.setPrefHeight(10);
-                region.setStyle(
-                    "-fx-background-color: linear-gradient(to right, #000000, " + gradientEnd + ");" +
-                    "-fx-border-radius: 10px;" +
-                    "-fx-background-radius: 10px;"
-                );
-            }
-
-            Node thumb = slider.lookup(".thumb");
-            if (thumb instanceof Region region) {
-                region.setPrefHeight(20);
-                region.setPrefWidth(20);
-                region.setStyle("-fx-background-radius: 26;" +
-                    "-fx-background-color: transparent;" +
-                    "-fx-border-color: #CBCBCB;" +
-                    "-fx-border-width: 5px;" +
-                    "-fx-border-radius: 50%;" +
-                    "-fx-background-radius: 50%;"
-                );
-            }
-        });
-        slider.valueProperty().addListener(
-                (obs, oldVal, newVal) -> processSliderMove()
-        );
-
-        return slider;
     }
 
     private void updateSliderGradients() {
@@ -76,23 +40,8 @@ class RgbSliderManager implements SliderManager {
         setSliderGradient(blueSlider, blueMinimum, blueMaximum);
     }
 
-    private void setSliderGradient(Slider slider, Color start, Color end) {
-        String startHex = ColorUtility.colorToHex(JavaFxConverter.toAwtColor(start));
-        String endHex = ColorUtility.colorToHex(JavaFxConverter.toAwtColor(end));
-
-        slider.applyCss();
-
-        Node track = slider.lookup(".track");
-        if (track instanceof Region region) {
-            region.setStyle(
-                "-fx-background-color: linear-gradient(to right, " + startHex + ", " + endHex + ");" +
-                "-fx-border-radius: 10px;" +
-                "-fx-background-radius: 10px;"
-            );
-        }
-    }
-
-    private void processSliderMove() {
+    @Override
+    protected void processSliderMove() {
         if (isUpdating) {
             return;
         }
@@ -107,10 +56,6 @@ class RgbSliderManager implements SliderManager {
             context.processColorChange(before, color);
             updateSliderGradients();
         }
-    }
-
-    private double readSliderAsPercentage(Slider slider) {
-        return slider.getValue() / slider.getMax();
     }
 
     @Override
@@ -132,10 +77,5 @@ class RgbSliderManager implements SliderManager {
         updateSliderGradients();
 
         isUpdating = false;
-    }
-
-    private void setSliderToPercentage(Slider slider, double percentage) {
-        double absolute = percentage * slider.getMax();
-        slider.setValue(absolute);
     }
 }

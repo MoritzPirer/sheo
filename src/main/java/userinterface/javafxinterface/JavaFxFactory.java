@@ -44,4 +44,8 @@ public class JavaFxFactory implements UiFactory {
         return new JavaFxSliderColorPicker(new RgbSliderManager());
     }
 
+    @Override
+    public ColorPicker createHsvColorPicker() {
+        return new JavaFxSliderColorPicker(new HsvSliderManager());
+    }
 }
