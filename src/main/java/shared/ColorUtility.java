@@ -76,8 +76,11 @@ public class ColorUtility {
     }
 
     private static double getHue(double min, double max, double redPercentage, double greenPercentage, double bluePercentage) {
-        double hue = 0;
-        if (max == redPercentage) {
+        double hue = 0.0;
+        if (max == min) {
+            hue = 0.0;
+        }
+        else if (max == redPercentage) {
             hue = 60.0 * (greenPercentage - bluePercentage) / (max - min);
         }
         else if (max == greenPercentage) {
@@ -151,7 +154,7 @@ public class ColorUtility {
         double x = chroma * (1 - Math.abs(hPrime % 2 - 1));
 
         double tempRed = 0, tempGreen = 0, tempBlue = 0;
-        switch ((int) Math.floor(hPrime)) {
+        switch ((int) Math.round(hPrime) % 6) {
             case 0 -> {
                 tempRed = chroma;
                 tempGreen = x;

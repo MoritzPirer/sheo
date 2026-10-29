@@ -49,4 +49,6 @@ public interface UiFactory {
     ColorPicker createRgbColorPicker();
 
     ColorPicker createHsvColorPicker();
+
+    ColorPicker createHslColorPicker();
 }

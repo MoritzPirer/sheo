@@ -80,7 +80,7 @@ public class PaletteView {
         informationPanel.setBackground(new Color(255, 255, 255));
         informationPanel.setPercentageSize(100.0, 20.0);
 
-        ColorPicker colorPicker = factory.createHsvColorPicker();
+        ColorPicker colorPicker = factory.createHslColorPicker();
         informationPanel.addChild(colorPicker);
         informationPanel.addChild(factory.createRgbColorPicker());
         colorPicker.setPercentageSize(50.0, 90.0);
