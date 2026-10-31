@@ -7,7 +7,6 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Region;
 import userinterface.ContentAlignment;
-import userinterface.Size;
 import userinterface.components.Button;
 import userinterface.listeners.ButtonListener;
 
@@ -52,17 +51,6 @@ class JavaFxButton extends JavaFxComponent implements Button {
     @Override
     public Region getJavaFxNode() {
         return button;
-    }
-
-    @Override
-    public void setBackground(Color color) {
-        javafx.scene.paint.Color javaFxColor = JavaFxConverter.toJavaFxColor(color);
-        button.setBackground(new Background(new BackgroundFill(javaFxColor, null, null)));
-    }
-
-    @Override
-    public void setPreferredSize(Size size) {
-        button.setPrefSize(size.width(), size.height());
     }
 
     @Override

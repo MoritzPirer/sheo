@@ -2,11 +2,15 @@ package userinterface.javafxinterface;
 
 import javafx.scene.Parent;
 import javafx.scene.control.Tooltip;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Region;
 import javafx.util.Duration;
 import userinterface.Size;
 import userinterface.listeners.HoverListener;
 import userinterface.components.UiComponent;
+
+import java.awt.*;
 
 /**
  * Abstract base for every component produced by the JavaFxFactory. Implements methods of UiComponent that only depend
@@ -115,5 +119,11 @@ abstract class JavaFxComponent implements UiComponent {
     @Override
     public void show() {
         getJavaFxNode().setVisible(true);
+    }
+
+    @Override
+    public void setBackground(Color color) {
+        javafx.scene.paint.Color javaFxColor = JavaFxConverter.toJavaFxColor(color);
+        getJavaFxNode().setBackground(new Background(new BackgroundFill(javaFxColor, null, null)));
     }
 }

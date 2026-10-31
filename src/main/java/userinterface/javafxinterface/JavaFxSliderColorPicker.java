@@ -64,12 +64,6 @@ class JavaFxSliderColorPicker extends JavaFxComponent implements ColorPicker {
     }
 
     @Override
-    public void setBackground(Color color) {
-        javafx.scene.paint.Color javaFxColor = JavaFxConverter.toJavaFxColor(color);
-        container.setBackground(new Background(new BackgroundFill(javaFxColor, null, null)));
-    }
-
-    @Override
     public void setContentAlignment(ContentAlignment alignment) {
         Pos pos = JavaFxConverter.toPos(alignment);
         container.setAlignment(pos);

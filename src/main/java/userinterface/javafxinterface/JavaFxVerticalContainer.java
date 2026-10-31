@@ -71,12 +71,6 @@ class JavaFxVerticalContainer extends JavaFxComponent implements UiContainer {
     }
 
     @Override
-    public void setBackground(Color color) {
-        javafx.scene.paint.Color javaFxColor = JavaFxConverter.toJavaFxColor(color);
-        vBox.setBackground(new Background(new BackgroundFill(javaFxColor, null, null)));
-    }
-
-    @Override
     public void setContentAlignment(ContentAlignment alignment) {
         Pos pos = JavaFxConverter.toPos(alignment);
         vBox.setAlignment(pos);
