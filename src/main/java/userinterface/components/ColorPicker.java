@@ -19,7 +19,6 @@ public interface ColorPicker extends UiComponent {
     /**
      * add a new listener to be notified whenever the color picker's value is changed, either by the user or by
      * calling setColor()
-     * @param listener
      */
     void addListener(ColorPickerListener listener);
 }

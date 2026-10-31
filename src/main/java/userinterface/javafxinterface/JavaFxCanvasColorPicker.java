@@ -26,6 +26,8 @@ class JavaFxCanvasColorPicker extends JavaFxComponent implements ColorPicker {
     private final Slider hueSlider;
 
     public JavaFxCanvasColorPicker() {
+        container.setMinSize(10, 10);
+        container.setPrefSize(10, 10);
         canvas = createCanvas();
         hueSlider = createHueSlider();
 
@@ -151,8 +153,6 @@ class JavaFxCanvasColorPicker extends JavaFxComponent implements ColorPicker {
      * draw the maker onto the canvas
      */
     private void drawMarker() {
-        System.out.println("draw marker");
-        System.out.println("selectedX: " + selectedX + " selectedY: " + selectedY);
         double thickness = 5;
 
         double diameter = 5 + Math.ceil(canvas.getWidth() * 0.03);
@@ -226,9 +226,9 @@ class JavaFxCanvasColorPicker extends JavaFxComponent implements ColorPicker {
         double saturation = hsv[1];
         double value = hsv[2];
 
-        hueSlider.setValue(hue);
-        selectedX = saturation * canvas.getWidth();
-        selectedY = value * canvas.getHeight();
+        setHue(hue);
+        setSaturation(saturation);
+        setValue(value);
 
         drawGradient();
 
@@ -257,8 +257,20 @@ class JavaFxCanvasColorPicker extends JavaFxComponent implements ColorPicker {
         return 1 - (selectedY / canvas.getHeight());
     }
 
+    private void setHue(double hue) {
+        hueSlider.setValue(hue);
+    }
+    private void setSaturation(double saturation) {
+        selectedX = saturation * canvas.getWidth();
+    }
+
+    private void setValue(double value) {
+        selectedY = (1.0 - value) * canvas.getHeight();
+    }
+
     @Override
     public java.awt.Color getColor() {
+        System.out.println("!!getCol: " + hueSlider.getValue() + " " + getSaturation() + " " + getValue());
         return ColorUtility.fromHsv(getHue(), getSaturation(), getValue());
     }
 
