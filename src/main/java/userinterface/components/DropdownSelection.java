@@ -4,7 +4,7 @@ import userinterface.listeners.DropdownSelectionListener;
 
 import java.util.List;
 
-public interface DropdownSelection {
+public interface DropdownSelection extends UiComponent {
     /**
      * Sets what the current value of the selection is. Notifies listeners unless that value was already selected.
      * @param value the value to set to.

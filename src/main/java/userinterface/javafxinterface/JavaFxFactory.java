@@ -53,4 +53,10 @@ public class JavaFxFactory implements UiFactory {
     public ColorPicker createHslColorPicker() {
         return new JavaFxSliderColorPicker(new HslSliderManager());
     }
+
+    @Override
+    public DropdownSelection createDropdownSelection(String... options) {
+        return new JavaFxDropdownSelection(options);
+    }
+
 }

@@ -51,4 +51,10 @@ public interface UiFactory {
     ColorPicker createHsvColorPicker();
 
     ColorPicker createHslColorPicker();
+
+    /**
+     * Creates a Dropdown selection of values
+     * @param options the initial options of the selection
+     */
+    DropdownSelection createDropdownSelection(String... options);
 }
