@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class JavaFxDropdownSelectionTest {
     static Stream<DropdownSelection> streamComponents() {
         return Stream.of(
-
+            new JavaFxDropdownSelection()
         );
     }
 
@@ -45,7 +45,7 @@ public class JavaFxDropdownSelectionTest {
 
     @ParameterizedTest
     @MethodSource("streamComponents")
-    public void whenValueIsSet_thenListenersAreNotified(DropdownSelection component) {
+    public void whenOptionsAreSet_thenListenersAreNotified(DropdownSelection component) {
         final boolean[] wasNotified = {false};
 
         List<String> options = new ArrayList<>();
@@ -71,17 +71,19 @@ public class JavaFxDropdownSelectionTest {
 
     @ParameterizedTest
     @MethodSource("streamComponents")
-    private void whenOptionsAreSet_thenListenersAreNotified(DropdownSelection component) {
+    public void whenValueIsSet_thenListenersAreNotified(DropdownSelection component) {
         final boolean[] wasNotified = {false};
 
         String value = "Apple";
         component.addDropdownSelectionListener(new DropdownSelectionListener() {
             @Override
-            public void onSelectionChange(DropdownSelection source, String before, String after) { }
+            public void onSelectionChange(DropdownSelection source, String before, String after) {
+                wasNotified[0] = true;
+            }
+
 
             @Override
             public void onOptionsChange(DropdownSelection source, List<String> before, List<String> after) {
-                wasNotified[0] = true;
             }
         });
 

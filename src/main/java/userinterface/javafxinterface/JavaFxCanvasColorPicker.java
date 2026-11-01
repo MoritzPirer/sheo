@@ -270,7 +270,6 @@ class JavaFxCanvasColorPicker extends JavaFxComponent implements ColorPicker {
 
     @Override
     public java.awt.Color getColor() {
-        System.out.println("!!getCol: " + hueSlider.getValue() + " " + getSaturation() + " " + getValue());
         return ColorUtility.fromHsv(getHue(), getSaturation(), getValue());
     }
 

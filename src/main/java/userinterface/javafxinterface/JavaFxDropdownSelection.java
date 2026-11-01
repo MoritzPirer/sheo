@@ -36,7 +36,7 @@ public class JavaFxDropdownSelection extends JavaFxComponent implements Dropdown
 
     @Override
     public void setValue(String value) {
-        if (comboBox.getValue().equals(value)) {
+        if (comboBox.getValue() != null && comboBox.getValue().equals(value)) {
             return;
         }
 
