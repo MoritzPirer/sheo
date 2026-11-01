@@ -19,6 +19,44 @@ public class ColorUtility {
         return builder.append(hex).toString();
     }
 
+    public static Color hexToColor(String hex) {
+        assert isHexCode(hex);
+
+        if (hex.startsWith("#")) {
+            hex = hex.substring(1);
+        }
+
+        if (hex.isEmpty()) {
+            return new Color(0, 0, 0);
+        }
+
+        int rgb = Integer.parseInt(hex, 16);
+        return new Color(rgb);
+    }
+
+    public static boolean isHexCode(String hex) {
+        if (hex.length() > HEX_CODE_LENGTH + 1 || hex.length() < HEX_CODE_LENGTH) {
+            return false;
+        }
+        if (hex.length() == HEX_CODE_LENGTH + 1) {
+            if (hex.startsWith("#")) {
+                hex = hex.substring(1);
+            }
+            else {
+                return false;
+            }
+        }
+
+
+        for (char c : hex.toCharArray()) {
+            if (!Character.isDigit(c) && (c < 'a' || c > 'f') && (c < 'A' || c > 'F')) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public static int getRed(int color) {
         return (color >> 16) & 0xFF;
     }
@@ -152,9 +190,12 @@ public class ColorUtility {
         double r, g, b;
 
         if (saturation == 0.0) {
-            r = g = b = lightness; // Achromatic (grayscale)
+            r = g = b = lightness; // grayscale
         } else {
-            double q = lightness < 0.5 ? lightness * (1.0 + saturation) : lightness + saturation - lightness * saturation;
+            double q = lightness < 0.5 ?
+                lightness * (1.0 + saturation) :
+                lightness + saturation - lightness * saturation;
+
             double p = 2.0 * lightness - q;
 
             double hNorm = hue / 360.0;
@@ -169,9 +210,9 @@ public class ColorUtility {
         int blue = (int) Math.round(b * 255.0);
 
         return new Color(
-                Math.clamp(red, 0, 255),
-                Math.clamp(green, 0, 255),
-                Math.clamp(blue, 0, 255)
+            Math.clamp(red, 0, 255),
+            Math.clamp(green, 0, 255),
+            Math.clamp(blue, 0, 255)
         );
     }
 
@@ -182,55 +223,6 @@ public class ColorUtility {
         if (t < 1.0 / 2.0) return q;
         if (t < 2.0 / 3.0) return p + (q - p) * (2.0 / 3.0 - t) * 6.0;
         return p;
-        /*
-        double chroma = saturation * (1 - Math.abs(2 * lightness - 1));
-        double hPrime = hue / 60.0;
-        double x = chroma * (1 - Math.abs(hPrime % 2) - 1);
-
-        double tempRed = 0, tempGreen = 0, tempBlue = 0;
-        switch ((int) Math.round(hPrime) % 6) {
-            case 0 -> {
-                tempRed = chroma;
-                tempGreen = x;
-                tempBlue = 0;
-            }
-            case 1 -> {
-                tempRed = x;
-                tempGreen = chroma;
-                tempBlue = 0;
-            }
-            case 2 -> {
-                tempRed = 0;
-                tempGreen = chroma;
-                tempBlue = x;
-            }
-            case 3 -> {
-                tempRed = 0;
-                tempGreen = x;
-                tempBlue = chroma;
-            }
-            case 4 -> {
-                tempRed = x;
-                tempGreen = 0;
-                tempBlue = chroma;
-            }
-            case 5 -> {
-                tempRed = chroma;
-                tempGreen = 0;
-                tempBlue = x;
-            }
-        }
-
-        double m = lightness - chroma / 2.0;
-
-        int red = (int) ((tempRed + m) * 255);
-        int green = (int) ((tempGreen + m) * 255);
-        int blue = (int) ((tempBlue + m) * 255);
-
-        red = Math.clamp(red, 0, 255);
-        green = Math.clamp(green, 0, 255);
-        blue = Math.clamp(blue, 0, 255);
-        return new Color(red, green, blue);
-         */
     }
+
 }

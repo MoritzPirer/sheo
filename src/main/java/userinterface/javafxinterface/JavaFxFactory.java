@@ -55,6 +55,11 @@ public class JavaFxFactory implements UiFactory {
     }
 
     @Override
+    public ColorPicker createTextBoxColorPicker() {
+        return new JavaFxTextBoxColorPicker();
+    }
+
+    @Override
     public DropdownSelection createDropdownSelection(String... options) {
         return new JavaFxDropdownSelection(options);
     }

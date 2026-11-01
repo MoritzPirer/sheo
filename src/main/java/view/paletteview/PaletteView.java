@@ -81,28 +81,17 @@ public class PaletteView {
         informationPanel.setBackground(new Color(255, 255, 255));
         informationPanel.setPercentageSize(100.0, 20.0);
 
-        DropdownSelection selection = factory.createDropdownSelection("foo", "bar", "baz");
-        informationPanel.addChild(selection);
+        ColorPicker picker = factory.createTextBoxColorPicker();
+        informationPanel.addChild(picker);
         informationPanel.setContentAlignment(ContentAlignment.TOP_CENTER);
         informationPanel.setPadding(new Padding(15));
         Button temp = factory.createButton("test");
         informationPanel.addChild(temp);
-        temp.addButtonListener(b -> selection.setValue("newOption"));
+        temp.addButtonListener(b -> picker.setColor(new Color(176, 11, 105)));
         temp.setBackground(new Color(176, 11, 105));
 
         Label proof = factory.createLabel("i am a label");
-        selection.addDropdownSelectionListener(new DropdownSelectionListener() {
-
-            @Override
-            public void onSelectionChange(DropdownSelection source, String before, String after) {
-                proof.setText(after);
-            }
-
-            @Override
-            public void onOptionsChange(DropdownSelection source, List<String> before, List<String> after) {
-                proof.setText("options changed");
-            }
-        });
+        picker.addListener(((before, after) -> proof.setBackground(after)));
 
         proof.setText("Sanity check");
         informationPanel.addChild(proof);

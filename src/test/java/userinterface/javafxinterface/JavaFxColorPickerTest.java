@@ -17,7 +17,8 @@ public class JavaFxColorPickerTest extends JavaFxTest {
             new JavaFxCanvasColorPicker(),
             new JavaFxSliderColorPicker(new RgbSliderManager()),
             new JavaFxSliderColorPicker(new HsvSliderManager()),
-            new JavaFxSliderColorPicker(new HslSliderManager())
+            new JavaFxSliderColorPicker(new HslSliderManager()),
+            new JavaFxTextBoxColorPicker()
         );
     }
 

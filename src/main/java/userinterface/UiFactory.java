@@ -52,6 +52,8 @@ public interface UiFactory {
 
     ColorPicker createHslColorPicker();
 
+    ColorPicker createTextBoxColorPicker();
+
     /**
      * Creates a Dropdown selection of values
      * @param options the initial options of the selection
