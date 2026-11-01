@@ -2,8 +2,6 @@ package userinterface.javafxinterface;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.HBox;
 import userinterface.ContentAlignment;

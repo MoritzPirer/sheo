@@ -80,20 +80,25 @@ public class PaletteView {
         parent.addChild(informationPanel);
         informationPanel.setBackground(new Color(255, 255, 255));
         informationPanel.setPercentageSize(100.0, 20.0);
-
-        ColorPicker picker = factory.createTextBoxColorPicker();
-        informationPanel.addChild(picker);
         informationPanel.setContentAlignment(ContentAlignment.TOP_CENTER);
         informationPanel.setPadding(new Padding(15));
-        Button temp = factory.createButton("test");
-        informationPanel.addChild(temp);
-        temp.addButtonListener(b -> picker.setColor(new Color(176, 11, 105)));
-        temp.setBackground(new Color(176, 11, 105));
 
-        Label proof = factory.createLabel("i am a label");
-        picker.addListener(((before, after) -> proof.setBackground(after)));
+        UiSlot slot = factory.createUiSlot();
+        slot.setMinimumSize(new Size(150, 150));
+        informationPanel.addChild(slot);
 
-        proof.setText("Sanity check");
-        informationPanel.addChild(proof);
+        ColorPicker textBoxPicker = factory.createTextBoxColorPicker();
+        ColorPicker canvasPicker = factory.createCanvasColorPicker();
+
+        slot.setChild(textBoxPicker);
+        Button toCanvas = factory.createButton("to canvas");
+        informationPanel.addChild(toCanvas);
+        toCanvas.addButtonListener(b -> slot.setChild(canvasPicker));
+        toCanvas.setBackground(new Color(176, 11, 105));
+
+        Button toTextBox = factory.createButton("to text box");
+        informationPanel.addChild(toTextBox);
+        toTextBox.addButtonListener(b -> slot.setChild(textBoxPicker));
+        toTextBox.setBackground(new Color(176, 11, 105));
     }
 }

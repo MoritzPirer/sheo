@@ -4,6 +4,17 @@ import userinterface.UiFactory;
 import userinterface.components.*;
 
 public class JavaFxFactory implements UiFactory {
+
+    @Override
+    public UiApplication createUiApplication(String title) {
+        return new JavaFxApplication(title);
+    }
+
+    @Override
+    public Scene createScene(UiContainer uiContainer) {
+        return new JavaFxScene(uiContainer);
+    }
+
     @Override
     public Button createButton(String text) {
         return new JavaFxButton(text);
@@ -25,13 +36,8 @@ public class JavaFxFactory implements UiFactory {
     }
 
     @Override
-    public Scene createScene(UiContainer uiContainer) {
-        return new JavaFxScene(uiContainer);
-    }
-
-    @Override
-    public UiApplication createUiApplication(String title) {
-        return new JavaFxApplication(title);
+    public UiSlot createUiSlot() {
+        return new JavaFxUiSlot();
     }
 
     @Override

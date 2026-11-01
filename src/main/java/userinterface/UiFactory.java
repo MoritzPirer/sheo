@@ -7,6 +7,17 @@ import userinterface.components.*;
  * that they work with components created by the same factory.
  */
 public interface UiFactory {
+
+    /**
+     * @param title the title of the window
+     */
+    UiApplication createUiApplication(String title);
+
+    /**
+     * @param uiContainer the root element of the scene
+     */
+    Scene createScene(UiContainer uiContainer);
+
     /**
      * creates a button displaying the given text
      * @param text the text to display
@@ -31,15 +42,7 @@ public interface UiFactory {
      */
     UiContainer createHorizontalUiContainer();
 
-    /**
-     * @param uiContainer the root element of the scene
-     */
-    Scene createScene(UiContainer uiContainer);
-
-    /**
-     * @param title the title of the window
-     */
-    UiApplication createUiApplication(String title);
+    UiSlot createUiSlot();
 
     /**
      * creates a color picker that allows the user to select the color from a 2d gradient
@@ -59,4 +62,5 @@ public interface UiFactory {
      * @param options the initial options of the selection
      */
     DropdownSelection createDropdownSelection(String... options);
+
 }

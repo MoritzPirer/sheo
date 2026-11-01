@@ -26,8 +26,9 @@ class JavaFxCanvasColorPicker extends JavaFxComponent implements ColorPicker {
     private final Slider hueSlider;
 
     public JavaFxCanvasColorPicker() {
-        container.setMinSize(10, 10);
-        container.setPrefSize(10, 10);
+        container.setMinHeight(75);
+        container.setMinWidth(100);
+        //container.setPrefSize(10, 10);
         canvas = createCanvas();
         hueSlider = createHueSlider();
 
@@ -109,8 +110,15 @@ class JavaFxCanvasColorPicker extends JavaFxComponent implements ColorPicker {
 
             Node thumb = slider.lookup(".thumb");
             if (thumb instanceof Region region) {
-                region.prefHeightProperty().bind(slider.heightProperty().multiply(0.6));
-                region.setStyle("-fx-background-radius: 25;");
+                region.setPrefHeight(20);
+                region.setPrefWidth(20);
+                region.setStyle("-fx-background-radius: 26;" +
+                        "-fx-background-color: transparent;" +
+                        "-fx-border-color: #CBCBCB;" +
+                        "-fx-border-width: 5px;" +
+                        "-fx-border-radius: 50%;" +
+                        "-fx-background-radius: 50%;"
+                );
             }
         });
 

@@ -44,6 +44,7 @@ public class JavaFxTextBoxColorPicker extends JavaFxComponent implements ColorPi
             return;
         }
 
+        //textField.setPromptText(textField.getText());
         Color oldColor = color;
         color = newColor;
 
