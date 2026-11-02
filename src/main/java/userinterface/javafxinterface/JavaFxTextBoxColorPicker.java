@@ -48,7 +48,7 @@ public class JavaFxTextBoxColorPicker extends JavaFxComponent implements ColorPi
         Color oldColor = color;
         color = newColor;
 
-        listeners.forEach(l -> l.onChange(oldColor, newColor));
+        listeners.forEach(l -> l.onChange(this, oldColor, newColor));
     }
 
     @Override
@@ -63,7 +63,7 @@ public class JavaFxTextBoxColorPicker extends JavaFxComponent implements ColorPi
         textField.setText(hex);
         textField.setPromptText(hex);
 
-        listeners.forEach(l -> l.onChange(before, color));
+        listeners.forEach(l -> l.onChange(this, before, color));
     }
 
     @Override
@@ -74,7 +74,9 @@ public class JavaFxTextBoxColorPicker extends JavaFxComponent implements ColorPi
 
     @Override
     public void addListener(ColorPickerListener listener) {
-        listeners.add(listener);
+        if (listener != null && !listeners.contains(listener)) {
+            listeners.add(listener);
+        }
     }
 
     @Override

@@ -9,6 +9,7 @@ import view.paletteview.PaletteView;
 public class ViewManager {
     private UiApplication application;
     private final UiFactory factory;
+    private PaletteView view;
 
     public ViewManager(UiFactory factory) {
         this.factory = factory;
@@ -21,9 +22,13 @@ public class ViewManager {
     }
 
     public void switchToEditor(Controller controller) {
-        PaletteView view = new PaletteView();
+        view = new PaletteView();
         Scene scene = view.initializeScene(factory, controller);
         application.start(scene);
         view.createListeners(controller);
+    }
+
+    public void openEditor(int colorIndex) {
+        view.openEditor(colorIndex);
     }
 }

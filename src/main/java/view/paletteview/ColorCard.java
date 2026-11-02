@@ -47,8 +47,7 @@ public class ColorCard implements ColorChangeListener {
         List<Button> buttons = List.of(
             createInspectButton(factory, controller),
             createEditButton(factory, controller),
-            createDeleteButton(factory, controller),
-            createRandomizeButton(factory, controller)
+            createDeleteButton(factory, controller)
         );
 
         for (Button button : buttons) {
@@ -88,7 +87,7 @@ public class ColorCard implements ColorChangeListener {
     private Button createEditButton(UiFactory factory, Controller controller) {
         Button editButton = factory.createButton("E");
         editButton.setToolTip("Edit");
-        editButton.addButtonListener(b -> controller.openEditor());
+        editButton.addButtonListener(b -> controller.openEditor(index));
 
         return editButton;
     }
@@ -99,14 +98,6 @@ public class ColorCard implements ColorChangeListener {
         deleteButton.addButtonListener(b -> controller.deleteColor(index));
 
         return deleteButton;
-    }
-
-    private Button createRandomizeButton(final UiFactory factory, Controller controller) {
-        Button randomizeButton = factory.createButton("R");
-        randomizeButton.setToolTip("Randomize");
-        randomizeButton.addButtonListener(b -> controller.randomizeColor(index));
-
-        return randomizeButton;
     }
 
     private UiContainer createColorInfo(UiFactory factory) {
@@ -143,7 +134,7 @@ public class ColorCard implements ColorChangeListener {
        this.index = newIndex;
     }
 
-    private void setColor(Color color) {
+    public void setColor(Color color) {
         this.color = color;
         background.setBackground(color);
         hexCode.setText(ColorUtility.colorToHex(color));

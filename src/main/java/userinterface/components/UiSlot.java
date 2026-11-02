@@ -8,7 +8,7 @@ import userinterface.Padding;
 public interface UiSlot extends UiComponent {
 
     /**
-     * Sets the given component as the component contained by this Slot
+     * Sets the given component as the component contained by this Slot. If a child already exists, it is replaced
      */
     void setChild(UiComponent uiComponent);
 

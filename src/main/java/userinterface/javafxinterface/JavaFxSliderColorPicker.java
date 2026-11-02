@@ -32,7 +32,7 @@ class JavaFxSliderColorPicker extends JavaFxComponent implements ColorPicker {
         javafx.scene.paint.Color fxColor = JavaFxConverter.toJavaFxColor(color);
         sliderManager.set(fxColor);
 
-        listeners.forEach(l -> l.onChange(before, color));
+        listeners.forEach(l -> l.onChange(this, before, color));
     }
 
     /**
@@ -42,7 +42,7 @@ class JavaFxSliderColorPicker extends JavaFxComponent implements ColorPicker {
         Color beforeAwt = JavaFxConverter.toAwtColor(before);
         Color afterAwt = JavaFxConverter.toAwtColor(after);
 
-        listeners.forEach(l -> l.onChange(beforeAwt, afterAwt));
+        listeners.forEach(l -> l.onChange(this, beforeAwt, afterAwt));
     }
 
     @Override
@@ -53,7 +53,9 @@ class JavaFxSliderColorPicker extends JavaFxComponent implements ColorPicker {
 
     @Override
     public void addListener(ColorPickerListener listener) {
-        listeners.add(listener);
+        if (listener != null && !listeners.contains(listener)) {
+            listeners.add(listener);
+        }
     }
 
     @Override

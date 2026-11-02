@@ -21,11 +21,12 @@ public class Controller {
     private final List<ColorDeletionListener> colorDeletionListeners = new ArrayList<>();
     private final List<ColorCreationListener> colorCreationListeners = new ArrayList<>();
     private final List<ColorChangeListener> colorChangeListeners = new ArrayList<>();
+    private ViewManager viewManager;
 
     public void run(String[] args) {
         // 1. initialize frontend
         UiFactory factory = new JavaFxFactory();
-        ViewManager viewManager = new ViewManager(factory);
+        viewManager = new ViewManager(factory);
 
         // 2. Run creation logic
         viewManager.initialize(args);
@@ -64,8 +65,11 @@ public class Controller {
     }
 
     public void randomizeColor(int index) {
+        setColor(index, random.makeColor());
+    }
+
+    public void setColor(int index, Color after) {
         Color before = palette.getColor(index);
-        Color after = random.makeColor();
         palette.setColor(index, after);
 
         colorChangeListeners.stream()
@@ -98,7 +102,7 @@ public class Controller {
         //TODO
     }
 
-    public void openEditor() {
-        //TODO
+    public void openEditor(int colorIndex) {
+        viewManager.openEditor(colorIndex);
     }
 }

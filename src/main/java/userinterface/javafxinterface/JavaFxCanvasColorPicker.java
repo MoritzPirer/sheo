@@ -24,16 +24,18 @@ class JavaFxCanvasColorPicker extends JavaFxComponent implements ColorPicker {
     private final VBox container = new VBox();
     private final Canvas canvas;
     private final Slider hueSlider;
+    private java.awt.Color pendingColor;
+    private boolean isUpdating = false;
 
     public JavaFxCanvasColorPicker() {
+        container.setPrefSize(200, 160);
         container.setMinHeight(75);
         container.setMinWidth(100);
-        //container.setPrefSize(10, 10);
         canvas = createCanvas();
         hueSlider = createHueSlider();
 
         container.getChildren().addAll(canvas, hueSlider);
-        drawMarker();
+        container.applyCss();
     }
 
     /**
@@ -46,6 +48,11 @@ class JavaFxCanvasColorPicker extends JavaFxComponent implements ColorPicker {
 
         canvas.widthProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal.doubleValue() > 0) {
+                if (oldVal.doubleValue() <= 0 && pendingColor != null) {
+                    java.awt.Color colorToApply = pendingColor;
+                    pendingColor = null;
+                    setColor(colorToApply);
+                }
                 adjustHorizontalSelectionAfterResize(oldVal.doubleValue(), newVal.doubleValue());
                 drawGradient();
             }
@@ -53,6 +60,11 @@ class JavaFxCanvasColorPicker extends JavaFxComponent implements ColorPicker {
 
         canvas.heightProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal.doubleValue() > 0) {
+                if (oldVal.doubleValue() <= 0 && pendingColor != null) {
+                    java.awt.Color colorToApply = pendingColor;
+                    pendingColor = null;
+                    setColor(colorToApply);
+                }
                 adjustVerticalSelectionAfterResize(oldVal.doubleValue(), newVal.doubleValue());
                 drawGradient();
             }
@@ -199,7 +211,7 @@ class JavaFxCanvasColorPicker extends JavaFxComponent implements ColorPicker {
         java.awt.Color before = ColorUtility.fromHsv(hue, oldSaturation, oldValue);
         java.awt.Color after = ColorUtility.fromHsv(hue, getSaturation(), getValue());
 
-        listeners.forEach(l -> l.onChange(before, after));
+        listeners.forEach(l -> l.onChange(this, before, after));
     }
 
     /**
@@ -208,6 +220,9 @@ class JavaFxCanvasColorPicker extends JavaFxComponent implements ColorPicker {
      * @param newPosition the hue after moving
      */
     private void processSliderMove(double oldPosition, double newPosition) {
+        if (isUpdating) {
+            return;
+        }
         drawGradient();
 
         // slider only changes hue
@@ -217,11 +232,18 @@ class JavaFxCanvasColorPicker extends JavaFxComponent implements ColorPicker {
         java.awt.Color beforeAwt = ColorUtility.fromHsv(oldPosition, saturation, value);
         java.awt.Color afterAwt = ColorUtility.fromHsv(newPosition, saturation, value);
 
-        listeners.forEach(listener -> listener.onChange(beforeAwt, afterAwt));
+        listeners.forEach(listener -> listener.onChange(this, beforeAwt, afterAwt));
     }
 
     @Override
     public void setColor(java.awt.Color color) {
+        if (color == null) {
+            return;
+        }
+        if (canvas.getWidth() <= 0 || canvas.getHeight() <= 0) {
+            pendingColor = color;
+            return;
+        }
         java.awt.Color before = getColor();
 
         //prevent feedback loops if a listener sets the color
@@ -229,6 +251,7 @@ class JavaFxCanvasColorPicker extends JavaFxComponent implements ColorPicker {
             return;
         }
 
+        isUpdating = true;
         double[] hsv = ColorUtility.toHsv(color);
         double hue = hsv[0];
         double saturation = hsv[1];
@@ -240,7 +263,9 @@ class JavaFxCanvasColorPicker extends JavaFxComponent implements ColorPicker {
 
         drawGradient();
 
-        listeners.forEach(l -> l.onChange(before, color));
+
+        listeners.forEach(l -> l.onChange(this, before, color));
+        isUpdating = false;
     }
 
     /**
@@ -283,7 +308,9 @@ class JavaFxCanvasColorPicker extends JavaFxComponent implements ColorPicker {
 
     @Override
     public void addListener(ColorPickerListener listener) {
-        listeners.add(listener);
+        if (listener != null && !listeners.contains(listener)) {
+            listeners.add(listener);
+        }
     }
 
     @Override
