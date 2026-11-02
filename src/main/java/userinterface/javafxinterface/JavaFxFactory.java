@@ -36,6 +36,11 @@ public class JavaFxFactory implements UiFactory {
     }
 
     @Override
+    public UiContainer createRearrangingUiContainer(int preferredRowCount, int preferredColumnCount) {
+        return new JavaFxRearrangingContainer(preferredRowCount, preferredColumnCount);
+    }
+
+    @Override
     public UiSlot createUiSlot() {
         return new JavaFxUiSlot();
     }

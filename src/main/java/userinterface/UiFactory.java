@@ -42,6 +42,8 @@ public interface UiFactory {
      */
     UiContainer createHorizontalUiContainer();
 
+    UiContainer createRearrangingUiContainer(int preferredRowCount, int preferredColumnCount);
+
     UiSlot createUiSlot();
 
     /**

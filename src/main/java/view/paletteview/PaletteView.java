@@ -49,7 +49,7 @@ public class PaletteView {
     }
 
     public void createColorSegment(UiFactory factory, Controller controller, UiContainer parent) {
-        UiContainer colorSegment = factory.createHorizontalUiContainer();
+        UiContainer colorSegment = factory.createRearrangingUiContainer(2, 6);
         parent.addChild(colorSegment);
         colorSegment.setContentAlignment(ContentAlignment.CENTER);
         colorSegment.setPadding(new Padding(15, 30));
