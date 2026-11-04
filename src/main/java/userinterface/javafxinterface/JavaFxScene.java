@@ -1,6 +1,7 @@
 package userinterface.javafxinterface;
 
 import userinterface.components.Scene;
+import userinterface.components.SectionContainer;
 import userinterface.components.UiContainer;
 
 class JavaFxScene extends Scene {
@@ -14,6 +15,17 @@ class JavaFxScene extends Scene {
         else {
             throw new IllegalArgumentException("Type mismatch");
         }
+    }
+
+    public JavaFxScene(SectionContainer root) {
+        super(root);
+        if (root instanceof JavaFxComponent javaFxContainer) {
+            scene = new javafx.scene.Scene(javaFxContainer.getJavaFxNode());
+        }
+        else {
+            throw new IllegalArgumentException("Type mismatch");
+        }
+
     }
 
     public javafx.scene.Scene getScene() {

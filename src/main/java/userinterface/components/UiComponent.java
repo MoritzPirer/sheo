@@ -42,6 +42,9 @@ public interface UiComponent {
     void setPercentageWidth(double percentageWidth);
     void setPercentageHeight(double percentageHeight);
 
+    void fillHeight();
+    void fillWidth();
+
     /**
      * Updates where the contents of the component (e.g. text, other components) are aligned within the component
      */

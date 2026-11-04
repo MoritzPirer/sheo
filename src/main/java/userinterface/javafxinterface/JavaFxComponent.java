@@ -4,6 +4,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.util.Duration;
 import userinterface.Size;
@@ -100,8 +101,8 @@ abstract class JavaFxComponent implements UiComponent {
             throw new IllegalArgumentException("Parent is not a Region!");
         }
 
-        child.minHeightProperty().bind(region.heightProperty().multiply(heightPercentage / 100.0));
-        child.minWidthProperty().bind(region.widthProperty().multiply(widthPercentage / 100.0));
+        //child.minHeightProperty().bind(region.heightProperty().multiply(heightPercentage / 100.0));
+        //child.minWidthProperty().bind(region.widthProperty().multiply(widthPercentage / 100.0));
 
         child.prefHeightProperty().bind(region.heightProperty().multiply(heightPercentage / 100.0));
         child.prefWidthProperty().bind(region.widthProperty().multiply(widthPercentage / 100.0));
@@ -150,6 +151,18 @@ abstract class JavaFxComponent implements UiComponent {
        child.minHeightProperty().bind(region.heightProperty().multiply(heightPercentage / 100.0));
        child.prefHeightProperty().bind(region.heightProperty().multiply(heightPercentage / 100.0));
        child.maxHeightProperty().bind(region.heightProperty());
+   }
+
+   @Override
+   public void fillHeight() {
+        getJavaFxNode().setMaxHeight(Double.MAX_VALUE);
+        getJavaFxNode().setPrefHeight(Region.USE_COMPUTED_SIZE);
+   }
+
+   @Override
+    public void fillWidth() {
+        getJavaFxNode().setMaxWidth(Double.MAX_VALUE);
+        getJavaFxNode().setPrefWidth(Region.USE_COMPUTED_SIZE);
    }
 
     @Override

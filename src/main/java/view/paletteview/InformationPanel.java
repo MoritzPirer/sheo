@@ -6,6 +6,8 @@ import userinterface.UiFactory;
 import userinterface.components.UiComponent;
 import userinterface.components.UiSlot;
 
+import java.awt.*;
+
 public class InformationPanel {
     private final UiSlot container;
     private final ColorEditor colorEditor;
@@ -13,9 +15,10 @@ public class InformationPanel {
 
     public InformationPanel(UiFactory factory, Controller controller) {
         container = factory.createUiSlot();
-        container.setMinimumSize(new Size(Integer.MAX_VALUE, 250));
-        container.setPreferredSize(new Size(Integer.MAX_VALUE, 250));
-        container.setMaximumSize(new Size(Integer.MAX_VALUE, 500));
+        container.setMinimumSize(new Size(-1, 250));
+        container.setPreferredSize(new Size(-1, 250));
+        container.setMaximumSize(new Size(-1, 500));
+        container.setBackground(new Color(0, 255, 0));
         colorEditor = new ColorEditor(factory, controller);
         this.controller = controller;
     }
@@ -26,6 +29,7 @@ public class InformationPanel {
 
     public void openEditor(int colorIndex) {
         container.setChild(colorEditor.getUiComponent());
+        colorEditor.getUiComponent().setPercentageWidth(100.0);
         colorEditor.open(colorIndex);
         controller.addColorDeletionListener(removedIndex -> {
             if (removedIndex == colorIndex) {

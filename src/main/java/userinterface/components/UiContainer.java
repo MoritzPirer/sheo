@@ -39,12 +39,6 @@ public interface UiContainer extends UiComponent {
     List<UiComponent> getChildren();
 
     /**
-     * Encourage child components to stretch perpendicular to the containers alignment axis to fill space
-     * e.g. in a vertical container, encourage children to stretch horizontally.
-     */
-    void stretch();
-
-    /**
      * Set padding to the inside of the container, i.e. enforce a minimum distance between content
      * and the container boundary. It is up to the implementation how this interacts with applied size constraints.
      */

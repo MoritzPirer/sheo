@@ -2,6 +2,7 @@ package userinterface.javafxinterface;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.HBox;
 import userinterface.ContentAlignment;
@@ -9,7 +10,6 @@ import userinterface.Padding;
 import userinterface.components.UiComponent;
 import userinterface.components.UiContainer;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,11 +55,6 @@ class JavaFxHorizontalContainer extends JavaFxComponent implements UiContainer {
     }
 
     @Override
-    public void stretch() {
-        hBox.setFillHeight(true);
-    }
-
-    @Override
     public void setPadding(Padding padding) {
         Insets insets = JavaFxConverter.toInsets(padding);
         hBox.setPadding(insets);
@@ -79,5 +74,16 @@ class JavaFxHorizontalContainer extends JavaFxComponent implements UiContainer {
     @Override
     public void setSpacing(double spacing) {
         hBox.setSpacing(spacing);
+    }
+
+    @Override
+    public void fillWidth() {
+        hBox.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(hBox, Priority.ALWAYS);
+    }
+    @Override
+    public void fillHeight() {
+        hBox.setMaxHeight(Double.MAX_VALUE);
+        hBox.setPrefHeight(Double.MAX_VALUE);
     }
 }

@@ -67,11 +67,6 @@ class JavaFxRearrangingContainer extends JavaFxComponent implements UiContainer 
     }
 
     @Override
-    public void stretch() {
-        // TODO: check if this can be applied logically
-    }
-
-    @Override
     public void setPadding(Padding padding) {
         Insets insets = JavaFxConverter.toInsets(padding);
         tilePane.setPadding(insets);

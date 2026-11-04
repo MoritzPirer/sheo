@@ -9,7 +9,6 @@ import userinterface.Padding;
 import userinterface.components.UiComponent;
 import userinterface.components.UiContainer;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,11 +54,6 @@ class JavaFxVerticalContainer extends JavaFxComponent implements UiContainer {
     }
 
     @Override
-    public void stretch() {
-        vBox.setFillWidth(true);
-    }
-
-    @Override
     public void setPadding(Padding padding) {
         Insets insets = JavaFxConverter.toInsets(padding);
         vBox.setPadding(insets);
@@ -79,5 +73,17 @@ class JavaFxVerticalContainer extends JavaFxComponent implements UiContainer {
     @Override
     public void setSpacing(double spacing) {
         vBox.setSpacing(spacing);
+    }
+
+    @Override
+    public void fillWidth() {
+        vBox.setPrefWidth(Double.MAX_VALUE);
+        vBox.setMaxWidth(Double.MAX_VALUE);
+    }
+
+    @Override
+    public void fillHeight() {
+        vBox.setMaxWidth(Double.MAX_VALUE);
+        VBox.setVgrow(vBox, Priority.ALWAYS);
     }
 }

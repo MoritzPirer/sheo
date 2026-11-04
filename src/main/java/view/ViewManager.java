@@ -25,7 +25,6 @@ public class ViewManager {
         view = new PaletteView();
         Scene scene = view.initializeScene(factory, controller);
         application.start(scene);
-        view.createListeners(controller);
     }
 
     public void openEditor(int colorIndex) {

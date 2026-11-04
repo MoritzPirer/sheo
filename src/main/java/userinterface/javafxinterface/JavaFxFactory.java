@@ -16,6 +16,11 @@ public class JavaFxFactory implements UiFactory {
     }
 
     @Override
+    public Scene createScene(SectionContainer sectionContainer) {
+        return new JavaFxScene(sectionContainer);
+    }
+
+    @Override
     public Button createButton(String text) {
         return new JavaFxButton(text);
     }
@@ -36,8 +41,13 @@ public class JavaFxFactory implements UiFactory {
     }
 
     @Override
-    public UiContainer createRearrangingUiContainer(int preferredRowCount, int preferredColumnCount) {
-        return new JavaFxRearrangingContainer(preferredRowCount, preferredColumnCount);
+    public SectionContainer createSectionContainer() {
+        return new JavaFxSectionContainer();
+    }
+
+    @Override
+    public TileContainer createTileContainer() {
+        return new JavaFxTileContainer();
     }
 
     @Override

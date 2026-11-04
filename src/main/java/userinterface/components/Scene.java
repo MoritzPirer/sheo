@@ -1,9 +1,9 @@
 package userinterface.components;
 
 public class Scene {
-    protected final UiContainer root;
+    protected final UiComponent root;
 
-    public Scene(UiContainer root) {
+    public Scene(UiComponent root) {
         this.root = root;
     }
 }

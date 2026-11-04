@@ -28,14 +28,13 @@ public class ColorCard implements ColorChangeListener {
         this.index = index;
         this.color = controller.getColor(index);
 
-
         background = createColorCardHoverMenu(factory, controller);
         UiContainer colorInfo = createColorInfo(factory);
 
         uiContainer = factory.createVerticalUiContainer();
-        uiContainer.setMinimumSize(new Size(180, 120));
+        uiContainer.setMinimumSize(new Size(180, 60));
         uiContainer.setMaximumSize(new Size(480, 360));
-        uiContainer.setPreferredSize(new Size(-1, -1));
+        uiContainer.setPreferredSize(new Size(180, 120));
         uiContainer.addChild(background);
         uiContainer.addChild(colorInfo);
 

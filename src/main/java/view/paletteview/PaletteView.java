@@ -16,51 +16,35 @@ public class PaletteView {
     private Toolbar toolbar;
     private InformationPanel informationPanel;
 
-    public void createListeners(Controller controller) {
-        for (ColorCard card : colorCards) {
-            controller.addColorChangeListener(card);
-        }
-    }
-
     public Scene initializeScene(UiFactory factory, Controller controller) {
-        UiContainer root = factory.createVerticalUiContainer();
+        SectionContainer root = factory.createSectionContainer();
         root.setBackground(new Color(165, 165, 172));
-        root.stretch();
-        root.setContentAlignment(ContentAlignment.TOP_CENTER);
 
         toolbar = new Toolbar(factory, controller);
-        root.addChild(toolbar.getUiComponent());
-        toolbar.getUiComponent().setPreferredSize(new Size(150, -1));
-        toolbar.getUiComponent().setMaximumSize(new Size(175, -1));
-
-        UiContainer lowerHalf = factory.createHorizontalUiContainer();
-        root.addChild(lowerHalf);
-        lowerHalf.setBackground(new Color(0, 0, 250));
-        lowerHalf.setMinimumSize(new Size(300, -1));
-        lowerHalf.setPreferredSize(new Size(Integer.MAX_VALUE, Integer.MAX_VALUE));
-
-        createColorSegment(factory, controller, lowerHalf);
+        UiContainer colorSegment = createColorSegment(factory, controller);
         informationPanel = new InformationPanel(factory, controller);
-        lowerHalf.addChild(informationPanel.getUiComponent());
+
+        root.setTop(toolbar.getUiComponent());
+        root.setCenter(colorSegment);
+        root.setRight(informationPanel.getUiComponent());
 
         return factory.createScene(root);
     }
 
-    public void createColorSegment(UiFactory factory, Controller controller, UiContainer parent) {
-        UiContainer colorSegment = factory.createRearrangingUiContainer(2, 6);
-        parent.addChild(colorSegment);
-        colorSegment.setContentAlignment(ContentAlignment.CENTER);
+    private UiContainer createColorSegment(UiFactory factory, Controller controller) {
+        TileContainer colorSegment = factory.createTileContainer();
         colorSegment.setPadding(new Padding(15, 30));
         colorSegment.setSpacing(20.0);
-        colorSegment.setMinimumSize(new Size(400, 400));
-        colorSegment.setPreferredSize(new Size(-1, -1));
-        colorSegment.setMaximumSize(new Size(Integer.MAX_VALUE, Integer.MAX_VALUE));
+        colorSegment.setBackground(new Color(228, 54, 255));
 
         for (int i = 0; i < controller.getColorCount(); i++) {
+            System.out.println("adding color " + i);
             ColorCard card = new ColorCard(i, controller, factory);
             colorCards.add(card);
             colorSegment.addChild(card.getUiComponent());
+            controller.addColorChangeListener(card);
         }
+
 
         controller.addColorDeletionListener(removedIndex -> {
             ColorCard card = colorCards.remove(removedIndex);
@@ -73,6 +57,8 @@ public class PaletteView {
             colorSegment.addChild(card.getUiComponent());
             controller.addColorChangeListener(card);
         });
+
+        return colorSegment;
     }
 
     public void openEditor(int colorIndex) {

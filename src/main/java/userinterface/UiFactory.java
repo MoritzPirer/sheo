@@ -18,6 +18,8 @@ public interface UiFactory {
      */
     Scene createScene(UiContainer uiContainer);
 
+    Scene createScene(SectionContainer sectionContainer);
+
     /**
      * creates a button displaying the given text
      * @param text the text to display
@@ -42,7 +44,9 @@ public interface UiFactory {
      */
     UiContainer createHorizontalUiContainer();
 
-    UiContainer createRearrangingUiContainer(int preferredRowCount, int preferredColumnCount);
+    SectionContainer createSectionContainer();
+
+    TileContainer createTileContainer();
 
     UiSlot createUiSlot();
 
