@@ -42,7 +42,7 @@ class JavaFxHorizontalContainer extends JavaFxComponent implements UiContainer {
     }
 
     @Override
-    public void removeChild(UiContainer uiComponent) {
+    public void removeChild(UiComponent uiComponent) {
         if (uiComponent instanceof JavaFxComponent component) {
             components.remove(component);
             hBox.getChildren().remove(component.getJavaFxNode());

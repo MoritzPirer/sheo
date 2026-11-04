@@ -24,20 +24,20 @@ public class PaletteView {
 
     public Scene initializeScene(UiFactory factory, Controller controller) {
         UiContainer root = factory.createVerticalUiContainer();
-        root.setBackground(new Color(250, 0, 250));
-        root.setContentAlignment(ContentAlignment.CENTER);
+        root.setBackground(new Color(165, 165, 172));
         root.stretch();
         root.setContentAlignment(ContentAlignment.TOP_CENTER);
 
         toolbar = new Toolbar(factory, controller);
         root.addChild(toolbar.getUiComponent());
-        toolbar.getUiComponent().setPercentageSize(25.0, 100.0);
+        toolbar.getUiComponent().setPreferredSize(new Size(150, -1));
         toolbar.getUiComponent().setMaximumSize(new Size(175, -1));
 
         UiContainer lowerHalf = factory.createHorizontalUiContainer();
         root.addChild(lowerHalf);
         lowerHalf.setBackground(new Color(0, 0, 250));
-        lowerHalf.setPercentageSize(75.0, 100.0);
+        lowerHalf.setMinimumSize(new Size(300, -1));
+        lowerHalf.setPreferredSize(new Size(Integer.MAX_VALUE, Integer.MAX_VALUE));
 
         createColorSegment(factory, controller, lowerHalf);
         informationPanel = new InformationPanel(factory, controller);
@@ -52,7 +52,9 @@ public class PaletteView {
         colorSegment.setContentAlignment(ContentAlignment.CENTER);
         colorSegment.setPadding(new Padding(15, 30));
         colorSegment.setSpacing(20.0);
-        colorSegment.setPercentageSize(100.0, 80.0);
+        colorSegment.setMinimumSize(new Size(400, 400));
+        colorSegment.setPreferredSize(new Size(-1, -1));
+        colorSegment.setMaximumSize(new Size(Integer.MAX_VALUE, Integer.MAX_VALUE));
 
         for (int i = 0; i < controller.getColorCount(); i++) {
             ColorCard card = new ColorCard(i, controller, factory);

@@ -3,6 +3,8 @@ package controller.listeners;
 import java.awt.*;
 
 public interface ColorChangeListener {
+    int COLOR_WAS_DELETED = -1;
+
     /**
      * @return what index the Listener is listening to
      */
@@ -18,7 +20,7 @@ public interface ColorChangeListener {
     /**
      * called when the color at the listened index is shifted, e.g. due to insertion or deletion of colors
      * @param newIndex the new index the color that was at the listened index before changing,
-     *                 or -1 if that color was removed
+     *                 or COLOR_WAS_DELETED if that color was removed
      */
     void onIndexShift(int newIndex);
 }

@@ -24,8 +24,11 @@ class JavaFxRearrangingContainer extends JavaFxComponent implements UiContainer 
         tilePane.setPrefRows(preferredRowCount);
         scrollPane = new ScrollPane(tilePane);
 
+        tilePane.setPrefTileWidth(Region.USE_COMPUTED_SIZE);
+        tilePane.setPrefTileHeight(Region.USE_COMPUTED_SIZE);
+
         scrollPane.setFitToWidth(true);
-        scrollPane.setFitToHeight(true);
+        scrollPane.setFitToHeight(false);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
     }
@@ -51,7 +54,7 @@ class JavaFxRearrangingContainer extends JavaFxComponent implements UiContainer 
     }
 
     @Override
-    public void removeChild(UiContainer uiComponent) {
+    public void removeChild(UiComponent uiComponent) {
         if (uiComponent instanceof JavaFxComponent component) {
             components.remove(component);
             tilePane.getChildren().remove(component.getJavaFxNode());

@@ -38,7 +38,7 @@ public class JavaFxColorPickerTest extends JavaFxTest {
         final boolean[] wasNotified = {false};
 
         layoutComponent(component);
-        component.addListener((before, after) ->  wasNotified[0] = true);
+        component.addListener((source, before, after) ->  wasNotified[0] = true);
 
         component.setColor(new Color(255, 255, 0));
 

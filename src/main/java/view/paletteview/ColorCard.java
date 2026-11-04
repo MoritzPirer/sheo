@@ -34,8 +34,11 @@ public class ColorCard implements ColorChangeListener {
 
         uiContainer = factory.createVerticalUiContainer();
         uiContainer.setMinimumSize(new Size(180, 120));
+        uiContainer.setMaximumSize(new Size(480, 360));
+        uiContainer.setPreferredSize(new Size(-1, -1));
         uiContainer.addChild(background);
         uiContainer.addChild(colorInfo);
+
 
         background.setPercentageSize(70.0, 100.0);
         colorInfo.setPercentageSize(30.0, 100.0);

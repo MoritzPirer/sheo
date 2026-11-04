@@ -2,6 +2,10 @@ package view.paletteview;
 
 import controller.Controller;
 import controller.listeners.ColorChangeListener;
+import shared.ColorUtility;
+import shared.CopyUtility;
+import userinterface.ContentAlignment;
+import userinterface.Size;
 import userinterface.UiFactory;
 import userinterface.components.Button;
 import userinterface.components.ColorPicker;
@@ -19,10 +23,12 @@ import java.util.Map;
 public class ColorEditor implements DropdownSelectionListener, ColorPickerListener, ColorChangeListener {
     private final UiContainer container;
     private final DropdownSelection dropdown;
-    private final Map<String, ColorPicker> colorPickers;
-    private ColorPicker activeColorPicker;
-    private final ColorPicker textBox;
+
     private final UiSlot colorPickerSlot;
+    private final Map<String, ColorPicker> colorPickers;
+
+    private ColorPicker selectedColorPicker;
+    private ColorPicker textBox;
 
     private final Controller controller;
     private int activeIndex = -1;
@@ -30,35 +36,89 @@ public class ColorEditor implements DropdownSelectionListener, ColorPickerListen
 
     public ColorEditor(UiFactory factory, Controller controller) {
         this.controller = controller;
-        colorPickers = new LinkedHashMap<>();
+        colorPickers = createColorPickers(factory);
+        dropdown = factory.createDropdownSelection(colorPickers.keySet().toArray(new String[0]));
+        dropdown.addDropdownSelectionListener(this);
+
+        selectedColorPicker = colorPickers.get(dropdown.getValue());
+
+        colorPickerSlot = factory.createUiSlot();
+        colorPickerSlot.setChild(selectedColorPicker);
+
+        container = factory.createVerticalUiContainer();
+        container.addChild(dropdown);
+        container.addChild(colorPickerSlot);
+        container.addChild(createSecondaryColorAction(factory));
+
+        dropdown.setPercentageWidth(100.0);
+
+        container.setContentAlignment(ContentAlignment.TOP_CENTER);
+        container.setMinimumSize(new Size(-1, 150));
+        container.setMinimumSize(new Size(-1, 250));
+    }
+
+    private Map<String, ColorPicker> createColorPickers(UiFactory factory) {
+        Map<String, ColorPicker> colorPickers = new LinkedHashMap<>(); //LinkedHashMap to preserve this order
         colorPickers.put("Canvas", factory.createCanvasColorPicker());
         colorPickers.put("RGB", factory.createRgbColorPicker());
         colorPickers.put("HSV", factory.createHsvColorPicker());
         colorPickers.put("HSL", factory.createHslColorPicker());
 
-        dropdown = factory.createDropdownSelection(colorPickers.keySet().toArray(new String[0]));
-        activeColorPicker = colorPickers.get(dropdown.getValue());
+        return colorPickers;
+    }
 
-        colorPickerSlot = factory.createUiSlot();
-
-        container = factory.createVerticalUiContainer();
-        container.addChild(dropdown);
-        container.addChild(colorPickerSlot);
-        colorPickerSlot.setChild(activeColorPicker);
-        dropdown.addDropdownSelectionListener(this);
-
+    //TODO come up with a better name
+    private UiContainer createSecondaryColorAction(UiFactory factory) {
         textBox = factory.createTextBoxColorPicker();
-        container.addChild(textBox);
         textBox.addListener(this);
 
+        Button copyButton = createCopyButton(factory);
         Button randomizeButton = createRandomizeButton(factory, controller);
+
+        UiContainer container = factory.createHorizontalUiContainer();
+
+        container.addChild(textBox);
         container.addChild(randomizeButton);
+        container.addChild(copyButton);
+
+        /*
+        textBox.setPercentageWidth(60.0);
+        randomizeButton.setPercentageWidth(20.0);
+        copyButton.setPercentageWidth(20.0);
+         */
+        textBox.setPreferredSize(new Size(20, 100));
+        randomizeButton.setPreferredSize(new Size(20, 30));
+        copyButton.setPreferredSize(new Size(20, 30));
+
+        return container;
+    }
+
+    private Button createCopyButton(UiFactory factory) {
+        Button copyButton = factory.createButton("C");
+        copyButton.setToolTip("Copy Hex");
+        copyButton.addButtonListener(b -> {
+            Color color = textBox.getColor();
+            String colorString = ColorUtility.colorToHex(color);
+            CopyUtility.setSystemClipboardContent(colorString);
+            //TODO: visual confirmation
+            //TODO: icon
+        });
+
+        return copyButton;
+    }
+
+    private Button createRandomizeButton(final UiFactory factory, Controller controller) {
+        Button randomizeButton = factory.createButton("R");
+        randomizeButton.setToolTip("Randomize");
+        randomizeButton.addButtonListener(b -> controller.randomizeColor(activeIndex));
+
+        return randomizeButton;
     }
 
     public void open(int colorIndex) {
         activeIndex = colorIndex;
-        activeColorPicker.addListener(this);
-        activeColorPicker.setColor(controller.getColor(colorIndex));
+        selectedColorPicker.addListener(this);
+        selectedColorPicker.setColor(controller.getColor(colorIndex));
         controller.addColorChangeListener(this);
     }
 
@@ -73,11 +133,11 @@ public class ColorEditor implements DropdownSelectionListener, ColorPickerListen
     @Override
     public void onSelectionChange(DropdownSelection source, String before, String after) {
         assert source == dropdown: "ColorEditor listening to unknown DropdownSelection";
-        activeColorPicker = colorPickers.get(source.getValue());
-        activeColorPicker.addListener(this);
-        colorPickerSlot.setChild(activeColorPicker);
+        selectedColorPicker = colorPickers.get(source.getValue());
+        selectedColorPicker.addListener(this);
+        colorPickerSlot.setChild(selectedColorPicker);
         if (activeIndex != -1) {
-            activeColorPicker.setColor(controller.getColor(activeIndex));
+            selectedColorPicker.setColor(controller.getColor(activeIndex));
         }
     }
 
@@ -94,20 +154,11 @@ public class ColorEditor implements DropdownSelectionListener, ColorPickerListen
 
     @Override
     public void onChange(ColorPicker source, Color before, Color after) {
-        //change by activeColorPicker or textBox
-
         if (isUpdating) {
             return;
         }
         if (before.equals(after)) {
             return;
-        }
-
-        if (source == activeColorPicker) {
-            textBox.setColor(after);
-        }
-        else if (source == textBox) {
-            activeColorPicker.setColor(after);
         }
 
         controller.setColor(activeIndex, after);
@@ -116,21 +167,20 @@ public class ColorEditor implements DropdownSelectionListener, ColorPickerListen
     @Override
     public void onChange(Color before, Color after) {
         isUpdating = true;
+
         textBox.setColor(after);
-        activeColorPicker.setColor(after);
+        selectedColorPicker.setColor(after);
+
         isUpdating = false;
     }
 
     @Override
     public void onIndexShift(int newIndex) {
+        if (newIndex == COLOR_WAS_DELETED) {
+            close();
+            return;
+        }
         activeIndex = newIndex;
     }
 
-    private Button createRandomizeButton(final UiFactory factory, Controller controller) {
-        Button randomizeButton = factory.createButton("R");
-        randomizeButton.setToolTip("Randomize");
-        randomizeButton.addButtonListener(b -> controller.randomizeColor(activeIndex));
-
-        return randomizeButton;
-    }
 }

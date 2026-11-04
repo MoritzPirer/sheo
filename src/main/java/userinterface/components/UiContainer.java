@@ -34,7 +34,7 @@ public interface UiContainer extends UiComponent {
      * this function has no effect.
      * @param uiComponent the component to remove
      */
-    void removeChild(UiContainer uiComponent);
+    void removeChild(UiComponent uiComponent);
 
     List<UiComponent> getChildren();
 

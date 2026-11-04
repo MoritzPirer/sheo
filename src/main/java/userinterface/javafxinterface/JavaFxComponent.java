@@ -70,8 +70,14 @@ abstract class JavaFxComponent implements UiComponent {
         if (size.height() >= 0) {
             component.setPrefHeight(size.height());
         }
+        else {
+            component.setPrefHeight(Region.USE_COMPUTED_SIZE);
+        }
         if (size.width() >= 0) {
             component.setPrefWidth(size.width());
+        }
+        else {
+            component.setPrefWidth(Region.USE_COMPUTED_SIZE);
         }
     }
 
@@ -103,6 +109,48 @@ abstract class JavaFxComponent implements UiComponent {
         child.maxHeightProperty().bind(region.heightProperty());
         child.maxWidthProperty().bind(region.widthProperty());
     }
+
+   @Override
+   public void setPercentageWidth(double widthPercentage) {
+       if (widthPercentage < 0 || widthPercentage > 100) {
+           throw new IllegalArgumentException("widthPercentage must be between 0 and 100");
+       }
+
+       Region child = getJavaFxNode();
+       Parent parent = child.getParent();
+
+       if (parent == null) {
+           throw new IllegalArgumentException("Node does not have a parent!");
+       }
+       if (!(parent instanceof Region region)) {
+           throw new IllegalArgumentException("Parent is not a Region!");
+       }
+
+       child.minWidthProperty().bind(region.widthProperty().multiply(widthPercentage / 100.0));
+       child.prefWidthProperty().bind(region.widthProperty().multiply(widthPercentage / 100.0));
+       child.maxWidthProperty().bind(region.widthProperty());
+   }
+
+   @Override
+   public void setPercentageHeight(double heightPercentage) {
+       if (heightPercentage < 0 || heightPercentage > 100) {
+           throw new IllegalArgumentException("heightPercentage must be between 0 and 100");
+       }
+
+       Region child = getJavaFxNode();
+       Parent parent = child.getParent();
+
+       if (parent == null) {
+           throw new IllegalArgumentException("Node does not have a parent!");
+       }
+       if (!(parent instanceof Region region)) {
+           throw new IllegalArgumentException("Parent is not a Region!");
+       }
+
+       child.minHeightProperty().bind(region.heightProperty().multiply(heightPercentage / 100.0));
+       child.prefHeightProperty().bind(region.heightProperty().multiply(heightPercentage / 100.0));
+       child.maxHeightProperty().bind(region.heightProperty());
+   }
 
     @Override
     public void setToolTip(String text) {
