@@ -27,6 +27,7 @@ public class PaletteView {
         root.setTop(toolbar.getUiComponent());
         root.setCenter(colorSegment);
         root.setRight(informationPanel.getUiComponent());
+        informationPanel.getUiComponent().setPercentageWidth(20.0);
 
         return factory.createScene(root);
     }

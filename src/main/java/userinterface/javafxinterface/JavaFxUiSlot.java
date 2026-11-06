@@ -27,10 +27,6 @@ class JavaFxUiSlot extends JavaFxComponent implements UiSlot {
 
         container.getChildren().add(fxComponent.getJavaFxNode());
         child = uiComponent;
-
-
-        container.setMinHeight(fxComponent.getJavaFxNode().getMinHeight());
-        container.setMinWidth(fxComponent.getJavaFxNode().getMinWidth());
     }
 
     @Override

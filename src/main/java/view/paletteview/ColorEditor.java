@@ -45,12 +45,14 @@ public class ColorEditor implements DropdownSelectionListener, ColorPickerListen
         colorPickerSlot = factory.createUiSlot();
         colorPickerSlot.setChild(selectedColorPicker);
 
+        UiContainer secondaryAction = createSecondaryColorAction(factory);
+
         container = factory.createVerticalUiContainer();
         container.addChild(dropdown);
         container.addChild(colorPickerSlot);
-
-        UiContainer secondaryAction = createSecondaryColorAction(factory);
         container.addChild(secondaryAction);
+
+        dropdown.setPercentageWidth(100.0);
 
         container.setContentAlignment(ContentAlignment.TOP_CENTER);
         container.setBackground(new Color(244, 117, 117));
@@ -80,10 +82,9 @@ public class ColorEditor implements DropdownSelectionListener, ColorPickerListen
         container.addChild(randomizeButton);
         container.addChild(copyButton);
 
-        
-        textBox.setPreferredSize(new Size(20, 100));
-        randomizeButton.setPreferredSize(new Size(20, 30));
-        copyButton.setPreferredSize(new Size(20, 30));
+        textBox.setMinimumSize(new Size(20, 100));
+        randomizeButton.setMinimumSize(new Size(20, 30));
+        copyButton.setMinimumSize(new Size(20, 30));
 
         return container;
     }

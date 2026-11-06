@@ -15,8 +15,8 @@ public class InformationPanel {
 
     public InformationPanel(UiFactory factory, Controller controller) {
         container = factory.createUiSlot();
-        container.setMinimumSize(new Size(-1, 250));
-        container.setPreferredSize(new Size(-1, 250));
+        container.setMinimumSize(new Size(-1, 200));
+        container.setPreferredSize(new Size(-1, 200));
         container.setMaximumSize(new Size(-1, 500));
         container.setBackground(new Color(0, 255, 0));
         colorEditor = new ColorEditor(factory, controller);
