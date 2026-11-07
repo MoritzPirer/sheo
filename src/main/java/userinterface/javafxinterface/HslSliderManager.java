@@ -3,7 +3,7 @@ package userinterface.javafxinterface;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import shared.ColorUtility;
+import shared.colorconversion.ColorUtility;
 
 public class HslSliderManager extends SliderManager {
     private final Slider hueSlider;
@@ -90,10 +90,10 @@ public class HslSliderManager extends SliderManager {
     }
 
     Color fromHsl(double hue, double saturation, double lightness) {
-        return JavaFxConverter.toJavaFxColor(ColorUtility.fromHsl(hue, saturation, lightness));
+        return JavaFxConverter.toJavaFxColor(ColorUtility.hslToRgb(hue, saturation, lightness));
     }
 
     double[] toHsl(Color color) {
-        return ColorUtility.toHsl(JavaFxConverter.toAwtColor(color));
+        return ColorUtility.rgbToHsl(JavaFxConverter.toAwtColor(color));
     }
 }

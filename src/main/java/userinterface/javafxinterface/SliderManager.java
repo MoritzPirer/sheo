@@ -5,7 +5,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
-import shared.ColorUtility;
+import shared.colorconversion.ColorUtility;
 
 import java.util.Arrays;
 
@@ -47,7 +47,7 @@ abstract class SliderManager {
      * overload for setSliderGradient(Slider, String...). converts all colors into hex codes first.
      */
     protected void setSliderGradient(Slider slider, Color... colors) {
-        String[] hexCodes = Arrays.stream(colors).map(c -> ColorUtility.colorToHex(JavaFxConverter.toAwtColor(c))).toArray(String[]::new);
+        String[] hexCodes = Arrays.stream(colors).map(c -> ColorUtility.colorToHexString(JavaFxConverter.toAwtColor(c))).toArray(String[]::new);
         setSliderGradient(slider, hexCodes);
     }
 

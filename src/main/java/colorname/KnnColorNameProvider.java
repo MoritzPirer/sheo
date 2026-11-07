@@ -1,6 +1,6 @@
 package colorname;
 
-import shared.ColorUtility;
+import shared.colorconversion.ColorUtility;
 
 import java.awt.*;
 import java.nio.file.Path;

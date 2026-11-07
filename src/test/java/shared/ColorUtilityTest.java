@@ -1,6 +1,7 @@
 package shared;
 
 import org.junit.jupiter.api.Test;
+import shared.colorconversion.ColorUtility;
 
 import java.awt.*;
 
@@ -29,7 +30,7 @@ public class ColorUtilityTest {
             for (int green = 0; green <= 255; green++) {
                 for (int blue = 0; blue <= 255; blue++) {
                     Color color = new Color(red, green, blue);
-                    String hex = ColorUtility.colorToHex(color);
+                    String hex = ColorUtility.colorToHexString(color);
                     String withoutHashtag = hex.substring(1);
                     int value = Integer.parseInt(withoutHashtag, 16);
 
@@ -70,8 +71,8 @@ public class ColorUtilityTest {
         };
 
         for (Color color : colors) {
-            double[] hsv = ColorUtility.toHsv(color);
-            Color reconstructed = ColorUtility.fromHsv(hsv[0], hsv[1], hsv[2]);
+            double[] hsv = ColorUtility.rgbToHsv(color);
+            Color reconstructed = ColorUtility.hsvToRgb(hsv[0], hsv[1], hsv[2]);
 
             assertTrue(squaredError(color, reconstructed) <= TOLERANCE);
         }
@@ -90,8 +91,8 @@ public class ColorUtilityTest {
         };
 
         for (Color color : colors) {
-            double[] hsl = ColorUtility.toHsl(color);
-            Color reconstructed = ColorUtility.fromHsl(hsl[0], hsl[1], hsl[2]);
+            double[] hsl = ColorUtility.rgbToHsl(color);
+            Color reconstructed = ColorUtility.hslToRgb(hsl[0], hsl[1], hsl[2]);
 
             assertTrue(squaredError(color, reconstructed) <= TOLERANCE, "Color " + color + " converted to " + reconstructed + " with error " + squaredError(color, reconstructed));
         }

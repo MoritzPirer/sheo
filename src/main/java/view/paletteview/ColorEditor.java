@@ -2,7 +2,7 @@ package view.paletteview;
 
 import controller.Controller;
 import controller.listeners.ColorChangeListener;
-import shared.ColorUtility;
+import shared.colorconversion.ColorUtility;
 import shared.CopyUtility;
 import userinterface.ContentAlignment;
 import userinterface.Size;
@@ -10,6 +10,7 @@ import userinterface.UiFactory;
 import userinterface.components.Button;
 import userinterface.components.ColorPicker;
 import userinterface.components.DropdownSelection;
+import userinterface.components.Label;
 import userinterface.components.UiContainer;
 import userinterface.components.UiSlot;
 import userinterface.listeners.ColorPickerListener;
@@ -54,6 +55,28 @@ public class ColorEditor implements DropdownSelectionListener, ColorPickerListen
 
         dropdown.setPercentageWidth(100.0);
 
+        Label analogous1 = factory.createLabel("analogous1");
+        Label analogous2 = factory.createLabel("analogous2");
+        Label analogous3 = factory.createLabel("analogous3");
+        container.addChild(analogous1);
+        container.addChild(analogous2);
+        container.addChild(analogous3);
+        textBox.addListener(new ColorPickerListener() {
+
+            @Override
+            public void onChange(ColorPicker source, Color before, Color after) {
+                Color[] complementaryColor = ColorUtility.getAnalogousColors(after, 1);
+                analogous1.setBackground(complementaryColor[0]);
+                analogous1.setText("analogous1: " + ColorUtility.colorToHexString(complementaryColor[0]));
+
+                analogous2.setBackground(complementaryColor[1]);
+                analogous2.setText("analogous2: " + ColorUtility.colorToHexString(complementaryColor[2]));
+
+                analogous3.setBackground(complementaryColor[2]);
+                analogous3.setText("analogous3: " + ColorUtility.colorToHexString(complementaryColor[2]));
+            }
+        });
+
         container.setContentAlignment(ContentAlignment.TOP_CENTER);
         container.setBackground(new Color(244, 117, 117));
     }
@@ -94,7 +117,7 @@ public class ColorEditor implements DropdownSelectionListener, ColorPickerListen
         copyButton.setToolTip("Copy Hex");
         copyButton.addButtonListener(b -> {
             Color color = textBox.getColor();
-            String colorString = ColorUtility.colorToHex(color);
+            String colorString = ColorUtility.colorToHexString(color);
             CopyUtility.setSystemClipboardContent(colorString);
             //TODO: visual confirmation
             //TODO: icon
