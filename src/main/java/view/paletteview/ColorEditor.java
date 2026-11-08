@@ -65,15 +65,15 @@ public class ColorEditor implements DropdownSelectionListener, ColorPickerListen
 
             @Override
             public void onChange(ColorPicker source, Color before, Color after) {
-                Color[] complementaryColor = ColorUtility.getAnalogousColors(after, 1);
-                analogous1.setBackground(complementaryColor[0]);
-                analogous1.setText("analogous1: " + ColorUtility.colorToHexString(complementaryColor[0]));
+                Color[] complementaryColor = ColorUtility.getSquareColors(after);
+                analogous1.setBackground(complementaryColor[1]);
+                analogous1.setText("analogous1: " + ColorUtility.colorToHexString(complementaryColor[1]));
 
-                analogous2.setBackground(complementaryColor[1]);
+                analogous2.setBackground(complementaryColor[2]);
                 analogous2.setText("analogous2: " + ColorUtility.colorToHexString(complementaryColor[2]));
 
-                analogous3.setBackground(complementaryColor[2]);
-                analogous3.setText("analogous3: " + ColorUtility.colorToHexString(complementaryColor[2]));
+                analogous3.setBackground(complementaryColor[3]);
+                analogous3.setText("analogous3: " + ColorUtility.colorToHexString(complementaryColor[3]));
             }
         });
 
