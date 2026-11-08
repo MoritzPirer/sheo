@@ -1,61 +1,16 @@
-package shared.colorconversion;
+package shared.colorgeneration;
+
+import shared.colorconversion.ColorConverter;
 
 import java.awt.*;
 
-public class ColorUtility {
-
-    public static String colorToHexString(Color color) {
-        return ColorStringConverter.colorToHexString(color);
-    }
-
-    public static Color hexToColor(String hex) {
-        return ColorStringConverter.hexStringToColor(hex);
-    }
-
-    public static boolean isHexString(String hex) {
-        return ColorStringConverter.isHexString(hex);
-    }
-
-    public static int getRed(int color) {
-        return (color >> 16) & 0xFF;
-    }
-
-    public static int getGreen(int color) {
-        return (color >> 8) & 0xFF;
-    }
-
-    public static int getBlue(int color) {
-        return color & 0xFF;
-    }
-
-    /**
-     * converts the given color into its HSV representation
-     * @param color the color to convert
-     * @return an array of the form [H, S, V]
-     * @see <a href="https://de.wikipedia.org/wiki/HSV-Farbraum#Umrechnung_RGB_in_HSV/HSL">Formula</a>
-     */
-    public static double[] rgbToHsv(Color color) {
-        return HsvConverter.rgbToHsv(color);
-    }
-
-    public static Color hsvToRgb(double hue, double saturation, double value) {
-        return HsvConverter.hsvToRgb(hue, saturation, value);
-    }
-
-    public static double[] rgbToHsl(Color color) {
-        return HslConverter.rgbToHsl(color);
-    }
-
-    public static Color hslToRgb(double hue, double saturation, double lightness) {
-        return HslConverter.hslToRgb(hue, saturation, lightness);
-    }
-
+public class ColorGenerator {
     public static Color getComplementColor(Color color) {
-        double[] hsv = rgbToHsv(color);
+        double[] hsv = ColorConverter.rgbToHsv(color);
 
         double newHue = (hsv[0] + 180.0) % 360.0;
 
-        return hsvToRgb(newHue, hsv[1], hsv[2]);
+        return ColorConverter.hsvToRgb(newHue, hsv[1], hsv[2]);
     }
 
     /**
@@ -71,11 +26,11 @@ public class ColorUtility {
         Color[] colors = new Color[(2 * amount) + 1];
         colors[amount] = color;
 
-        double[] hsv = rgbToHsv(color);
+        double[] hsv = ColorConverter.rgbToHsv(color);
 
         for (int i = 1; i <= amount; i++) {
-            colors[amount - i] = hsvToRgb(offsetHue(hsv[0], -(angle * amount)), hsv[1], hsv[2]);
-            colors[amount + i] = hsvToRgb(offsetHue(hsv[0], (angle * amount)), hsv[1], hsv[2]);
+            colors[amount - i] = ColorConverter.hsvToRgb(offsetHue(hsv[0], -(angle * amount)), hsv[1], hsv[2]);
+            colors[amount + i] = ColorConverter.hsvToRgb(offsetHue(hsv[0], (angle * amount)), hsv[1], hsv[2]);
         }
 
         return colors;
@@ -127,12 +82,39 @@ public class ColorUtility {
      */
     private static Color[] getColorNGon(Color color, int n) {
         Color[] colors = new Color[n];
-        double[] hsv = rgbToHsv(color);
+        double[] hsv = ColorConverter.rgbToHsv(color);
 
         double anglePerStep = 360.0 / n;
         for (int step = 0; step < n; step++) {
             double currentHue = offsetHue(hsv[0], anglePerStep * step);
-            colors[step] = hsvToRgb(currentHue, hsv[1], hsv[2]);
+            colors[step] = ColorConverter.hsvToRgb(currentHue, hsv[1], hsv[2]);
+        }
+
+        return colors;
+    }
+
+    public static Color[] getColorShades(Color color, int count) {
+        Color[] colors = new Color[count];
+        double[] hsl = ColorConverter.rgbToHsl(color);
+
+
+        int anchorPosition = (int) Math.min((count - Math.round(hsl[2] * count)), count - 1);
+
+        colors[anchorPosition] = color;
+
+        //double lightnessPerStep = 1.0 / count;
+        double lightnessPerStep = (1.0 - hsl[2]) / anchorPosition;
+
+        System.out.println("lightness: " + hsl[2]);
+        System.out.println("anchorPosition: " + anchorPosition);
+
+        for (int step = 0; step < count; step++) {
+            if (step == anchorPosition) {
+                continue;
+            }
+
+            double currentLightness = 1.0 - lightnessPerStep * step;
+            colors[step] = ColorConverter.hslToRgb(hsl[0], hsl[1], currentLightness);
         }
 
         return colors;

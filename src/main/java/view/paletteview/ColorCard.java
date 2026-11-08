@@ -2,7 +2,7 @@ package view.paletteview;
 
 import controller.Controller;
 import controller.listeners.ColorChangeListener;
-import shared.colorconversion.ColorUtility;
+import shared.colorconversion.ColorConverter;
 import userinterface.ContentAlignment;
 import userinterface.Size;
 import userinterface.UiFactory;
@@ -107,7 +107,7 @@ public class ColorCard implements ColorChangeListener {
         uiContainer.setContentAlignment(ContentAlignment.TOP_LEFT);
         uiContainer.setBackground(new Color(200, 200, 200));
 
-        String hexString = ColorUtility.colorToHexString(color);
+        String hexString = ColorConverter.colorToHexString(color);
         this.hexCode = factory.createLabel(hexString);
         uiContainer.addChild(hexCode);
 
@@ -139,7 +139,7 @@ public class ColorCard implements ColorChangeListener {
     public void setColor(Color color) {
         this.color = color;
         background.setBackground(color);
-        hexCode.setText(ColorUtility.colorToHexString(color));
-        colorName.setText("NAME OF " + ColorUtility.colorToHexString(color)); //TODO: connect to colorname module
+        hexCode.setText(ColorConverter.colorToHexString(color));
+        colorName.setText("NAME OF " + ColorConverter.colorToHexString(color)); //TODO: connect to colorname module
     }
 }

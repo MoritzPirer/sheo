@@ -1,13 +1,13 @@
 package shared;
 
 import org.junit.jupiter.api.Test;
-import shared.colorconversion.ColorUtility;
+import shared.colorconversion.ColorConverter;
 
 import java.awt.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ColorUtilityTest {
+public class ColorConverterTest {
     private static final double TOLERANCE = 5;
     /**
      * calculates the squared error of the rgb channels of two colors
@@ -30,7 +30,7 @@ public class ColorUtilityTest {
             for (int green = 0; green <= 255; green++) {
                 for (int blue = 0; blue <= 255; blue++) {
                     Color color = new Color(red, green, blue);
-                    String hex = ColorUtility.colorToHexString(color);
+                    String hex = ColorConverter.colorToHexString(color);
                     String withoutHashtag = hex.substring(1);
                     int value = Integer.parseInt(withoutHashtag, 16);
 
@@ -50,9 +50,9 @@ public class ColorUtilityTest {
                     Color color = new Color(red, green, blue);
                     int rgb = color.getRGB();
 
-                    assertEquals(red, ColorUtility.getRed(rgb));
-                    assertEquals(green, ColorUtility.getGreen(rgb));
-                    assertEquals(blue, ColorUtility.getBlue(rgb));
+                    assertEquals(red, ColorConverter.getRed(rgb));
+                    assertEquals(green, ColorConverter.getGreen(rgb));
+                    assertEquals(blue, ColorConverter.getBlue(rgb));
                 }
             }
         }
@@ -71,8 +71,8 @@ public class ColorUtilityTest {
         };
 
         for (Color color : colors) {
-            double[] hsv = ColorUtility.rgbToHsv(color);
-            Color reconstructed = ColorUtility.hsvToRgb(hsv[0], hsv[1], hsv[2]);
+            double[] hsv = ColorConverter.rgbToHsv(color);
+            Color reconstructed = ColorConverter.hsvToRgb(hsv[0], hsv[1], hsv[2]);
 
             assertTrue(squaredError(color, reconstructed) <= TOLERANCE);
         }
@@ -91,8 +91,8 @@ public class ColorUtilityTest {
         };
 
         for (Color color : colors) {
-            double[] hsl = ColorUtility.rgbToHsl(color);
-            Color reconstructed = ColorUtility.hslToRgb(hsl[0], hsl[1], hsl[2]);
+            double[] hsl = ColorConverter.rgbToHsl(color);
+            Color reconstructed = ColorConverter.hslToRgb(hsl[0], hsl[1], hsl[2]);
 
             assertTrue(squaredError(color, reconstructed) <= TOLERANCE, "Color " + color + " converted to " + reconstructed + " with error " + squaredError(color, reconstructed));
         }

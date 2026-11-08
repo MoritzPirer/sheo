@@ -8,7 +8,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import shared.colorconversion.ColorUtility;
+import shared.colorconversion.ColorConverter;
 import userinterface.ContentAlignment;
 import userinterface.components.ColorPicker;
 import userinterface.listeners.ColorPickerListener;
@@ -151,7 +151,7 @@ class JavaFxCanvasColorPicker extends JavaFxComponent implements ColorPicker {
         int width = (int) canvas.getWidth();
         int height = (int) canvas.getHeight();
 
-        Color interpolationTarget = JavaFxConverter.toJavaFxColor(ColorUtility.hsvToRgb(getHue(), 1, 1));
+        Color interpolationTarget = JavaFxConverter.toJavaFxColor(ColorConverter.hsvToRgb(getHue(), 1, 1));
 
         for (int pixelRow = 0; pixelRow <= height; pixelRow++) {
             double heightPercentage = (double) pixelRow / (height - 1);
@@ -208,8 +208,8 @@ class JavaFxCanvasColorPicker extends JavaFxComponent implements ColorPicker {
 
         drawGradient();
 
-        java.awt.Color before = ColorUtility.hsvToRgb(hue, oldSaturation, oldValue);
-        java.awt.Color after = ColorUtility.hsvToRgb(hue, getSaturation(), getValue());
+        java.awt.Color before = ColorConverter.hsvToRgb(hue, oldSaturation, oldValue);
+        java.awt.Color after = ColorConverter.hsvToRgb(hue, getSaturation(), getValue());
 
         listeners.forEach(l -> l.onChange(this, before, after));
     }
@@ -229,8 +229,8 @@ class JavaFxCanvasColorPicker extends JavaFxComponent implements ColorPicker {
         double saturation = getSaturation();
         double value = getValue();
 
-        java.awt.Color beforeAwt = ColorUtility.hsvToRgb(oldPosition, saturation, value);
-        java.awt.Color afterAwt = ColorUtility.hsvToRgb(newPosition, saturation, value);
+        java.awt.Color beforeAwt = ColorConverter.hsvToRgb(oldPosition, saturation, value);
+        java.awt.Color afterAwt = ColorConverter.hsvToRgb(newPosition, saturation, value);
 
         listeners.forEach(listener -> listener.onChange(this, beforeAwt, afterAwt));
     }
@@ -252,7 +252,7 @@ class JavaFxCanvasColorPicker extends JavaFxComponent implements ColorPicker {
         }
 
         isUpdating = true;
-        double[] hsv = ColorUtility.rgbToHsv(color);
+        double[] hsv = ColorConverter.rgbToHsv(color);
         double hue = hsv[0];
         double saturation = hsv[1];
         double value = hsv[2];
@@ -303,7 +303,7 @@ class JavaFxCanvasColorPicker extends JavaFxComponent implements ColorPicker {
 
     @Override
     public java.awt.Color getColor() {
-        return ColorUtility.hsvToRgb(getHue(), getSaturation(), getValue());
+        return ColorConverter.hsvToRgb(getHue(), getSaturation(), getValue());
     }
 
     @Override

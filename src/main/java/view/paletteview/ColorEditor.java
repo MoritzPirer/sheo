@@ -2,8 +2,9 @@ package view.paletteview;
 
 import controller.Controller;
 import controller.listeners.ColorChangeListener;
-import shared.colorconversion.ColorUtility;
+import shared.colorconversion.ColorConverter;
 import shared.CopyUtility;
+import shared.colorevaluation.ColorEvaluator;
 import userinterface.ContentAlignment;
 import userinterface.Size;
 import userinterface.UiFactory;
@@ -55,25 +56,14 @@ public class ColorEditor implements DropdownSelectionListener, ColorPickerListen
 
         dropdown.setPercentageWidth(100.0);
 
-        Label analogous1 = factory.createLabel("analogous1");
-        Label analogous2 = factory.createLabel("analogous2");
-        Label analogous3 = factory.createLabel("analogous3");
-        container.addChild(analogous1);
-        container.addChild(analogous2);
-        container.addChild(analogous3);
+        Label label = factory.createLabel("contrast:");
+        container.addChild(label);
         textBox.addListener(new ColorPickerListener() {
 
             @Override
             public void onChange(ColorPicker source, Color before, Color after) {
-                Color[] complementaryColor = ColorUtility.getSquareColors(after);
-                analogous1.setBackground(complementaryColor[1]);
-                analogous1.setText("analogous1: " + ColorUtility.colorToHexString(complementaryColor[1]));
-
-                analogous2.setBackground(complementaryColor[2]);
-                analogous2.setText("analogous2: " + ColorUtility.colorToHexString(complementaryColor[2]));
-
-                analogous3.setBackground(complementaryColor[3]);
-                analogous3.setText("analogous3: " + ColorUtility.colorToHexString(complementaryColor[3]));
+                double contrast = ColorEvaluator.calculateContrast(after, Color.white);
+                label.setText("on white: " + contrast);
             }
         });
 
@@ -117,7 +107,7 @@ public class ColorEditor implements DropdownSelectionListener, ColorPickerListen
         copyButton.setToolTip("Copy Hex");
         copyButton.addButtonListener(b -> {
             Color color = textBox.getColor();
-            String colorString = ColorUtility.colorToHexString(color);
+            String colorString = ColorConverter.colorToHexString(color);
             CopyUtility.setSystemClipboardContent(colorString);
             //TODO: visual confirmation
             //TODO: icon

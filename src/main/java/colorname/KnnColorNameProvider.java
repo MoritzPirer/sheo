@@ -1,6 +1,6 @@
 package colorname;
 
-import shared.colorconversion.ColorUtility;
+import shared.colorconversion.ColorConverter;
 
 import java.awt.*;
 import java.nio.file.Path;
@@ -42,9 +42,9 @@ public class KnnColorNameProvider implements ColorNameProvider {
     }
 
     private double distance(Color color, int cellColor) {
-        int red = ColorUtility.getRed(cellColor) - color.getRed();
-        int green = ColorUtility.getGreen(cellColor) - color.getGreen();
-        int blue = ColorUtility.getBlue(cellColor) - color.getBlue();
+        int red = ColorConverter.getRed(cellColor) - color.getRed();
+        int green = ColorConverter.getGreen(cellColor) - color.getGreen();
+        int blue = ColorConverter.getBlue(cellColor) - color.getBlue();
 
         return Math.sqrt(red * red + green * green + blue * blue);
     }

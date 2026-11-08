@@ -5,7 +5,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
-import shared.colorconversion.ColorUtility;
+import shared.colorconversion.ColorConverter;
 import userinterface.ContentAlignment;
 import userinterface.components.ColorPicker;
 import userinterface.listeners.ColorPickerListener;
@@ -33,12 +33,12 @@ public class JavaFxTextBoxColorPicker extends JavaFxComponent implements ColorPi
 
     private void processUserEnter() {
         String hex = textField.getText();
-        if (!ColorUtility.isHexString(hex)) {
-            textField.setText(ColorUtility.colorToHexString(color));
+        if (!ColorConverter.isHexString(hex)) {
+            textField.setText(ColorConverter.colorToHexString(color));
             return;
         }
 
-        Color newColor = ColorUtility.hexToColor(hex);
+        Color newColor = ColorConverter.hexToColor(hex);
         if (color.equals(newColor)) {
             return;
         }
@@ -58,7 +58,7 @@ public class JavaFxTextBoxColorPicker extends JavaFxComponent implements ColorPi
 
         Color before = this.color;
         this.color = color;
-        String hex = ColorUtility.colorToHexString(color);
+        String hex = ColorConverter.colorToHexString(color);
         textField.setText(hex);
         textField.setPromptText(hex);
 
