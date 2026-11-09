@@ -19,7 +19,7 @@ public class Suggestor {
     private final Label[] labels;
     private final Function<Color, Color[]> suggestionProducer;
 
-    private Suggestor(UiFactory factory, int labelCount, String name, Function<Color, Color[]> suggestionProducer) {
+    private Suggestor(UiFactory factory, ColorEditor context, int labelCount, String name, Function<Color, Color[]> suggestionProducer) {
         this.suggestionProducer = suggestionProducer;
         this.name = name;
 
@@ -31,54 +31,62 @@ public class Suggestor {
             labels[index] = factory.createLabel("");
             labels[index].setPreferredSize(new Size(25, 100));
             labels[index].enableAutomaticTextColor();
-            Button button = factory.createButton("C");
-            button.setPreferredSize(new Size(20, 30));
+            Button copyButton = factory.createButton("C");
+            copyButton.setPreferredSize(new Size(20, 30));
 
             int finalIndex = index; // required for lambda
-            button.addButtonListener(source ->
+            copyButton.addButtonListener(source ->
                     CopyUtility.setSystemClipboardContent(labels[finalIndex].getText())
             );
 
+            Button applyButton = factory.createButton("A");
+            applyButton.setPreferredSize(new Size(20, 30));
+            applyButton.addButtonListener(source ->
+                context.onChange(null, null, ColorConverter.hexToColor(labels[finalIndex].getText()))
+            );
+
+
             rowContainer.addChild(labels[index]);
-            rowContainer.addChild(button);
+            rowContainer.addChild(copyButton);
+            rowContainer.addChild(applyButton);
 
             container.addChild(rowContainer);
         }
         container.setContentAlignment(ContentAlignment.CENTER);
     }
 
-    public static Suggestor makeShadeSuggestor(UiFactory factory) {
-        return new Suggestor(factory, 7, "Shade", c -> ColorGenerator.getColorShades(c, 7));
+    public static Suggestor makeShadeSuggestor(UiFactory factory, ColorEditor context) {
+        return new Suggestor(factory, context, 7, "Shade", c -> ColorGenerator.getColorShades(c, 7));
     }
 
-    public static Suggestor makeAnalogousSuggestor(UiFactory factory) {
-        return new Suggestor(factory, 3, "Analogous", c -> ColorGenerator.getAnalogousColors(c, 1));
+    public static Suggestor makeAnalogousSuggestor(UiFactory factory, ColorEditor context) {
+        return new Suggestor(factory, context, 3, "Analogous", c -> ColorGenerator.getAnalogousColors(c, 1));
     }
 
-    public static Suggestor makeComplementSuggestor(UiFactory factory) {
-        return new Suggestor(factory, 2, "Complementary", c -> new Color[]{c, ColorGenerator.getComplementColor(c)});
+    public static Suggestor makeComplementSuggestor(UiFactory factory, ColorEditor context) {
+        return new Suggestor(factory, context, 2, "Complementary", c -> new Color[]{c, ColorGenerator.getComplementColor(c)});
     }
 
-    public static Suggestor makeSplitComplementSuggestor(UiFactory factory) {
-        return new Suggestor(factory, 3, "Split Complementary", ColorGenerator::getSplitComplementaryColors);
+    public static Suggestor makeSplitComplementSuggestor(UiFactory factory, ColorEditor context) {
+        return new Suggestor(factory, context, 3, "Split Complementary", ColorGenerator::getSplitComplementaryColors);
     }
 
-    public static Suggestor makeTriadicSuggestor(UiFactory factory) {
-        return new Suggestor(factory, 3, "Triadic", ColorGenerator::getTriadicColors);
+    public static Suggestor makeTriadicSuggestor(UiFactory factory, ColorEditor context) {
+        return new Suggestor(factory, context, 3, "Triadic", ColorGenerator::getTriadicColors);
     }
 
-    public static Suggestor makeSquareSuggestor(UiFactory factory) {
-        return new Suggestor(factory, 4, "Square", ColorGenerator::getSquareColors);
+    public static Suggestor makeSquareSuggestor(UiFactory factory, ColorEditor context) {
+        return new Suggestor(factory, context, 4, "Square", ColorGenerator::getSquareColors);
     }
 
-    public static Suggestor[] makeAllSuggestors(UiFactory factory) {
+    public static Suggestor[] makeAllSuggestors(UiFactory factory, ColorEditor context) {
         return new Suggestor[]{
-            makeShadeSuggestor(factory),
-            makeAnalogousSuggestor(factory),
-            makeComplementSuggestor(factory),
-            makeSplitComplementSuggestor(factory),
-            makeTriadicSuggestor(factory),
-            makeSquareSuggestor(factory)
+            makeShadeSuggestor(factory, context),
+            makeAnalogousSuggestor(factory, context),
+            makeComplementSuggestor(factory, context),
+            makeSplitComplementSuggestor(factory, context),
+            makeTriadicSuggestor(factory, context),
+            makeSquareSuggestor(factory, context)
         };
     }
 

@@ -1,5 +1,6 @@
 package view.paletteview;
 
+import controller.Controller;
 import userinterface.UiFactory;
 import userinterface.components.*;
 import userinterface.listeners.DropdownSelectionListener;
@@ -17,10 +18,10 @@ public class ColorSuggestionHandler {
     private Suggestor activeSuggestor;
     private Color activeColor;
 
-    public ColorSuggestionHandler(UiFactory factory, Color initialColor) {
+    public ColorSuggestionHandler(UiFactory factory, Color initialColor, ColorEditor context) {
         container = factory.createVerticalUiContainer();
 
-        createSuggestions(factory);
+        createSuggestions(factory, context);
         dropdown = factory.createDropdownSelection(suggestions.keySet().toArray(String[]::new));
         dropdown.addDropdownSelectionListener(new DropdownSelectionListener() {
 
@@ -50,9 +51,9 @@ public class ColorSuggestionHandler {
         slot.setPercentageWidth(100.0);
     }
 
-    void createSuggestions(UiFactory factory) {
+    void createSuggestions(UiFactory factory, ColorEditor context) {
         suggestions = new LinkedHashMap<>();
-        for (Suggestor suggestor : Suggestor.makeAllSuggestors(factory)) {
+        for (Suggestor suggestor : Suggestor.makeAllSuggestors(factory, context)) {
             suggestions.put(suggestor.getName(), suggestor);
         }
     }

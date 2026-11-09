@@ -45,7 +45,7 @@ public class ColorEditor implements DropdownSelectionListener, ColorPickerListen
 
         createColorSelection(factory);
         createSecondaryColorAction(factory);
-        colorSuggestionHandler = new ColorSuggestionHandler(factory, Color.red);
+        colorSuggestionHandler = new ColorSuggestionHandler(factory, Color.red, this);
         container.addChild(colorSuggestionHandler.getUiComponent());
         colorSuggestionHandler.getUiComponent().setPercentageWidth(100.0);
     }
@@ -161,7 +161,7 @@ public class ColorEditor implements DropdownSelectionListener, ColorPickerListen
         if (isUpdating) {
             return;
         }
-        if (before.equals(after)) {
+        if (after.equals(before)) {
             return;
         }
 
