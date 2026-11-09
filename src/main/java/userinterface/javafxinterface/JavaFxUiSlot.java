@@ -31,11 +31,10 @@ class JavaFxUiSlot extends JavaFxComponent implements UiSlot {
 
     @Override
     public void removeChild() {
-        assert !container.getChildren().isEmpty();
-        assert child != null;
-
-        container.getChildren().removeFirst();
-        child = null;
+        if (!container.getChildren().isEmpty()) {
+            container.getChildren().removeFirst();
+            child = null;
+        }
     }
 
     @Override

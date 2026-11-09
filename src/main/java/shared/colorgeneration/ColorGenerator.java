@@ -97,13 +97,10 @@ public class ColorGenerator {
         Color[] colors = new Color[count];
         double[] hsl = ColorConverter.rgbToHsl(color);
 
-
         int anchorPosition = (int) Math.min((count - Math.round(hsl[2] * count)), count - 1);
 
         colors[anchorPosition] = color;
-
-        //double lightnessPerStep = 1.0 / count;
-        double lightnessPerStep = (1.0 - hsl[2]) / anchorPosition;
+        double lightnessPerStep = 1.0 / count;
 
         for (int step = 0; step < count; step++) {
             if (step == anchorPosition) {
