@@ -4,12 +4,15 @@ import model.*;
 import controller.listeners.ColorChangeListener;
 import controller.listeners.ColorCreationListener;
 import controller.listeners.ColorDeletionListener;
+import model.colorname.ColorNameProvider;
+import model.colorname.KnnColorNameProvider;
 import shared.random.Random;
 import shared.random.RandomnessProvider;
 import userinterface.UiFactory;
 import userinterface.javafxinterface.JavaFxFactory;
 import view.ViewManager;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.*;
@@ -22,6 +25,12 @@ public class Controller {
     private final List<ColorCreationListener> colorCreationListeners = new ArrayList<>();
     private final List<ColorChangeListener> colorChangeListeners = new ArrayList<>();
     private ViewManager viewManager;
+
+    private final ColorNameProvider colorNameProvider;
+
+    public Controller(ColorNameProvider colorNameProvider) {
+        this.colorNameProvider = colorNameProvider;
+    }
 
     public void run(String[] args) {
         // 1. initialize frontend
@@ -104,5 +113,9 @@ public class Controller {
 
     public void openEditor(int colorIndex) {
         viewManager.openEditor(colorIndex);
+    }
+
+    public String getColorName(Color color) {
+        return colorNameProvider.get(color);
     }
 }

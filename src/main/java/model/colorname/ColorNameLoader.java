@@ -1,4 +1,4 @@
-package colorname;
+package model.colorname;
 
 import java.io.BufferedReader;
 import java.io.IOException;

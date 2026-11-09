@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ControllerTest {
     private Controller setupSingleColorController() {
-        Controller controller = new Controller();
+        Controller controller = new Controller(null);
         List<Color> list = new ArrayList<>();
         list.add(new Color(0, 0, 0));
 

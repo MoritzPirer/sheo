@@ -1,4 +1,4 @@
-package colorname;
+package model.colorname;
 
 import java.awt.*;
 

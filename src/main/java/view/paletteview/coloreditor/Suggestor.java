@@ -41,8 +41,9 @@ public class Suggestor {
 
     private Label createLabel(UiFactory factory) {
         Label label = factory.createLabel("");
-        label.setPreferredSize(new Size(25, 100));
+        label.setMinimumSize(new Size(27, 110));
         label.enableAutomaticTextColor();
+        label.setContentAlignment(ContentAlignment.CENTER);
 
         return label;
     }
@@ -53,6 +54,7 @@ public class Suggestor {
         copyButton.addButtonListener(source ->
                 CopyUtility.setSystemClipboardContent(labels[index].getText())
         );
+        copyButton.setToolTip("Copy");
 
         return copyButton;
     }
@@ -63,6 +65,7 @@ public class Suggestor {
         applyButton.addButtonListener(source ->
             context.onChange(null, null, ColorConverter.hexToColor(labels[index].getText()))
         );
+        applyButton.setToolTip("Apply");
 
         return applyButton;
     }

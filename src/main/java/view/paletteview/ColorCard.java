@@ -23,10 +23,12 @@ public class ColorCard implements ColorChangeListener {
     private Label colorName;
 
     private int index;
+    private final Controller controller;
 
     public ColorCard(int index, Controller controller, UiFactory factory) {
         this.index = index;
         this.color = controller.getColor(index);
+        this.controller = controller;
 
         background = createColorCardHoverMenu(factory, controller);
         UiContainer colorInfo = createColorInfo(factory);
@@ -111,7 +113,7 @@ public class ColorCard implements ColorChangeListener {
         this.hexCode = factory.createLabel(hexString);
         uiContainer.addChild(hexCode);
 
-        this.colorName = factory.createLabel("White");
+        this.colorName = factory.createLabel(controller.getColorName(color));
         uiContainer.addChild(colorName);
 
         return uiContainer;
@@ -140,6 +142,6 @@ public class ColorCard implements ColorChangeListener {
         this.color = color;
         background.setBackground(color);
         hexCode.setText(ColorConverter.colorToHexString(color));
-        colorName.setText("NAME OF " + ColorConverter.colorToHexString(color)); //TODO: connect to colorname module
+        colorName.setText(controller.getColorName(color));
     }
 }
