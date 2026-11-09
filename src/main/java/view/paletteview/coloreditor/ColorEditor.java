@@ -1,4 +1,4 @@
-package view.paletteview;
+package view.paletteview.coloreditor;
 
 import controller.Controller;
 import controller.listeners.ColorChangeListener;
@@ -45,7 +45,7 @@ public class ColorEditor implements DropdownSelectionListener, ColorPickerListen
 
         createColorSelection(factory);
         createSecondaryColorAction(factory);
-        colorSuggestionHandler = new ColorSuggestionHandler(factory, Color.red, this);
+        colorSuggestionHandler = new ColorSuggestionHandler(factory, this);
         container.addChild(colorSuggestionHandler.getUiComponent());
         colorSuggestionHandler.getUiComponent().setPercentageWidth(100.0);
     }
@@ -71,6 +71,10 @@ public class ColorEditor implements DropdownSelectionListener, ColorPickerListen
         colorPickers.put("RGB", factory.createRgbColorPicker());
         colorPickers.put("HSV", factory.createHsvColorPicker());
         colorPickers.put("HSL", factory.createHslColorPicker());
+
+        for (ColorPicker colorPicker : colorPickers.values()) {
+            colorPicker.addListener(this);
+        }
 
         return colorPickers;
     }
@@ -137,9 +141,10 @@ public class ColorEditor implements DropdownSelectionListener, ColorPickerListen
     @Override
     public void onSelectionChange(DropdownSelection source, String before, String after) {
         assert source == colorPickerDropdown : "ColorEditor listening to unknown DropdownSelection";
+
         selectedColorPicker = colorPickers.get(source.getValue());
-        selectedColorPicker.addListener(this);
         colorPickerSlot.setChild(selectedColorPicker);
+
         if (activeIndex != -1) {
             selectedColorPicker.setColor(controller.getColor(activeIndex));
         }
@@ -187,5 +192,4 @@ public class ColorEditor implements DropdownSelectionListener, ColorPickerListen
         }
         activeIndex = newIndex;
     }
-
 }

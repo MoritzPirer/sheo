@@ -24,7 +24,6 @@ public class JavaFxSectionContainer extends JavaFxComponent implements SectionCo
     public void setCenter(UiComponent component) {
         JavaFxComponent fxComponent = convertOrThrow(component);
         container.setCenter(fxComponent.getJavaFxNode());
-        System.out.println("center has been set to a node of class: " + fxComponent.getClass());
     }
 
     @Override

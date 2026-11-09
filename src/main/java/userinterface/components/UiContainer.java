@@ -2,7 +2,6 @@ package userinterface.components;
 
 import userinterface.Padding;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -23,7 +22,7 @@ public interface UiContainer extends UiComponent {
      */
     void addChild(int index, UiComponent uiComponent);
 
-    default void addChildren(Collection<UiComponent> uiComponents) {
+    default void addChildren(UiComponent... uiComponents) {
         for (UiComponent uiComponent : uiComponents) {
             addChild(uiComponent);
         }

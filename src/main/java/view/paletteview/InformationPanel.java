@@ -5,6 +5,7 @@ import userinterface.Size;
 import userinterface.UiFactory;
 import userinterface.components.UiComponent;
 import userinterface.components.UiSlot;
+import view.paletteview.coloreditor.ColorEditor;
 
 import java.awt.*;
 

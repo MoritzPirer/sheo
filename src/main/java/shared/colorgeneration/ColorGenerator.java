@@ -105,9 +105,6 @@ public class ColorGenerator {
         //double lightnessPerStep = 1.0 / count;
         double lightnessPerStep = (1.0 - hsl[2]) / anchorPosition;
 
-        System.out.println("lightness: " + hsl[2]);
-        System.out.println("anchorPosition: " + anchorPosition);
-
         for (int step = 0; step < count; step++) {
             if (step == anchorPosition) {
                 continue;

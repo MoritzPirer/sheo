@@ -1,6 +1,5 @@
-package view.paletteview;
+package view.paletteview.coloreditor;
 
-import controller.Controller;
 import userinterface.UiFactory;
 import userinterface.components.*;
 import userinterface.listeners.DropdownSelectionListener;
@@ -12,19 +11,17 @@ import java.util.Map;
 
 public class ColorSuggestionHandler {
     private final UiContainer container;
-    private final DropdownSelection dropdown;
     private Map<String, Suggestor> suggestions;
     private final UiSlot slot;
     private Suggestor activeSuggestor;
     private Color activeColor;
 
-    public ColorSuggestionHandler(UiFactory factory, Color initialColor, ColorEditor context) {
+    public ColorSuggestionHandler(UiFactory factory, ColorEditor context) {
         container = factory.createVerticalUiContainer();
 
         createSuggestions(factory, context);
-        dropdown = factory.createDropdownSelection(suggestions.keySet().toArray(String[]::new));
+        DropdownSelection dropdown = factory.createDropdownSelection(suggestions.keySet().toArray(String[]::new));
         dropdown.addDropdownSelectionListener(new DropdownSelectionListener() {
-
             @Override
             public void onSelectionChange(DropdownSelection source, String before, String after) {
                 activeSuggestor = suggestions.get(after);
@@ -38,22 +35,20 @@ public class ColorSuggestionHandler {
             }
         });
 
-        activeColor = initialColor;
+        activeSuggestor = suggestions.get("Shade");
 
         slot = factory.createUiSlot();
-        activeSuggestor = suggestions.get("Shade");
         slot.setChild(activeSuggestor.getUiComponent());
-        activeSuggestor.updateSuggestions(activeColor);
 
-        container.addChild(dropdown);
-        container.addChild(slot);
+        container.addChildren(dropdown, slot);
+
         dropdown.setPercentageWidth(100.0);
         slot.setPercentageWidth(100.0);
     }
 
     void createSuggestions(UiFactory factory, ColorEditor context) {
         suggestions = new LinkedHashMap<>();
-        for (Suggestor suggestor : Suggestor.makeAllSuggestors(factory, context)) {
+        for (Suggestor suggestor : Suggestor.createAllSuggestors(factory, context)) {
             suggestions.put(suggestor.getName(), suggestor);
         }
     }

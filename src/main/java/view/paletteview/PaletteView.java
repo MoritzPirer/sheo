@@ -39,13 +39,11 @@ public class PaletteView {
         colorSegment.setBackground(new Color(228, 54, 255));
 
         for (int i = 0; i < controller.getColorCount(); i++) {
-            System.out.println("adding color " + i);
             ColorCard card = new ColorCard(i, controller, factory);
             colorCards.add(card);
             colorSegment.addChild(card.getUiComponent());
             controller.addColorChangeListener(card);
         }
-
 
         controller.addColorDeletionListener(removedIndex -> {
             ColorCard card = colorCards.remove(removedIndex);
