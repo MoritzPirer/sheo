@@ -9,27 +9,17 @@ import userinterface.Size;
 import userinterface.UiFactory;
 import userinterface.components.Button;
 import userinterface.components.ColorPicker;
-import userinterface.components.DropdownSelection;
 import userinterface.components.UiContainer;
-import userinterface.components.UiSlot;
 import userinterface.listeners.ColorPickerListener;
-import userinterface.listeners.DropdownSelectionListener;
 
 import java.awt.*;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
-public class ColorEditor implements DropdownSelectionListener, ColorPickerListener, ColorChangeListener {
+public class ColorEditor implements ColorPickerListener, ColorChangeListener {
     private final UiContainer container;
-
-    private DropdownSelection colorPickerDropdown;
-    private UiSlot colorPickerSlot;
-    private Map<String, ColorPicker> colorPickers;
-    private ColorPicker selectedColorPicker;
 
     private ColorPicker textBox;
 
+    ColorPickerGroup colorPickerGroup;
     ColorSuggestionHandler colorSuggestionHandler;
 
     private final Controller controller;
@@ -43,40 +33,13 @@ public class ColorEditor implements DropdownSelectionListener, ColorPickerListen
         container.setContentAlignment(ContentAlignment.TOP_CENTER);
         container.setBackground(new Color(244, 117, 117));
 
-        createColorSelection(factory);
+        colorPickerGroup = new ColorPickerGroup(factory);
+        container.addChild(colorPickerGroup.getUiComponent());
         createSecondaryColorAction(factory);
+
         colorSuggestionHandler = new ColorSuggestionHandler(factory, this);
         container.addChild(colorSuggestionHandler.getUiComponent());
         colorSuggestionHandler.getUiComponent().setPercentageWidth(100.0);
-    }
-
-    private void createColorSelection(UiFactory factory) {
-        colorPickers = createColorPickers(factory);
-        colorPickerDropdown = factory.createDropdownSelection(colorPickers.keySet().toArray(new String[0]));
-        colorPickerDropdown.addDropdownSelectionListener(this);
-
-        selectedColorPicker = colorPickers.get(colorPickerDropdown.getValue());
-
-        colorPickerSlot = factory.createUiSlot();
-        colorPickerSlot.setChild(selectedColorPicker);
-
-        container.addChild(colorPickerDropdown);
-        container.addChild(colorPickerSlot);
-        colorPickerDropdown.setPercentageWidth(100.0);
-    }
-
-    private Map<String, ColorPicker> createColorPickers(UiFactory factory) {
-        Map<String, ColorPicker> colorPickers = new LinkedHashMap<>(); //LinkedHashMap to preserve this order
-        colorPickers.put("Canvas", factory.createCanvasColorPicker());
-        colorPickers.put("RGB", factory.createRgbColorPicker());
-        colorPickers.put("HSV", factory.createHsvColorPicker());
-        colorPickers.put("HSL", factory.createHslColorPicker());
-
-        for (ColorPicker colorPicker : colorPickers.values()) {
-            colorPicker.addListener(this);
-        }
-
-        return colorPickers;
     }
 
     //TODO come up with a better name
@@ -124,9 +87,10 @@ public class ColorEditor implements DropdownSelectionListener, ColorPickerListen
 
     public void open(int colorIndex) {
         activeIndex = colorIndex;
-        selectedColorPicker.addListener(this);
-        selectedColorPicker.setColor(controller.getColor(colorIndex));
+        colorPickerGroup.addListener(this);
+        colorPickerGroup.setColor(controller.getColor(colorIndex));
         colorSuggestionHandler.setActiveColor(controller.getColor(colorIndex));
+
         controller.addColorChangeListener(this);
     }
 
@@ -136,24 +100,6 @@ public class ColorEditor implements DropdownSelectionListener, ColorPickerListen
 
     public UiContainer getUiComponent() {
         return container;
-    }
-
-    @Override
-    public void onSelectionChange(DropdownSelection source, String before, String after) {
-        assert source == colorPickerDropdown : "ColorEditor listening to unknown DropdownSelection";
-
-        selectedColorPicker = colorPickers.get(source.getValue());
-        colorPickerSlot.setChild(selectedColorPicker);
-
-        if (activeIndex != -1) {
-            selectedColorPicker.setColor(controller.getColor(activeIndex));
-        }
-    }
-
-    @Override
-    public void onOptionsChange(DropdownSelection source, List<String> before, List<String> after) {
-        assert source == colorPickerDropdown : "ColorEditor listening to unknown DropdownSelection";
-        throw new IllegalStateException("Options should never change for this dropdown");
     }
 
     @Override
@@ -178,7 +124,7 @@ public class ColorEditor implements DropdownSelectionListener, ColorPickerListen
         isUpdating = true;
 
         textBox.setColor(after);
-        selectedColorPicker.setColor(after);
+        colorPickerGroup.setColor(after);
         colorSuggestionHandler.setActiveColor(after);
 
         isUpdating = false;
