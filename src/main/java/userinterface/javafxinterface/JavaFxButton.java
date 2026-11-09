@@ -49,6 +49,11 @@ class JavaFxButton extends JavaFxComponent implements Button {
     }
 
     @Override
+    public void enableAutomaticTextColor() {
+        //TODO
+    }
+
+    @Override
     public Region getJavaFxNode() {
         return button;
     }
