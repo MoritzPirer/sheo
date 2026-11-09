@@ -12,11 +12,12 @@ import java.util.Map;
 public class ColorSuggestionHandler {
     private final UiContainer container;
     private final DropdownSelection dropdown;
-    private Map<String, Suggestion> suggestions;
+    private Map<String, Suggestor> suggestions;
     private final UiSlot slot;
-    private Suggestion activeSuggestion;
+    private Suggestor activeSuggestor;
+    private Color activeColor;
 
-    public ColorSuggestionHandler(UiFactory factory) {
+    public ColorSuggestionHandler(UiFactory factory, Color initialColor) {
         container = factory.createVerticalUiContainer();
 
         createSuggestions(factory);
@@ -25,9 +26,9 @@ public class ColorSuggestionHandler {
 
             @Override
             public void onSelectionChange(DropdownSelection source, String before, String after) {
-                Suggestion suggestion = suggestions.get(after);
-                slot.setChild(suggestion.getUiComponent());
-                suggestion.onSelect();
+                activeSuggestor = suggestions.get(after);
+                slot.setChild(activeSuggestor.getUiComponent());
+                activeSuggestor.updateSuggestions(activeColor);
             }
 
             @Override
@@ -36,9 +37,12 @@ public class ColorSuggestionHandler {
             }
         });
 
+        activeColor = initialColor;
+
         slot = factory.createUiSlot();
-        activeSuggestion = suggestions.get("Shade");
-        slot.setChild(activeSuggestion.getUiComponent());
+        activeSuggestor = suggestions.get("Shade");
+        slot.setChild(activeSuggestor.getUiComponent());
+        activeSuggestor.updateSuggestions(activeColor);
 
         container.addChild(dropdown);
         container.addChild(slot);
@@ -48,12 +52,14 @@ public class ColorSuggestionHandler {
 
     void createSuggestions(UiFactory factory) {
         suggestions = new LinkedHashMap<>();
-        Suggestion suggestion = new ShadeSuggestion(factory);
-        suggestions.put(suggestion.getName(), suggestion);
+        for (Suggestor suggestor : Suggestor.makeAllSuggestors(factory)) {
+            suggestions.put(suggestor.getName(), suggestor);
+        }
     }
 
     public void setActiveColor(Color newColor) {
-        activeSuggestion.onColorChange(newColor);
+        activeColor = newColor;
+        activeSuggestor.updateSuggestions(newColor);
     }
 
     public UiContainer getUiComponent() {
