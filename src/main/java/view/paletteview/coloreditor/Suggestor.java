@@ -1,5 +1,6 @@
 package view.paletteview.coloreditor;
 
+import javafx.util.Pair;
 import shared.CopyUtility;
 import shared.colorconversion.ColorConverter;
 import shared.colorgeneration.ColorGenerator;
@@ -11,15 +12,17 @@ import userinterface.components.UiContainer;
 import userinterface.components.Label;
 
 import java.awt.*;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Function;
 
 public class Suggestor {
     private final UiContainer container;
     private final String name;
     private final Label[] labels;
-    private final Function<Color, Color[]> suggestionProducer;
+    private final Function<Color, List<Pair<Color, String>>> suggestionProducer;
 
-    private Suggestor(UiFactory factory, ColorEditor context, int labelCount, String name, Function<Color, Color[]> suggestionProducer) {
+    private Suggestor(UiFactory factory, ColorEditor context, int labelCount, String name, Function<Color, List<Pair<Color, String>>> suggestionProducer) {
         this.suggestionProducer = suggestionProducer;
         this.name = name;
         labels = new Label[labelCount];
@@ -42,6 +45,7 @@ public class Suggestor {
     private Label createLabel(UiFactory factory) {
         Label label = factory.createLabel("");
         label.setMinimumSize(new Size(27, 110));
+        label.setPreferredSize(new Size(27, 110));
         label.enableAutomaticTextColor();
         label.setContentAlignment(ContentAlignment.CENTER);
 
@@ -71,27 +75,51 @@ public class Suggestor {
     }
 
     public static Suggestor createShadeSuggestor(UiFactory factory, ColorEditor context) {
-        return new Suggestor(factory, context, 7, "Shade", c -> ColorGenerator.getColorShades(c, 7));
+        return new Suggestor(factory, context, 7, "Shade", c ->
+            makeColorNamePairs(ColorGenerator.getColorShades(c, 7))
+        );
     }
 
     public static Suggestor createAnalogousSuggestor(UiFactory factory, ColorEditor context) {
-        return new Suggestor(factory, context, 3, "Analogous", c -> ColorGenerator.getAnalogousColors(c, 1));
+        return new Suggestor(factory, context, 3, "Analogous", c ->
+            makeColorNamePairs(ColorGenerator.getAnalogousColors(c, 1))
+        );
     }
 
     public static Suggestor createComplementarySuggestor(UiFactory factory, ColorEditor context) {
-        return new Suggestor(factory, context, 2, "Complementary", c -> new Color[]{c, ColorGenerator.getComplementColor(c)});
+        return new Suggestor(factory, context, 2, "Complementary", c ->
+            makeColorNamePairs(new Color[]{c, ColorGenerator.getComplementColor(c)})
+        );
     }
 
     public static Suggestor createSplitComplementarySuggestor(UiFactory factory, ColorEditor context) {
-        return new Suggestor(factory, context, 3, "Split Complementary", ColorGenerator::getSplitComplementaryColors);
+        return new Suggestor(factory, context, 3, "Split Complementary", c ->
+            makeColorNamePairs(ColorGenerator.getSplitComplementaryColors(c))
+        );
     }
 
     public static Suggestor createTriadicSuggestor(UiFactory factory, ColorEditor context) {
-        return new Suggestor(factory, context, 3, "Triadic", ColorGenerator::getTriadicColors);
+        return new Suggestor(factory, context, 3, "Triadic", c ->
+            makeColorNamePairs(ColorGenerator.getTriadicColors(c))
+        );
     }
 
     public static Suggestor createSquareSuggestor(UiFactory factory, ColorEditor context) {
-        return new Suggestor(factory, context, 4, "Square", ColorGenerator::getSquareColors);
+        return new Suggestor(factory, context, 4, "Square", c ->
+            makeColorNamePairs(ColorGenerator.getSquareColors(c))
+        );
+    }
+
+    public static Suggestor createSimilarSuggestor(UiFactory factory, ColorEditor context) {
+        return new Suggestor(factory, context, 4, "Similar", c -> context.getSimilarColors(c, 4));
+    }
+
+    private static List<Pair<Color, String>> makeColorNamePairs(Color[] colors) {
+        return Arrays.stream(colors).map(Suggestor::makeColorNamePair).toList();
+    }
+
+    private static Pair<Color, String> makeColorNamePair(Color color) {
+        return new Pair<>(color, ColorConverter.colorToHexString(color));
     }
 
     public static Suggestor[] createAllSuggestors(UiFactory factory, ColorEditor context) {
@@ -101,7 +129,8 @@ public class Suggestor {
             createComplementarySuggestor(factory, context),
             createSplitComplementarySuggestor(factory, context),
             createTriadicSuggestor(factory, context),
-            createSquareSuggestor(factory, context)
+            createSquareSuggestor(factory, context),
+            createSimilarSuggestor(factory, context)
         };
     }
 
@@ -114,13 +143,13 @@ public class Suggestor {
     }
 
     public void updateSuggestions(Color color) {
-        Color[] colors = suggestionProducer.apply(color);
+        List<Pair<Color, String>> colors = suggestionProducer.apply(color);
 
-        assert colors.length == labels.length;
+        assert colors.size() == labels.length;
 
         for (int i = 0; i < labels.length; i++) {
-            labels[i].setBackground(colors[i]);
-            labels[i].setText(ColorConverter.colorToHexString(colors[i]));
+            labels[i].setBackground(colors.get(i).getKey());
+            labels[i].setText(colors.get(i).getValue());
         }
     }
 }

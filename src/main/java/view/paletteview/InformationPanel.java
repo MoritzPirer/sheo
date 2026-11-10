@@ -19,7 +19,7 @@ public class InformationPanel {
         container.setMinimumSize(new Size(-1, 200));
         container.setPreferredSize(new Size(-1, 200));
         container.setMaximumSize(new Size(-1, 500));
-        container.setBackground(new Color(0, 255, 0));
+        container.setBackground(new Color(221, 221, 221));
         colorEditor = new ColorEditor(factory, controller);
         this.controller = controller;
     }

@@ -7,15 +7,20 @@ import model.colorname.NullColorNameProvider;
 import java.awt.*;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
+import java.util.Objects;
 
 //TODO: Rename this class once the final name has been decided
 public class Main {
    public static void main(String[] args) {
        ColorNameProvider nameProvider;
        try {
-           Path colorNameFilePath = Path.of(Main.class.getClassLoader().getResource("colornames.csv").toURI());
+           Path colorNameFilePath = Path.of(Objects.requireNonNull(Main.class
+               .getClassLoader()
+               .getResource("colornames.csv"))
+               .toURI()
+           );
            nameProvider = new KnnColorNameProvider(colorNameFilePath);
-       } catch (URISyntaxException e) {
+       } catch (URISyntaxException | NullPointerException e) {
            nameProvider = new NullColorNameProvider();
        }
        Controller controller = new Controller(nameProvider);

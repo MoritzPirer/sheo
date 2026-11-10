@@ -36,7 +36,7 @@ public class PaletteView {
         TileContainer colorSegment = factory.createTileContainer();
         colorSegment.setPadding(new Padding(15, 30));
         colorSegment.setSpacing(20.0);
-        colorSegment.setBackground(new Color(228, 54, 255));
+        colorSegment.setBackground(new Color(251, 251, 251, 251));
 
         for (int i = 0; i < controller.getColorCount(); i++) {
             ColorCard card = new ColorCard(i, controller, factory);

@@ -1,5 +1,6 @@
 package userinterface.javafxinterface;
 
+import javafx.scene.control.OverrunStyle;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Region;
@@ -15,6 +16,7 @@ class JavaFxLabel extends JavaFxComponent implements Label {
 
     public JavaFxLabel(String text) {
         label = new javafx.scene.control.Label(text);
+        label.setTextOverrun(OverrunStyle.WORD_ELLIPSIS);
     }
 
     @Override

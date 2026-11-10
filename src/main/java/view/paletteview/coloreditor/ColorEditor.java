@@ -13,6 +13,8 @@ import userinterface.components.UiContainer;
 import userinterface.listeners.ColorPickerListener;
 
 import java.awt.*;
+import javafx.util.Pair;
+import java.util.List;
 
 public class ColorEditor implements ColorPickerListener, ColorChangeListener {
     private final UiContainer container;
@@ -31,7 +33,6 @@ public class ColorEditor implements ColorPickerListener, ColorChangeListener {
 
         container = factory.createVerticalUiContainer();
         container.setContentAlignment(ContentAlignment.TOP_CENTER);
-        container.setBackground(new Color(244, 117, 117));
 
         colorPickerGroup = new ColorPickerGroup(factory);
         container.addChild(colorPickerGroup.getUiComponent());
@@ -47,18 +48,18 @@ public class ColorEditor implements ColorPickerListener, ColorChangeListener {
         textBox = factory.createTextBoxColorPicker();
         textBox.addListener(this);
 
-        Button copyButton = createCopyButton(factory);
         Button randomizeButton = createRandomizeButton(factory, controller);
+        Button copyButton = createCopyButton(factory);
 
         UiContainer secondaryColorActionContainer = factory.createHorizontalUiContainer();
 
         secondaryColorActionContainer.addChild(textBox);
-        secondaryColorActionContainer.addChild(randomizeButton);
         secondaryColorActionContainer.addChild(copyButton);
+        secondaryColorActionContainer.addChild(randomizeButton);
 
         textBox.setMinimumSize(new Size(20, 100));
-        randomizeButton.setMinimumSize(new Size(20, 30));
         copyButton.setMinimumSize(new Size(20, 30));
+        randomizeButton.setMinimumSize(new Size(20, 30));
 
         container.addChild(secondaryColorActionContainer);
     }
@@ -137,5 +138,9 @@ public class ColorEditor implements ColorPickerListener, ColorChangeListener {
             return;
         }
         activeIndex = newIndex;
+    }
+
+    public List<Pair<Color, String>> getSimilarColors(Color color, int count) {
+        return controller.getSimilarColors(color, count);
     }
 }

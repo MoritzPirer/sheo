@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.util.Pair;
 import model.*;
 import controller.listeners.ColorChangeListener;
 import controller.listeners.ColorCreationListener;
@@ -117,5 +118,9 @@ public class Controller {
 
     public String getColorName(Color color) {
         return colorNameProvider.get(color);
+    }
+
+    public List<Pair<Color, String>> getSimilarColors(Color color, int count) {
+        return colorNameProvider.getNearest(color, count);
     }
 }

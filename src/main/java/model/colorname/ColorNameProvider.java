@@ -1,6 +1,9 @@
 package model.colorname;
 
+import javafx.util.Pair;
+
 import java.awt.*;
+import java.util.List;
 
 public interface ColorNameProvider {
     /**
@@ -9,4 +12,6 @@ public interface ColorNameProvider {
      * @return the most fitting name for the color, or an empty string if no name was found
      */
     String get(Color color);
+
+    List<Pair<Color, String>> getNearest(Color color, int count);
 }
