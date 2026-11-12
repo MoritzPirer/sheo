@@ -2,6 +2,7 @@ package userinterface.javafxinterface;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.util.Duration;
 import userinterface.ContentAlignment;
 import userinterface.Padding;
 
@@ -52,4 +53,7 @@ class JavaFxConverter {
         return new Insets(padding.top(), padding.right(), padding.bottom(), padding.left());
     }
 
+    public static javafx.util.Duration toDuration(java.time.Duration duration) {
+        return new Duration(duration.toMillis());
+    }
 }

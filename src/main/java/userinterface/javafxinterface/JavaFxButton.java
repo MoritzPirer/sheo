@@ -1,17 +1,19 @@
 package userinterface.javafxinterface;
 
+import javafx.animation.PauseTransition;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Pos;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Region;
+import javafx.scene.paint.Paint;
 import userinterface.ContentAlignment;
 import userinterface.components.Button;
 import userinterface.listeners.ButtonListener;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,6 +75,43 @@ class JavaFxButton extends JavaFxComponent implements Button {
         view.setPreserveRatio(true);
 
         button.setGraphic(view);
+    }
+
+    @Override
+    public void setTemporaryStyle(Color backgroundColor, Color textColor, String text, Duration duration) {
+        Background background = button.getBackground();
+        Paint previousTextColor = button.getTextFill();
+        String previousText = button.getText();
+
+        button.setDisable(true);
+        if (backgroundColor != null) {
+            setBackground(backgroundColor);
+        }
+        if (textColor != null) {
+            button.setTextFill(JavaFxConverter.toJavaFxColor(textColor));
+        }
+        if (text != null) {
+            button.setText(text);
+        }
+
+        PauseTransition pauseTransition = new PauseTransition(JavaFxConverter.toDuration(duration));
+        pauseTransition.setOnFinished(e -> {
+            button.setBackground(background);
+            button.setTextFill(previousTextColor);
+            button.setText(previousText);
+            button.setDisable(false);
+        });
+        pauseTransition.play();
+    }
+
+    @Override
+    public void enable() {
+        button.setDisable(false);
+    }
+
+    @Override
+    public void disable() {
+        button.setDisable(true);
     }
 
     @Override

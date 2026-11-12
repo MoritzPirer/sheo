@@ -6,19 +6,19 @@ import controller.listeners.ColorChangeListener;
 import controller.listeners.ColorCreationListener;
 import controller.listeners.ColorDeletionListener;
 import model.colorname.ColorNameProvider;
-import model.colorname.KnnColorNameProvider;
 import shared.random.Random;
 import shared.random.RandomnessProvider;
 import userinterface.UiFactory;
 import userinterface.javafxinterface.JavaFxFactory;
 import view.ViewManager;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.*;
 
 public class Controller {
+    public static final int MAX_COLOR_COUNT = 10;
+
     private Palette palette;
     private final RandomnessProvider random = new Random();
 
@@ -104,8 +104,10 @@ public class Controller {
     }
 
     public void addColor() {
-        palette.addColor(random.makeColor());
-        colorCreationListeners.forEach(listener -> listener.onAdd(palette.size() - 1));
+        if (palette.size() < MAX_COLOR_COUNT) {
+            palette.addColor(random.makeColor());
+            colorCreationListeners.forEach(listener -> listener.onAdd(palette.size() - 1));
+        }
     }
 
     public void openInspector() {
