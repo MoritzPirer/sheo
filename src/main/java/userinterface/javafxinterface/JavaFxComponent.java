@@ -1,16 +1,23 @@
 package userinterface.javafxinterface;
 
+import javafx.beans.binding.Bindings;
 import javafx.scene.Parent;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Region;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+
+import userinterface.CornerRadius;
 import userinterface.Size;
 import userinterface.listeners.HoverListener;
 import userinterface.components.UiComponent;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Abstract base for every component produced by the JavaFxFactory. Implements methods of UiComponent that only depend
@@ -152,18 +159,6 @@ abstract class JavaFxComponent implements UiComponent {
        child.maxHeightProperty().bind(region.heightProperty());
    }
 
-   @Override
-   public void fillHeight() {
-        getJavaFxNode().setMaxHeight(Double.MAX_VALUE);
-        getJavaFxNode().setPrefHeight(Region.USE_COMPUTED_SIZE);
-   }
-
-   @Override
-    public void fillWidth() {
-        getJavaFxNode().setMaxWidth(Double.MAX_VALUE);
-        getJavaFxNode().setPrefWidth(Region.USE_COMPUTED_SIZE);
-   }
-
     @Override
     public void setToolTip(String text) {
         Tooltip tooltip = new Tooltip(text);
@@ -184,6 +179,57 @@ abstract class JavaFxComponent implements UiComponent {
     @Override
     public void setBackground(Color color) {
         javafx.scene.paint.Color javaFxColor = JavaFxConverter.toJavaFxColor(color);
-        getJavaFxNode().setBackground(new Background(new BackgroundFill(javaFxColor, null, null)));
+        Background background = getJavaFxNode().getBackground();
+        if (background == null) {
+            getJavaFxNode().setBackground(new Background(new BackgroundFill(javaFxColor, null, null)));
+            return;
+        }
+
+        List<BackgroundFill> fills = background.getFills();
+        List<BackgroundFill> newFills = new ArrayList<>(fills.size());
+
+        for (BackgroundFill fill : fills) {
+            newFills.add(new BackgroundFill(javaFxColor, fill.getRadii(), fill.getInsets()));
+        }
+
+        getJavaFxNode().setBackground(new Background(newFills.toArray(BackgroundFill[]::new)));
+    }
+
+    @Override
+    public void setCornerRadius(CornerRadius cornerRadius) {
+        CornerRadii cornerRadii = JavaFxConverter.toCornerRadii(cornerRadius);
+        Region node = getJavaFxNode();
+        Background background = node.getBackground();
+        Rectangle clip = new Rectangle();
+
+        clip.widthProperty().bind(node.widthProperty());
+        clip.heightProperty().bind(node.heightProperty());
+
+        if (cornerRadius.isPercent()) {
+            clip.arcWidthProperty()
+                .bind(Bindings.min(node.widthProperty(), node.heightProperty())
+                .multiply(cornerRadius.radius() * 2));
+            clip.arcHeightProperty().bind(clip.arcWidthProperty());
+        }
+        else {
+            clip.setArcWidth(cornerRadius.radius() * 2);
+            clip.setArcHeight(cornerRadius.radius() * 2);
+
+        }
+        node.setClip(clip);
+        if (background == null) {
+            node.setBackground(new Background(new BackgroundFill(null, cornerRadii, null)));
+            System.out.println(node.getBackground());
+            return;
+        }
+
+        List<BackgroundFill> fills = background.getFills();
+        List<BackgroundFill> newFills = new ArrayList<>(fills.size());
+
+        for (BackgroundFill fill : fills) {
+            newFills.add(new BackgroundFill(fill.getFill(), cornerRadii, fill.getInsets()));
+        }
+
+        node.setBackground(new Background(newFills.toArray(BackgroundFill[]::new)));
     }
 }

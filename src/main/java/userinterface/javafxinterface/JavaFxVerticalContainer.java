@@ -75,15 +75,4 @@ class JavaFxVerticalContainer extends JavaFxComponent implements UiContainer {
         vBox.setSpacing(spacing);
     }
 
-    @Override
-    public void fillWidth() {
-        vBox.setPrefWidth(Double.MAX_VALUE);
-        vBox.setMaxWidth(Double.MAX_VALUE);
-    }
-
-    @Override
-    public void fillHeight() {
-        vBox.setMaxWidth(Double.MAX_VALUE);
-        VBox.setVgrow(vBox, Priority.ALWAYS);
-    }
 }

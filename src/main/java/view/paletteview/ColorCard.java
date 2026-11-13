@@ -4,6 +4,7 @@ import controller.Controller;
 import controller.listeners.ColorChangeListener;
 import shared.colorconversion.ColorConverter;
 import userinterface.ContentAlignment;
+import userinterface.CornerRadius;
 import userinterface.Size;
 import userinterface.UiFactory;
 import userinterface.components.Button;
@@ -39,7 +40,7 @@ public class ColorCard implements ColorChangeListener {
         //uiContainer.setPreferredSize(new Size(180, 120));
         uiContainer.addChild(background);
         uiContainer.addChild(colorInfo);
-
+        uiContainer.setCornerRadius(new CornerRadius(0.1, true));
 
         background.setPercentageSize(70.0, 100.0);
         colorInfo.setPercentageSize(30.0, 100.0);

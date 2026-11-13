@@ -1,6 +1,7 @@
 package userinterface.components;
 
 import userinterface.ContentAlignment;
+import userinterface.CornerRadius;
 import userinterface.Size;
 import userinterface.listeners.HoverListener;
 
@@ -42,9 +43,6 @@ public interface UiComponent {
     void setPercentageWidth(double percentageWidth);
     void setPercentageHeight(double percentageHeight);
 
-    void fillHeight();
-    void fillWidth();
-
     /**
      * Updates where the contents of the component (e.g. text, other components) are aligned within the component
      */
@@ -64,4 +62,6 @@ public interface UiComponent {
      * @param text the text to display on hover
      */
     void setToolTip(String text);
+
+    void setCornerRadius(CornerRadius cornerRadius);
 }

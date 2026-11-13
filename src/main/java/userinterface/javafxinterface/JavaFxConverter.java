@@ -2,8 +2,10 @@ package userinterface.javafxinterface;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.layout.CornerRadii;
 import javafx.util.Duration;
 import userinterface.ContentAlignment;
+import userinterface.CornerRadius;
 import userinterface.Padding;
 
 /**
@@ -55,5 +57,15 @@ class JavaFxConverter {
 
     public static javafx.util.Duration toDuration(java.time.Duration duration) {
         return new Duration(duration.toMillis());
+    }
+
+    public static CornerRadii toCornerRadii(CornerRadius cornerRadius) {
+        return new CornerRadii(
+            cornerRadius.radius(),
+            cornerRadius.radius(),
+            cornerRadius.radius(),
+            cornerRadius.radius(),
+            cornerRadius.isPercent()
+        );
     }
 }
