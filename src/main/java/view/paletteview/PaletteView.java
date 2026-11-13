@@ -1,9 +1,7 @@
 package view.paletteview;
 
 import controller.Controller;
-import userinterface.ContentAlignment;
 import userinterface.Padding;
-import userinterface.Size;
 import userinterface.UiFactory;
 import userinterface.components.*;
 
@@ -21,7 +19,7 @@ public class PaletteView {
         root.setBackground(new Color(165, 165, 172));
 
         toolbar = new Toolbar(factory, controller);
-        UiContainer colorSegment = createColorSegment(factory, controller);
+        GridContainer colorSegment = createColorSegment(factory, controller);
         informationPanel = new InformationPanel(factory, controller);
 
         root.setTop(toolbar.getUiComponent());
@@ -32,11 +30,11 @@ public class PaletteView {
         return factory.createScene(root);
     }
 
-    private UiContainer createColorSegment(UiFactory factory, Controller controller) {
-        TileContainer colorSegment = factory.createTileContainer();
-        colorSegment.setPadding(new Padding(15, 30));
-        colorSegment.setSpacing(20.0);
+    private GridContainer createColorSegment(UiFactory factory, Controller controller) {
+        GridContainer colorSegment = factory.createGridContainer(2, 5);
         colorSegment.setBackground(new Color(251, 251, 251, 251));
+        colorSegment.setSpacing(15.0);
+        colorSegment.setPadding(new Padding(15,20));
 
         for (int i = 0; i < controller.getColorCount(); i++) {
             ColorCard card = new ColorCard(i, controller, factory);

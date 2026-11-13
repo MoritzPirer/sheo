@@ -46,8 +46,8 @@ public class JavaFxFactory implements UiFactory {
     }
 
     @Override
-    public TileContainer createTileContainer() {
-        return new JavaFxTileContainer();
+    public GridContainer createGridContainer(int rows, int columns) {
+        return new JavaFxGridContainer(rows, columns);
     }
 
     @Override

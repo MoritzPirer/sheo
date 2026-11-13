@@ -12,6 +12,7 @@ import userinterface.components.UiContainer;
 import userinterface.components.Label;
 
 import java.awt.*;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
@@ -55,9 +56,10 @@ public class Suggestor {
     private Button createCopyButton(UiFactory factory, int index) {
         Button copyButton = factory.createButton("C");
         copyButton.setPreferredSize(new Size(20, 30));
-        copyButton.addButtonListener(source ->
-                CopyUtility.setSystemClipboardContent(labels[index].getText())
-        );
+        copyButton.addButtonListener(source -> {
+            CopyUtility.setSystemClipboardContent(labels[index].getText());
+            copyButton.setTemporaryStyle(new Color(58, 195, 32), null, null, Duration.ofMillis(250));
+        });
         copyButton.setToolTip("Copy");
 
         return copyButton;

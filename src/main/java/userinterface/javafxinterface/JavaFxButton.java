@@ -83,7 +83,7 @@ class JavaFxButton extends JavaFxComponent implements Button {
         Paint previousTextColor = button.getTextFill();
         String previousText = button.getText();
 
-        button.setDisable(true);
+        //button.setDisable(true);
         if (backgroundColor != null) {
             setBackground(backgroundColor);
         }
@@ -99,7 +99,7 @@ class JavaFxButton extends JavaFxComponent implements Button {
             button.setBackground(background);
             button.setTextFill(previousTextColor);
             button.setText(previousText);
-            button.setDisable(false);
+            //button.setDisable(false);
         });
         pauseTransition.play();
     }

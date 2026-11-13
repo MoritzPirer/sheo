@@ -46,7 +46,7 @@ public interface UiFactory {
 
     SectionContainer createSectionContainer();
 
-    TileContainer createTileContainer();
+    GridContainer createGridContainer(int rows, int columns);
 
     UiSlot createUiSlot();
 

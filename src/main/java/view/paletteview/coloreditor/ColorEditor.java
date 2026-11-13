@@ -14,6 +14,8 @@ import userinterface.listeners.ColorPickerListener;
 
 import java.awt.*;
 import javafx.util.Pair;
+
+import java.time.Duration;
 import java.util.List;
 
 public class ColorEditor implements ColorPickerListener, ColorChangeListener {
@@ -66,12 +68,12 @@ public class ColorEditor implements ColorPickerListener, ColorChangeListener {
 
     private Button createCopyButton(UiFactory factory) {
         Button copyButton = factory.createButton("C");
-        copyButton.setToolTip("Copy Hex");
+        copyButton.setToolTip("Copy");
         copyButton.addButtonListener(b -> {
             Color color = textBox.getColor();
             String colorString = ColorConverter.colorToHexString(color);
             CopyUtility.setSystemClipboardContent(colorString);
-            //TODO: visual confirmation
+            copyButton.setTemporaryStyle(new Color(58, 195, 32), null, null, Duration.ofMillis(250));
             //TODO: icon
         });
 
