@@ -16,7 +16,7 @@ import java.util.PriorityQueue;
 public class KnnColorNameProvider implements ColorNameProvider {
 
     private final ImmutableIntToStringMap map;
-    int[] colors; //known colors stored as an integer where the lower three bytes correspond to red, blue and green.
+    private final int[] colors; //known colors stored as an integer where the lower three bytes correspond to red, blue and green.
 
     public KnnColorNameProvider(Path colorNameFile) {
         map = ColorNameLoader.loadColorNames(colorNameFile);

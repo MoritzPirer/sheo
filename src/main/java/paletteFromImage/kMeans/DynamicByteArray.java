@@ -4,7 +4,7 @@ class DynamicByteArray {
     private static final int INITIAL_CAPACITY = 16;
 
     byte[] array;
-    int size = 0;
+    int size;
 
     public DynamicByteArray() {
          this.array = new byte[INITIAL_CAPACITY];

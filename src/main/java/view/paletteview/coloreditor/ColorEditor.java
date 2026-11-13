@@ -23,8 +23,8 @@ public class ColorEditor implements ColorPickerListener, ColorChangeListener {
 
     private ColorPicker textBox;
 
-    ColorPickerGroup colorPickerGroup;
-    ColorSuggestionHandler colorSuggestionHandler;
+    private final ColorPickerGroup colorPickerGroup;
+    private final ColorSuggestionHandler colorSuggestionHandler;
 
     private final Controller controller;
     private int activeIndex = -1;

@@ -107,9 +107,6 @@ abstract class JavaFxComponent implements UiComponent {
             throw new IllegalArgumentException("Parent is not a Region!");
         }
 
-        //child.minHeightProperty().bind(region.heightProperty().multiply(heightPercentage / 100.0));
-        //child.minWidthProperty().bind(region.widthProperty().multiply(widthPercentage / 100.0));
-
         child.prefHeightProperty().bind(region.heightProperty().multiply(heightPercentage / 100.0));
         child.prefWidthProperty().bind(region.widthProperty().multiply(widthPercentage / 100.0));
 

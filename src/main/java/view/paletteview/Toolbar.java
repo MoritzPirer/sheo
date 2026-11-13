@@ -1,7 +1,6 @@
 package view.paletteview;
 
 import controller.Controller;
-import controller.listeners.ColorDeletionListener;
 import userinterface.ContentAlignment;
 import userinterface.Padding;
 import userinterface.UiFactory;
@@ -9,7 +8,6 @@ import userinterface.components.UiComponent;
 import userinterface.components.UiContainer;
 import userinterface.components.Button;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 

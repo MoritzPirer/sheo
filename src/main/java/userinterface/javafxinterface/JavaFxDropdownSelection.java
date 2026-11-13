@@ -9,7 +9,6 @@ import userinterface.components.DropdownSelection;
 import userinterface.listeners.DropdownSelectionListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class JavaFxDropdownSelection extends JavaFxComponent implements DropdownSelection {

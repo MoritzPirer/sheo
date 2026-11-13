@@ -1,8 +1,6 @@
 package controller;
 
 import controller.listeners.ColorChangeListener;
-import controller.listeners.ColorCreationListener;
-import controller.listeners.ColorDeletionListener;
 import model.ListPalette;
 import org.junit.jupiter.api.Test;
 

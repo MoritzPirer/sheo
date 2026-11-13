@@ -4,7 +4,6 @@ import model.colorname.ColorNameProvider;
 import model.colorname.KnnColorNameProvider;
 import model.colorname.NullColorNameProvider;
 
-import java.awt.*;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.util.Objects;

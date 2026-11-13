@@ -7,7 +7,7 @@ import userinterface.components.SectionContainer;
 import userinterface.components.UiComponent;
 
 public class JavaFxSectionContainer extends JavaFxComponent implements SectionContainer {
-    private BorderPane container = new BorderPane();
+    private final BorderPane container = new BorderPane();
 
 
     @Override
