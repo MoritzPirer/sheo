@@ -27,7 +27,7 @@ public class ViewManager {
         application.start(scene);
     }
 
-    public void openEditor(int colorIndex) {
-        view.openEditor(colorIndex);
+    public void toggleColorEditor(int colorIndex) {
+        view.toggleColorEditor(colorIndex);
     }
 }

@@ -64,4 +64,7 @@ public interface UiComponent {
     void setToolTip(String text);
 
     void setCornerRadius(CornerRadius cornerRadius);
+
+    void scaleTemporarily(double factor);
+    void resetScale();
 }

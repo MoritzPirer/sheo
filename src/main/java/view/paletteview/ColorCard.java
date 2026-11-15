@@ -26,6 +26,8 @@ public class ColorCard implements ColorChangeListener {
     private int index;
     private final Controller controller;
 
+    private boolean isOpened = false;
+
     public ColorCard(int index, Controller controller, UiFactory factory) {
         this.index = index;
         this.color = controller.getColor(index);
@@ -37,10 +39,23 @@ public class ColorCard implements ColorChangeListener {
         uiContainer = factory.createVerticalUiContainer();
         uiContainer.setMinimumSize(new Size(180, 60));
         uiContainer.setMaximumSize(new Size(480, 360));
-        //uiContainer.setPreferredSize(new Size(180, 120));
+
         uiContainer.addChild(background);
         uiContainer.addChild(colorInfo);
         uiContainer.setCornerRadius(new CornerRadius(0.1, true));
+        uiContainer.addHoverListener(new HoverListener() {
+            @Override
+            public void onHoverStart(UiComponent hovered) {
+                uiContainer.scaleTemporarily(1.1);
+            }
+
+            @Override
+            public void onHoverStop(UiComponent hovered) {
+                if (!isOpened) {
+                    uiContainer.resetScale();
+                }
+            }
+        });
 
         background.setPercentageSize(70.0, 100.0);
         colorInfo.setPercentageSize(30.0, 100.0);
@@ -92,7 +107,7 @@ public class ColorCard implements ColorChangeListener {
     private Button createEditButton(UiFactory factory, Controller controller) {
         Button editButton = factory.createButton("E");
         editButton.setToolTip("Edit");
-        editButton.addButtonListener(b -> controller.openEditor(index));
+        editButton.addButtonListener(b -> controller.toggleColorEditor(index));
 
         return editButton;
     }
@@ -144,5 +159,15 @@ public class ColorCard implements ColorChangeListener {
         background.setBackground(color);
         hexCode.setText(ColorConverter.colorToHexString(color));
         colorName.setText(controller.getColorName(color));
+    }
+
+    public void scaleUp() {
+        isOpened = true;
+        uiContainer.scaleTemporarily(1.1);
+    }
+
+    public void resetScale() {
+        isOpened = false;
+        uiContainer.resetScale();
     }
 }

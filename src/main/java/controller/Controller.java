@@ -114,8 +114,8 @@ public class Controller {
         //TODO
     }
 
-    public void openEditor(int colorIndex) {
-        viewManager.openEditor(colorIndex);
+    public void toggleColorEditor(int colorIndex) {
+        viewManager.toggleColorEditor(colorIndex);
     }
 
     public String getColorName(Color color) {

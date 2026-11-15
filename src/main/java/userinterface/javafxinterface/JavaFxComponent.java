@@ -1,5 +1,6 @@
 package userinterface.javafxinterface;
 
+import javafx.animation.ScaleTransition;
 import javafx.beans.binding.Bindings;
 import javafx.scene.Parent;
 import javafx.scene.control.Tooltip;
@@ -24,6 +25,8 @@ import java.util.List;
  * on the Component's primary javaFx component
  */
 abstract class JavaFxComponent implements UiComponent {
+    ScaleTransition applyScaling;
+    ScaleTransition resetScaling;
     /**
      * Used by the methods of this class. Return the primary javaFx component of the UiComponent (for wrappers, this is
      * the wrapped component. For custom components, this is the container of the used components)
@@ -228,5 +231,35 @@ abstract class JavaFxComponent implements UiComponent {
         }
 
         node.setBackground(new Background(newFills.toArray(BackgroundFill[]::new)));
+    }
+
+    @Override
+    public void scaleTemporarily(double factor) {
+        if (factor <= 0) {
+            throw new IllegalArgumentException("factor must be positive");
+        }
+
+        Region node = getJavaFxNode();
+        applyScaling = new ScaleTransition(Duration.millis(150), node);
+        applyScaling.setToX(factor);
+        applyScaling.setToY(factor);
+
+        resetScaling = new ScaleTransition(Duration.millis(150), node);
+        resetScaling.setToX(1.0);
+        resetScaling.setToY(1.0);
+
+        node.toFront(); // Ensure tile renders on top of its neighbors
+        resetScaling.stop();
+        applyScaling.playFromStart();
+    }
+
+    @Override
+    public void resetScale() {
+        if (resetScaling == null) {
+            return;
+        }
+
+        applyScaling.stop();
+        resetScaling.playFromStart();
     }
 }

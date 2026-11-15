@@ -8,11 +8,15 @@ import userinterface.components.UiSlot;
 import view.paletteview.coloreditor.ColorEditor;
 
 import java.awt.*;
+import java.util.List;
+import java.util.ArrayList;
 
 public class InformationPanel {
     private final UiSlot container;
     private final ColorEditor colorEditor;
     private final Controller controller;
+    private final List<InformationPanelListener> listeners = new ArrayList<>();
+    private int activeIndex = -1;
 
     public InformationPanel(UiFactory factory, Controller controller) {
         container = factory.createUiSlot();
@@ -28,7 +32,12 @@ public class InformationPanel {
         return container;
     }
 
-    public void openEditor(int colorIndex) {
+    public void toggleColorEditor(int colorIndex) {
+        if (activeIndex == colorIndex) {
+            closeEditor();
+            return;
+        }
+
         container.setChild(colorEditor.getUiComponent());
         colorEditor.getUiComponent().setPercentageWidth(100.0);
         colorEditor.open(colorIndex);
@@ -37,10 +46,22 @@ public class InformationPanel {
                 closeEditor();
             }
         });
+
+        if (activeIndex != -1) {
+            listeners.forEach(listener -> listener.onColorEditorClose(activeIndex));
+        }
+        activeIndex = colorIndex;
+        listeners.forEach(listener -> listener.onColorEditorOpen(colorIndex));
     }
 
     public void closeEditor() {
         colorEditor.close();
         container.removeChild();
+        listeners.forEach(l -> l.onColorEditorClose(activeIndex));
+        activeIndex = -1;
+    }
+
+    public void addListener(InformationPanelListener listener) {
+        listeners.add(listener);
     }
 }

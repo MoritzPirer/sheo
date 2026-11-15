@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.*;
 
-public class PaletteView {
+public class PaletteView implements InformationPanelListener {
     private final List<ColorCard> colorCards = new ArrayList<>();
     private Toolbar toolbar;
     private InformationPanel informationPanel;
@@ -21,6 +21,7 @@ public class PaletteView {
         toolbar = new Toolbar(factory, controller);
         GridContainer colorSegment = createColorSegment(factory, controller);
         informationPanel = new InformationPanel(factory, controller);
+        informationPanel.addListener(this);
 
         root.setTop(toolbar.getUiComponent());
         root.setCenter(colorSegment);
@@ -58,7 +59,17 @@ public class PaletteView {
         return colorSegment;
     }
 
-    public void openEditor(int colorIndex) {
-        informationPanel.openEditor(colorIndex);
+    public void toggleColorEditor(int colorIndex) {
+        informationPanel.toggleColorEditor(colorIndex);
+    }
+
+    @Override
+    public void onColorEditorOpen(int colorIndex) {
+        colorCards.get(colorIndex).scaleUp();
+    }
+
+    @Override
+    public void onColorEditorClose(int colorIndex) {
+        colorCards.get(colorIndex).resetScale();
     }
 }
