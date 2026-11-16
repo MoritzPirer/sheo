@@ -17,6 +17,7 @@ import java.awt.*;
 import java.util.List;
 
 public class ColorCard implements ColorChangeListener {
+    private static final double FOCUS_SCALE_UP_FACTOR = 1.1;
     private Color color;
     private final UiContainer uiContainer;
     private final UiContainer background;
@@ -46,7 +47,7 @@ public class ColorCard implements ColorChangeListener {
         uiContainer.addHoverListener(new HoverListener() {
             @Override
             public void onHoverStart(UiComponent hovered) {
-                uiContainer.scaleTemporarily(1.1);
+                uiContainer.scaleTemporarily(FOCUS_SCALE_UP_FACTOR);
             }
 
             @Override
@@ -163,7 +164,7 @@ public class ColorCard implements ColorChangeListener {
 
     public void scaleUp() {
         isOpened = true;
-        uiContainer.scaleTemporarily(1.1);
+        uiContainer.scaleTemporarily(FOCUS_SCALE_UP_FACTOR);
     }
 
     public void resetScale() {

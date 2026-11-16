@@ -20,7 +20,21 @@ public class ColorSuggestionHandler {
         container = factory.createVerticalUiContainer();
 
         createSuggestions(factory, context);
-        DropdownSelection dropdown = factory.createDropdownSelection(suggestions.keySet().toArray(String[]::new));
+        DropdownSelection dropdown = createDropdown(factory, suggestions.keySet().toArray(String[]::new));
+
+        activeSuggestor = suggestions.get("Shade");
+
+        slot = factory.createUiSlot();
+        slot.setChild(activeSuggestor.getUiComponent());
+
+        container.addChildren(dropdown, slot);
+
+        dropdown.setPercentageWidth(100.0);
+        slot.setPercentageWidth(100.0);
+    }
+
+    DropdownSelection createDropdown(UiFactory factory, String[] options) {
+        DropdownSelection dropdown = factory.createDropdownSelection(options);
         dropdown.addDropdownSelectionListener(new DropdownSelectionListener() {
             @Override
             public void onSelectionChange(DropdownSelection source, String before, String after) {
@@ -35,15 +49,7 @@ public class ColorSuggestionHandler {
             }
         });
 
-        activeSuggestor = suggestions.get("Shade");
-
-        slot = factory.createUiSlot();
-        slot.setChild(activeSuggestor.getUiComponent());
-
-        container.addChildren(dropdown, slot);
-
-        dropdown.setPercentageWidth(100.0);
-        slot.setPercentageWidth(100.0);
+        return dropdown;
     }
 
     void createSuggestions(UiFactory factory, ColorEditor context) {

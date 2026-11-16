@@ -18,6 +18,9 @@ import java.util.List;
 import java.util.function.Function;
 
 public class Suggestor {
+    private static final Size BUTTON_SIZE = new Size(20, 30);
+    private static final Color CONFIRMATION_COLOR = new Color(58, 195, 32);
+    private static final Duration CONFIRMATION_DURATION = Duration.ofMillis(250);
     private final UiContainer container;
     private final String name;
     private final Label[] labels;
@@ -55,19 +58,20 @@ public class Suggestor {
 
     private Button createCopyButton(UiFactory factory, int index) {
         Button copyButton = factory.createButton("C");
-        copyButton.setPreferredSize(new Size(20, 30));
+        copyButton.setPreferredSize(BUTTON_SIZE);
+        copyButton.setToolTip("Copy");
+
         copyButton.addButtonListener(source -> {
             CopyUtility.setSystemClipboardContent(labels[index].getText());
-            copyButton.setTemporaryStyle(new Color(58, 195, 32), null, null, Duration.ofMillis(250));
+            copyButton.setTemporaryStyle(CONFIRMATION_COLOR, null, null, CONFIRMATION_DURATION);
         });
-        copyButton.setToolTip("Copy");
 
         return copyButton;
     }
 
     public Button createApplyButton(UiFactory factory, int index, ColorEditor context) {
         Button applyButton = factory.createButton("A");
-        applyButton.setPreferredSize(new Size(20, 30));
+        applyButton.setPreferredSize(BUTTON_SIZE);
         applyButton.addButtonListener(source ->
             context.onChange(null, null, ColorConverter.hexToColor(labels[index].getText()))
         );
@@ -77,43 +81,50 @@ public class Suggestor {
     }
 
     public static Suggestor createShadeSuggestor(UiFactory factory, ColorEditor context) {
-        return new Suggestor(factory, context, 7, "Shade", c ->
-            makeColorNamePairs(ColorGenerator.getColorShades(c, 7))
+        final int count = 7;
+        return new Suggestor(factory, context, count, "Shade", c ->
+            makeColorNamePairs(ColorGenerator.getColorShades(c, count))
         );
     }
 
     public static Suggestor createAnalogousSuggestor(UiFactory factory, ColorEditor context) {
+        final int count = 3;
         return new Suggestor(factory, context, 3, "Analogous", c ->
-            makeColorNamePairs(ColorGenerator.getAnalogousColors(c, 1))
+            makeColorNamePairs(ColorGenerator.getAnalogousColors(c, (count - 1) / 2))
         );
     }
 
     public static Suggestor createComplementarySuggestor(UiFactory factory, ColorEditor context) {
-        return new Suggestor(factory, context, 2, "Complementary", c ->
+        final int count = 2;
+        return new Suggestor(factory, context, count, "Complementary", c ->
             makeColorNamePairs(new Color[]{c, ColorGenerator.getComplementColor(c)})
         );
     }
 
     public static Suggestor createSplitComplementarySuggestor(UiFactory factory, ColorEditor context) {
-        return new Suggestor(factory, context, 3, "Split Complementary", c ->
+        final int count = 3;
+        return new Suggestor(factory, context, count, "Split Complementary", c ->
             makeColorNamePairs(ColorGenerator.getSplitComplementaryColors(c))
         );
     }
 
     public static Suggestor createTriadicSuggestor(UiFactory factory, ColorEditor context) {
-        return new Suggestor(factory, context, 3, "Triadic", c ->
+        final int count = 3;
+        return new Suggestor(factory, context, count, "Triadic", c ->
             makeColorNamePairs(ColorGenerator.getTriadicColors(c))
         );
     }
 
     public static Suggestor createSquareSuggestor(UiFactory factory, ColorEditor context) {
-        return new Suggestor(factory, context, 4, "Square", c ->
+        final int count = 4;
+        return new Suggestor(factory, context, count, "Square", c ->
             makeColorNamePairs(ColorGenerator.getSquareColors(c))
         );
     }
 
     public static Suggestor createSimilarSuggestor(UiFactory factory, ColorEditor context) {
-        return new Suggestor(factory, context, 4, "Similar", c -> context.getSimilarColors(c, 4));
+        final int count = 4;
+        return new Suggestor(factory, context, count, "Similar", c -> context.getSimilarColors(c, count));
     }
 
     private static List<Pair<Color, String>> makeColorNamePairs(Color[] colors) {
