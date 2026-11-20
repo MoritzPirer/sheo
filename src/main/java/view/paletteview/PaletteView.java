@@ -32,7 +32,9 @@ public class PaletteView implements InformationPanelListener {
     }
 
     private GridContainer createColorSegment(UiFactory factory, Controller controller) {
-        GridContainer colorSegment = factory.createGridContainer(2, 5);
+        final int rows = 2;
+        final int columns = Controller.MAX_COLOR_COUNT / rows;
+        GridContainer colorSegment = factory.createGridContainer(rows, columns);
         colorSegment.setBackground(new Color(251, 251, 251, 251));
         colorSegment.setSpacing(15.0);
         colorSegment.setPadding(new Padding(15,20));
